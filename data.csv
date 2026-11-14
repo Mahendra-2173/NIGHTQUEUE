@@ -7,7 +7,7 @@ order_id,timestamp,item_ordered,dish_category,queue_ahead,burners_active,claimed
 6,23:36:40,Double Egg Maggi,maggi,4,2,5,18.4,50,Hostel 8,No,High heat boiled water over; stove wiped
 7,23:39:00,Bun Omelette,egg_toast,5,1,5,23.1,45,Hostel 9,No,Burner 1 gas ran low; valve adjusted
 8,23:41:50,Dudh Saah x2,beverage,5,2,5,8.8,30,Hostel 6,No,Small tea saucepan on side flame
-9,23:43:30,Egg Toast,egg_toast,6,2,5,21.5,40,Hostel 7,No,Student repeatedly asked 'Bipul Da, hoise?'
+9,23:43:30,Egg Toast,egg_toast,6,2,5,21.5,40,Hostel 7,No,"Student repeatedly asked 'Bipul Da hoise?'"
 10,23:45:50,Plain Maggi,maggi,6,2,5,19.9,35,Hostel 8,No,Shared pan batch with order 11
 11,23:46:15,Plain Maggi,maggi,7,2,5,20.4,35,Hostel 6,No,Poured into disposable paper bowl
 12,23:48:40,Lal Saah x2,beverage,6,2,3,6.5,20,Hostel 7,No,Fast turnaround; ginger crushed quickly
