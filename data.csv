@@ -1,0 +1,21 @@
+order_id,timestamp,item_ordered,dish_category,queue_ahead,burners_active,claimed_wait_mins,actual_wait_mins,price_inr,hostel_origin,curfew_breach,notes
+1,23:25:10,Double Egg Maggi,maggi,0,2,5,6.4,50,Hostel 6,No,First order observed; both burners free
+2,23:26:35,Plain Maggi,maggi,1,2,5,7.9,35,Hostel 7,No,Cooked alongside order 1 in second pan
+3,23:29:10,Bun Omelette,egg_toast,1,2,5,11.2,45,Hostel 8,No,Tawa occupied with buttering local pao bun
+4,23:31:00,Egg Toast,egg_toast,2,2,5,13.8,40,Hostel 6,No,Egg shell cracking and whisking delay
+5,23:34:15,Plain Maggi,maggi,3,2,5,16.1,35,Hostel 7,No,Student sat on bench discussing endsem exam
+6,23:36:40,Double Egg Maggi,maggi,4,2,5,18.4,50,Hostel 8,No,High heat boiled water over; stove wiped
+7,23:39:00,Bun Omelette,egg_toast,5,1,5,23.1,45,Hostel 9,No,Burner 1 gas ran low; valve adjusted
+8,23:41:50,Dudh Saah x2,beverage,5,2,5,8.8,30,Hostel 6,No,Small tea saucepan on side flame
+9,23:43:30,Egg Toast,egg_toast,6,2,5,21.5,40,Hostel 7,No,Student repeatedly asked 'Bipul Da, hoise?'
+10,23:45:50,Plain Maggi,maggi,6,2,5,19.9,35,Hostel 8,No,Shared pan batch with order 11
+11,23:46:15,Plain Maggi,maggi,7,2,5,20.4,35,Hostel 6,No,Poured into disposable paper bowl
+12,23:48:40,Lal Saah x2,beverage,6,2,3,6.5,20,Hostel 7,No,Fast turnaround; ginger crushed quickly
+13,23:51:10,Bun Omelette,egg_toast,7,2,5,24.8,45,Hostel 8,No,Student from Hostel 8 checking wrist watch
+14,23:53:40,Double Egg Maggi,maggi,8,2,5,27.2,50,Hostel 6,Yes,Student had to sprint to Gate 1 at 00:23
+15,23:57:15,Egg Toast,egg_toast,8,2,5,28.6,40,Hostel 7,Yes,Late register marked at Hostel 7 guard desk
+16,23:59:50,Plain Maggi,maggi,7,2,5,24.1,35,Hostel 8,Yes,Reached hostel gate at 00:31; guard warned him
+17,00:02:20,Bun Omelette,egg_toast,7,2,5,25.7,45,Hostel 6,Yes,Hostel 6 night guard blew whistle
+18,00:04:00,Double Egg Maggi,maggi,6,2,5,22.3,50,Hostel 7,Yes,Food collected by roommate running back
+19,00:06:15,Dudh Saah x1,beverage,4,2,3,7.2,15,Hostel 9,No,Quick tea served while others waited
+20,00:08:10,Egg Toast,egg_toast,5,2,5,20.1,40,Hostel 8,Yes,Student complained about Bipul Da false promise
