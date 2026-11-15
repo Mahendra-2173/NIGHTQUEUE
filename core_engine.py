@@ -1,16 +1,16 @@
 """
-NightQueue Core Engine: Queue estimation and curfew risk prediction
-for Bipul Da's Night Stall outside Gate 1, NIT Silchar.
+NightQueue Core Engine: Queue Wait Time & Curfew Safety Calculator
+Calculates real cooking times and curfew risks for Bipul Da's stall at Gate 1, NIT Silchar.
 """
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional
 import os
 import pandas as pd
 
 
-# NIT Silchar campus walking transit times to Gate 1 (in minutes, one-way)
+# NIT Silchar campus walking times to Gate 1 (one-way in minutes)
 NIT_SILCHAR_HOSTEL_WALK_TIMES = {
     "Hostel 1": 5.0,
     "Hostel 2": 5.0,
@@ -25,7 +25,7 @@ NIT_SILCHAR_HOSTEL_WALK_TIMES = {
     "Girls Hostel 2": 10.5,
 }
 
-# Empirical base service times (in minutes) calibrated from data.csv
+# Base cooking times per item category (in minutes)
 BASE_COOK_TIMES = {
     "maggi": 4.5,
     "egg_toast": 6.0,
@@ -33,7 +33,8 @@ BASE_COOK_TIMES = {
     "bakery": 3.0,
 }
 
-PAN_CHANGEOVER_PENALTY_MINS = 1.2  # Sanitizing tawa / pan transition lag
+# Time needed to wipe and oil the pan between egg dishes and Maggi
+PAN_CLEANING_PENALTY_MINS = 1.2
 
 
 @dataclass
@@ -63,18 +64,18 @@ class NightQueueModel:
         self.load_data()
 
     def load_data(self) -> None:
-        """Loads data.csv and calculates empirical calibration constants."""
+        """Loads data.csv containing 20 real orders collected at the stall."""
         if os.path.exists(self.data_csv_path):
             try:
                 self.df = pd.read_csv(self.data_csv_path)
             except Exception as e:
-                print(f"[Warning] Failed to parse {self.data_csv_path}: {e}")
+                print(f"[Warning] Could not read {self.data_csv_path}: {e}")
                 self.df = pd.DataFrame()
         else:
             self.df = pd.DataFrame()
 
     def get_summary_stats(self) -> Dict[str, float]:
-        """Calculates core statistical evidence from fieldwork data."""
+        """Calculates simple summary numbers from the 20 real orders."""
         if self.df is None or self.df.empty:
             return {
                 "total_orders": 0,
@@ -83,8 +84,8 @@ class NightQueueModel:
                 "avg_underestimation_gap": 13.0,
                 "curfew_breach_rate_pct": 35.0,
             }
-        
-        # Clean potential corrupted rows gracefully
+
+        # Filter valid rows
         valid_df = self.df.dropna(subset=["claimed_wait_mins", "actual_wait_mins"]).copy()
         valid_df["claimed_wait_mins"] = pd.to_numeric(valid_df["claimed_wait_mins"], errors="coerce")
         valid_df["actual_wait_mins"] = pd.to_numeric(valid_df["actual_wait_mins"], errors="coerce")
@@ -124,34 +125,32 @@ class NightQueueModel:
         curfew_buffer_mins: float = 5.0,
     ) -> QueuePrediction:
         """
-        Calculates queue delay using multi-server burner capacity + batching heuristics,
-        and evaluates curfew breach risk for NIT Silchar students.
+        Calculates realistic cooking wait time and whether the student will reach
+        their hostel before the 12:30 AM curfew.
         """
-        # Guard against invalid inputs (e.g. interviewer passing bad rows)
+        # Protect against negative or bad inputs
         safe_orders_ahead = max(0, int(orders_ahead))
         safe_burners = max(1, int(burners_active))
         dish_category = dish_category.lower() if dish_category else "maggi"
-        
+
         base_cook = BASE_COOK_TIMES.get(dish_category, 5.0)
         walk_time = NIT_SILCHAR_HOSTEL_WALK_TIMES.get(hostel, 7.5)
 
-        # Multi-server queue estimation with burner batching logic:
-        # If order is Maggi, up to 2 plates can share a pan.
-        # Egg toast cannot batch with Maggi.
-        effective_batches_ahead = safe_orders_ahead / safe_burners
-        
-        # Batch factor: Maggi batches reduce effective cook batches by ~25%
+        # Cooking time calculation:
+        # Bipul Da splits orders across available burners.
+        # Maggi can be batched together (2 in one pot), while egg dishes take individual tawa time.
+        effective_batches = safe_orders_ahead / safe_burners
         if dish_category == "maggi":
-            effective_batches_ahead *= 0.75
+            effective_batches *= 0.75
 
-        # Pan transition penalty occurs every ~3 mixed orders
-        estimated_changeovers = safe_orders_ahead // 3
-        total_changeover_penalty = estimated_changeovers * PAN_CHANGEOVER_PENALTY_MINS
+        # Pan cleaning delay happens every ~3 mixed orders
+        pan_cleanings = safe_orders_ahead // 3
+        cleaning_delay = pan_cleanings * PAN_CLEANING_PENALTY_MINS
 
-        # Total estimated kitchen wait
-        estimated_cook_wait = (effective_batches_ahead * base_cook) + base_cook + total_changeover_penalty
+        # Total estimated cooking wait
+        estimated_cook_wait = (effective_batches * base_cook) + base_cook + cleaning_delay
 
-        # Resolve current time
+        # Determine current clock time
         now = datetime.now()
         if current_time_str:
             try:
@@ -160,40 +159,45 @@ class NightQueueModel:
             except Exception:
                 pass
 
-        # Total round trip: Walk to Gate 1 + Wait in Queue + Walk Back to Hostel
+        # Total trip = Walk to Gate 1 + Cooking wait + Walk back to hostel
         total_trip_mins = walk_time + estimated_cook_wait + walk_time
 
         ready_dt = now + timedelta(minutes=estimated_cook_wait)
         return_dt = now + timedelta(minutes=total_trip_mins)
 
-        # Parse curfew time
+        # Determine curfew time (12:30 AM)
         curfew_hour, curfew_min = [int(p) for p in curfew_time_str.split(":")]
         curfew_dt = now.replace(hour=curfew_hour, minute=curfew_min, second=0, microsecond=0)
         if curfew_dt < now:
-            # If current time is 23:30 and curfew is 00:30, curfew is tomorrow
+            # If current time is 23:45 and curfew is 00:30, curfew is past midnight
             curfew_dt += timedelta(days=1)
 
         curfew_margin = (curfew_dt - return_dt).total_seconds() / 60.0
 
-        # Curfew Status
+        # Simple, plain-English advice based on curfew safety
         if curfew_margin < 0:
             status = "BREACH"
             minutes_late = abs(round(curfew_margin, 1))
             rec = (
-                f"🚨 DANGER: You will return {minutes_late} mins after curfew! "
-                f"Switch to Lal/Dudh Saah (ready in ~5 mins) or skip tonight to avoid guard penalty."
+                f"🚨 DON'T GO: You will return {minutes_late} minutes after the 12:30 AM curfew! "
+                f"The gate will be locked. Skip tonight or have quick tea to avoid the late register."
             )
         elif curfew_margin <= curfew_buffer_mins:
             status = "CAUTION"
+            margin_left = round(curfew_margin, 1)
             rec = (
-                f"⚠️ TIGHT BUFFER: You have only {round(curfew_margin, 1)} mins before gate lock. "
-                f"Avoid complex egg toasts; pick Plain Maggi or Tea."
+                f"⚠️ HURRY: You only have {margin_left} minutes to spare before 12:30 AM! "
+                f"Walk quickly and choose Plain Maggi or Tea instead of slow egg items."
             )
         else:
             status = "SAFE"
-            rec = f"✅ SAFE TO ORDER: You will reach {hostel} with {round(curfew_margin, 1)} mins to spare before 00:30."
+            margin_left = round(curfew_margin, 1)
+            rec = (
+                f"✅ SAFE TO GO: You have {margin_left} minutes to spare before the 12:30 AM curfew. "
+                f"You will reach {hostel} comfortably in time."
+            )
 
-        # Compare with Bipul Da's optimistic quote
+        # Compare with Bipul Da's "5 minutes" claim
         claimed_wait = 5.0 if safe_orders_ahead <= 4 else 10.0
         gap = round(estimated_cook_wait - claimed_wait, 1)
 
@@ -218,23 +222,5 @@ class NightQueueModel:
 
 
 if __name__ == "__main__":
-    # Self-test the core prediction
     model = NightQueueModel("data.csv")
-    stats = model.get_summary_stats()
-    print("Fieldwork Summary Stats:", stats)
-    
-    pred = model.predict_wait_and_curfew(
-        dish_name="Bun Omelette",
-        dish_category="egg_toast",
-        hostel="Hostel 7",
-        orders_ahead=6,
-        burners_active=2,
-        current_time_str="23:45",
-        curfew_time_str="00:30",
-    )
-    print("\nSample Prediction:")
-    print(f"Dish: {pred.item_name} | Hostel: {pred.hostel}")
-    print(f"Vendor Claimed: {pred.vendor_promised_mins} mins | Real Cook Wait: {pred.estimated_cook_wait_mins} mins")
-    print(f"Return Time: {pred.estimated_return_time} | Curfew: {pred.curfew_time}")
-    print(f"Curfew Status: {pred.curfew_status} (Margin: {pred.curfew_margin_mins} mins)")
-    print(f"Recommendation: {pred.recommendation}")
+    print("Summary Stats:", model.get_summary_stats())
