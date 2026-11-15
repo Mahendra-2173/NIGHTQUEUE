@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bipul Da's Tea Stall ("Tapri") — NIT Silchar Gate 1 Curfew & Food Wait Checker</title>
+  <title>NightQueue — NIT Silchar Gate 1 Curfew & Food Wait Radar</title>
+  <link rel="icon" type="image/png" href="/photos/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,15 +77,17 @@
       
       <!-- Brand & Identification -->
       <a href="#checker" onclick="showPage('checker')" class="flex items-center space-x-3 group cursor-pointer focus:outline-none">
-        <div class="h-11 w-11 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition transform">
-          ☕
+        <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 p-1 flex items-center justify-center shadow-lg shadow-amber-500/10 group-hover:scale-105 transition transform overflow-hidden bg-slate-900/90">
+          <img src="/photos/logo.png" alt="NightQueue Logo" class="h-full w-full object-contain filter drop-shadow">
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Bipul Da's Tea Stall</span>
-            <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">Tapri</span>
+            <span class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center">
+              Night<span class="text-amber-400">Queue</span>
+            </span>
+            <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">Tapri Radar</span>
           </div>
-          <p class="text-xs text-slate-400">NIT Silchar Gate 1 • Food Wait Time & Gate In-Time Checker</p>
+          <p class="text-xs text-slate-400">Bipul Da's Tea Stall • NIT Silchar Gate 1</p>
         </div>
       </a>
 
@@ -909,8 +913,13 @@
 
   <!-- Global Footer -->
   <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-400">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div>Bipul Da's Tea Stall ("Tapri") • Built for NIT Silchar Students outside Gate 1</div>
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5">
+        <img src="/photos/logo.png" alt="NightQueue Logo" class="h-6 w-6 object-contain">
+        <span class="font-bold text-slate-200 text-sm">Night<span class="text-amber-400">Queue</span></span>
+        <span class="text-slate-600">•</span>
+        <span>Bipul Da's Tea Stall ("Tapri") • Built for NIT Silchar Students outside Gate 1</span>
+      </div>
       <div>Gate Closing Times: Boys (BH1–BH9) 12:30 AM • Girls (GH1–GH4) 10:30 PM • Maintained by Raju</div>
     </div>
   </footer>

@@ -48,8 +48,14 @@ def test_page():
 
 @app.route("/photos/<path:filename>")
 def serve_photo(filename):
-    """Serves fieldwork timestamped photos."""
+    """Serves fieldwork timestamped photos and site assets."""
     return send_from_directory("photos", filename)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    """Serves site favicon."""
+    return send_from_directory("photos", "favicon.ico")
 
 
 # REST API Endpoints

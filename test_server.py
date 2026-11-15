@@ -261,6 +261,8 @@ class TestNightQueueComprehensive24(unittest.TestCase):
             ("/api/item-stats", 200),
             ("/photos/stall_setup.jpg", 200),
             ("/photos/cooking_rush.jpg", 200),
+            ("/photos/logo.png", 200),
+            ("/favicon.ico", 200),
         ]
         for url, expected_code in endpoints:
             r = self.client.get(url)
