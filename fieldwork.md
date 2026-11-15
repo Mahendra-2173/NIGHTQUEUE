@@ -6,6 +6,7 @@
 **Person Interviewed:** Bipul Nath ("Bipul Da"), age 44, stall cook and operator.  
 **Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew 10:30 PM).  
 **Live Web Application:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
+**3-Minute Screen Recording Video:** [Watch on Google Drive](https://drive.google.com/drive/folders/1zBrTpkhPoQvqBuyldZZNyvc1oD0mFReR?usp=drive_link)  
 
 ---
 

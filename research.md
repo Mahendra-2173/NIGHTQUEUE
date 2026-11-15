@@ -4,6 +4,7 @@
 **Role:** Sole proprietor and cook at *Bipul Da's Tea Stall* (popularly called **"Tapri"** by students, signboard reads **"NIKHIL TEA STALL"**), situated exactly 80 meters outside Gate No. 1 (Main Gate), National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).  
 **Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew: 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew: 10:30 PM).  
 **Live Web Application:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
+**3-Minute Screen Recording Video:** [Watch on Google Drive](https://drive.google.com/drive/folders/1zBrTpkhPoQvqBuyldZZNyvc1oD0mFReR?usp=drive_link)  
 **Date:** November 15, 2026  
 
 ---
