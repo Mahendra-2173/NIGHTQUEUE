@@ -1,11 +1,10 @@
 """
-NightQueue: Flask Web Application & CLI for NIT Silchar Students & Stall Operator
-Predicts food wait times, curfew feasibility, and empowers Bipul Da with honest queue quotes.
+NightQueue: Flask Web Application & Technical CLI Runner
+Grounds wait-time and curfew predictions in empirical data from Gate 1, NIT Silchar.
 """
 
 import sys
 import argparse
-import json
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from core_engine import NightQueueModel
@@ -16,40 +15,34 @@ CORS(app)
 model = NightQueueModel("data.csv")
 
 
-# Web Page Routes
+# Multi-Page Navigation Routes
 @app.route("/")
 def index():
-    """Main home dashboard (defaults to Curfew Checker)."""
+    """Main dashboard entrypoint (defaults to Curfew Checker)."""
     return render_template("index.html", initial_page="checker")
 
 
 @app.route("/checker")
 def checker_page():
-    """Student Curfew & Queue Radar page."""
+    """Curfew Checker page."""
     return render_template("index.html", initial_page="checker")
-
-
-@app.route("/owner")
-def owner_page():
-    """Stall Owner (Bipul Da) Order Manager page."""
-    return render_template("index.html", initial_page="owner")
 
 
 @app.route("/data")
 def data_page():
-    """Stall Data page (20 Real Observations)."""
+    """Stall Data page (20 verified observations & item statistics)."""
     return render_template("index.html", initial_page="data")
 
 
 @app.route("/story")
 def story_page():
-    """The Fieldwork Story page (NIT Silchar Gate 1)."""
+    """The Fieldwork Story page (NIT Silchar context)."""
     return render_template("index.html", initial_page="story")
 
 
 @app.route("/test")
 def test_page():
-    """Simple Test & Diagnostics page."""
+    """Simple Test and Reliability Diagnostics page."""
     return render_template("index.html", initial_page="test")
 
 
@@ -63,25 +56,32 @@ def get_stats():
 
 @app.route("/api/data", methods=["GET"])
 def get_data_rows():
-    """Returns all 20 real observational records from data.csv."""
-    if model.df is not None and not model.df.empty:
-        records = model.df.fillna("").to_dict(orient="records")
+    """Returns all validated observational records from data.csv."""
+    if model.valid_df is not None and not model.valid_df.empty:
+        records = model.valid_df.fillna("").to_dict(orient="records")
         return jsonify(records)
     return jsonify([])
 
 
+@app.route("/api/item-stats", methods=["GET"])
+def get_item_statistics():
+    """Returns food-item-wise mean, median, min, max, and std statistics."""
+    item_stats = model.get_item_statistics()
+    return jsonify(item_stats)
+
+
 @app.route("/api/audit", methods=["GET"])
 def get_dataset_audit():
-    """Returns dataset health and integrity audit (Section 3 compliance)."""
-    audit = model.validate_dataset()
-    return jsonify(audit.__dict__)
+    """Returns the comprehensive dataset validation and health report."""
+    rep = model.load_and_validate_dataset()
+    return jsonify(rep.__dict__)
 
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
     """
-    Main prediction endpoint. Calculates cook delay from empirical observations,
-    walk time, departure deadline, curfew feasibility, and confidence interval.
+    Main prediction endpoint. Uses item-level empirical statistics,
+    queue congestion modeling, walking transit matrix, and date-aware curfew feasibility.
     """
     payload = request.get_json() or {}
 
@@ -112,7 +112,7 @@ def predict():
 def test_bad_row():
     """
     Defensively sanitizes bad or adversarial inputs (negative orders, 0 burners)
-    and demonstrates safe software degradation.
+    and demonstrates safe software degradation without crashing.
     """
     payload = request.get_json() or {}
     raw_orders = payload.get("orders_ahead", -5)
@@ -137,7 +137,7 @@ def test_bad_row():
             "status": "DEFENDED_SUCCESSFULLY",
             "sanitized_orders_ahead": sanitized_orders,
             "sanitized_burners_active": sanitized_burners,
-            "estimated_cook_wait_mins": prediction.estimated_cook_wait_mins,
+            "estimated_cook_wait_mins": prediction.historical_prep_mins + prediction.queue_wait_mins,
             "defense_note": (
                 f"Fixed bad inputs safely: orders({raw_orders}) -> {sanitized_orders}, "
                 f"burners({raw_burners}) -> {sanitized_burners}. Time fallback applied safely."
@@ -152,27 +152,32 @@ def test_bad_row():
 
 def run_cli():
     """Runs a complete technical evaluation report in terminal mode."""
-    print("=" * 68)
+    print("=" * 70)
     print("🌙 NightQueue: NIT Silchar Gate 1 Queuing Model (Technical CLI Report)")
-    print("=" * 68)
+    print("=" * 70)
 
-    audit = model.validate_dataset()
+    rep = model.validation_report
     print("\n[1] DATASET INTEGRITY & VALIDATION AUDIT (data.csv):")
-    print(f"  • Validation Status:       {'PASS (Clean)' if audit.is_valid else 'FAIL'}")
-    print(f"  • Total Genuine Rows:      {audit.total_rows}")
-    print(f"  • Missing Values:          {audit.missing_values_count}")
-    print(f"  • Duplicate IDs:           {audit.duplicate_ids_count}")
-    print(f"  • Categories Verified:     {', '.join(audit.categories_present)}")
+    print(f"  • Validation Status:       {'PASS (Clean)' if rep.is_valid else 'FAIL'}")
+    print(f"  • Total Rows Read:         {rep.total_rows_read}")
+    print(f"  • Valid Historical Rows:   {rep.valid_rows_count}")
+    print(f"  • Excluded Records:        {rep.excluded_rows_count}")
+    print(f"  • Missing Values:          {rep.missing_values_count}")
+    print(f"  • Duplicate IDs:           {rep.duplicate_ids_count}")
+
+    print("\n[2] FOOD-ITEM HISTORICAL PREPARATION TIME STATISTICS:")
+    for item, s in model.get_item_statistics().items():
+        print(f"  • {item:18}: n={s['count']} | mean={s['mean_actual_mins']}m | median={s['median_actual_mins']}m | min={s['min_actual_mins']}m | max={s['max_actual_mins']}m | std={s['std_actual_mins']}m")
 
     stats = model.get_summary_stats()
-    print("\n[2] EMPIRICAL FIELDWORK EVIDENCE:")
+    print("\n[3] EMPIRICAL QUEUING EVIDENCE:")
     print(f"  • Bipul Da's Claimed Mean: {stats['avg_claimed_mins']} mins ('Bas 5 minute')")
     print(f"  • Actual Measured Mean:    {stats['avg_actual_mins']} mins")
     print(f"  • Underestimation Gap:     +{stats['avg_underestimation_gap']} mins late")
-    print(f"  • Curfew Breach Rate:      {stats['curfew_breach_rate_pct']}% of observed students")
-    print(f"  • Marginal Queue Delay:    ~{stats.get('queue_penalty_per_order', 2.3)} mins per waiting order")
+    print(f"  • Curfew Breach Rate:      {stats['curfew_breach_rate_pct']}% of observed visits")
+    print(f"  • Marginal Delay/Order:    ~{stats['queue_penalty_per_order']} mins/order")
 
-    print("\n[3] SAMPLE EVALUATION: 23:45 IST, Hostel 7 Student, Bun Omelette, 6 orders ahead:")
+    print("\n[4] SAMPLE PREDICTION: 23:45 IST, Hostel 7 Student, Bun Omelette, 6 orders ahead:")
     pred = model.predict_wait_and_curfew(
         dish_name="Bun Omelette",
         dish_category="egg_toast",
@@ -182,31 +187,33 @@ def run_cli():
         current_time_str="23:45",
         curfew_time_str="00:30",
     )
-    print(f"  • Estimated Cook Wait:     {pred.estimated_cook_wait_mins} mins (Bipul Da claims: {pred.vendor_promised_mins}m)")
+    print(f"  • Historical Base Prep:    {pred.historical_prep_mins} mins")
+    print(f"  • Queue Waiting Estimate:  {pred.queue_wait_mins} mins")
+    print(f"  • Uncertainty Buffer:      ±{pred.uncertainty_buffer_mins} mins ({pred.expected_range})")
     print(f"  • Walk Time (Hostel 7):    {pred.walk_one_way_mins} mins each way ({pred.total_trip_mins}m total trip)")
     print(f"  • Latest Departure Time:   {pred.departure_deadline}")
     print(f"  • Estimated Room Return:   {pred.estimated_return_time}")
     print(f"  • Curfew Deadline:         {pred.curfew_time}")
-    print(f"  • Curfew Status:           [{pred.curfew_status}] (Margin: {pred.curfew_margin_mins} mins)")
+    print(f"  • Curfew Feasibility:      [{pred.curfew_status}] (Margin: {pred.curfew_margin_mins} mins)")
     print(f"  • Advice:                  {pred.recommendation}")
-    print(f"  • Empirical Confidence:    {pred.confidence_interval}")
+    print(f"  • Transparent Explanation: {pred.calculation_explanation}")
 
-    print("\n[4] BAD-ROW STRESS TEST (Handling negative queue & 0 burners):")
+    print("\n[5] BAD-ROW STRESS TEST (Handling negative queue & 0 burners):")
     bad_pred = model.predict_wait_and_curfew(
-        dish_name="Stress Item",
-        dish_category="invalid_category",
+        dish_name="Corrupt Input",
+        dish_category="invalid",
         hostel="Unknown Hostel",
         orders_ahead=-20,
         burners_active=0,
         current_time_str="99:99",
     )
-    print(f"  • Handled cleanly without crash. Fallback wait: {bad_pred.estimated_cook_wait_mins} mins")
-    print("=" * 68)
+    print(f"  • Handled cleanly without crash. Fallback wait: {bad_pred.historical_prep_mins + bad_pred.queue_wait_mins} mins")
+    print("=" * 70)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="NightQueue NIT Silchar")
-    parser.add_argument("--cli", action="store_true", help="Run in CLI mode instead of web server")
+    parser.add_argument("--cli", action="store_true", help="Run in technical CLI mode")
     parser.add_argument("--port", type=int, default=5000, help="Port to bind web server (default: 5000)")
     args = parser.parse_args()
 
