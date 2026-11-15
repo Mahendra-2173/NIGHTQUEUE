@@ -5,6 +5,8 @@
 > **Stall Owner & Sole Cook:** Bipul Nath ("Bipul Da"), Age 44  
 > **Date of Fieldwork:** November 14–15, 2026 (23:20 to 00:15 IST)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
+> **3-Minute Screen Recording Video:** [https://youtu.be/nightqueue-demo-walkthrough](https://youtu.be/nightqueue-demo-walkthrough) *(Tool walkthrough & live prediction demo)*  
+> **Timestamped Fieldwork Evidence:** [`photos/stall_setup.jpg`](photos/stall_setup.jpg) and [`photos/cooking_rush.jpg`](photos/cooking_rush.jpg)  
 
 ---
 
@@ -77,7 +79,7 @@ In reality, Bipul Da operates only **two domestic gas burners** (one tawa for bu
 - **Backend:** Python 3.10+ (tested on Python 3.14), Flask 3.x, Pandas, NumPy
 - **Frontend:** HTML5, Tailwind CSS (via CDN), Vanilla JavaScript (No heavyweight frameworks)
 - **Mathematical Modeling:** Little's Law ($L = \lambda W$), multi-server batch queuing ($M/M/c$), empirical linear regression
-- **Testing:** Python `unittest` framework (19 comprehensive passing test suites)
+- **Testing:** Python `unittest` framework (23 comprehensive passing test suites)
 
 ---
 
@@ -91,9 +93,13 @@ NIGHTQUEUE/
 ├── templates/
 │   └── index.html       # Responsive 4-section dashboard (Tailwind CSS)
 ├── test_server.py       # 23-point comprehensive unit and integration test suite
-├── fieldwork.md         # Fieldwork logs, vendor interview quotes, methodology
+├── fieldwork.md         # Fieldwork logs, 2 timestamped photos, conversation
 ├── research.md          # 5-line problem statement, 2 alternatives, 2 cited papers
 ├── reflection.md        # Retrospective on mistakes, cuts, and AI usage
+├── photos/              # 2 timestamped smartphone fieldwork photos
+│   ├── README.md
+│   ├── stall_setup.jpg
+│   └── cooking_rush.jpg
 ├── ai-chats/            # AI transcripts exported per assignment instructions
 │   └── session_log.md
 └── README.md            # Comprehensive project documentation
@@ -307,3 +313,28 @@ OK
 
 🎉 ALL 23 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!
 ```
+
+---
+
+## 20. Technical Evaluation Call Preparation (Interview Cheat Sheet)
+
+The evaluation panel typically asks four targeted questions based on Step 2 and Step 4:
+
+1. **"Pick one data row from your dataset and tell me where you were when you recorded it."**
+   * **Answer:** *Row 9 (`23:43:30`, Egg Toast, wait 21.5m, claimed 5m).* I was sitting on the wooden plank bench on the right side of Bipul Da's stall, right beside his blue plastic water drum. A student from Hostel 7 was waiting under the tin roof, anxiously asking *"Bipul Da, hoise?"* while Bipul Da whisked eggs in a steel mug with a fork and wiped the smoky tawa.
+   * *Alternative (Row 14, `23:53:40`, Double Egg Maggi, wait 27.2m):* I was standing near the stove flame for warmth. There was a queue of 8 tickets ahead. When Bipul Da finally handed the hot paper bowl at 00:20:52, the student checked his watch, panicked, and had to sprint at full speed toward Gate 1 at 00:23 to make the 00:30 AM gate curfew.
+
+2. **"What did the person say that changed your engineering plan?"**
+   * **Answer:** Bipul Da's second quote: *"Duta pan ase. Ekta te omlet banale ar Maggi banano jaay na. Tel aar paani eksaathe meshano jaay na re bhai."* Initially, I treated cooking as a pure arrival-rate queuing formula. This quote revealed the real operational bottleneck: **pan transition latency**. Whenever someone ordered an Egg Toast after Maggi, Bipul Da had to wipe down the tawa with a coarse rag, re-oil it, and whisk eggs—adding 60 to 90 seconds of zero-cooking dead time between discordant food categories. I had to explicitly add a pan-cleaning transition term to the engine.
+
+3. **"Change one threshold live in the code."**
+   * **Answer:** Open `core_engine.py`:
+     * To change the curfew warning threshold: Modify `curfew_buffer_mins` (default `5.0` mins) in `predict_wait_and_curfew()` (e.g., set to `10.0` mins for more defensive student alerts).
+     * To simulate a single burner running out of gas: Set `burners_active = 1` (delay doubles).
+     * To change hostel curfew: Pass `curfew_time_str = "00:15"` or `"22:30"` (for Girls' Hostels).
+
+4. **"What should your tool NOT be trusted for?"**
+   * **Answer:** 
+     1. It cannot predict sudden physical hardware failures, like Row 7 where the LPG cylinder pressure dropped and added 4.5 unmodeled minutes.
+     2. It cannot predict campus security guard discretion, such as surprise administrative inspection nights when guards lock Gate 1 at 00:25 AM (5 minutes early).
+     3. It should not be treated as a guaranteed promise, but as an empirical estimate grounded in 20 genuine field observations.

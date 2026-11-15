@@ -5,7 +5,7 @@ Grounds wait-time and curfew predictions in empirical data from Gate 1, NIT Silc
 
 import sys
 import argparse
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 from core_engine import NightQueueModel
 
@@ -44,6 +44,12 @@ def story_page():
 def test_page():
     """Simple Test and Reliability Diagnostics page."""
     return render_template("index.html", initial_page="test")
+
+
+@app.route("/photos/<path:filename>")
+def serve_photo(filename):
+    """Serves fieldwork timestamped photos."""
+    return send_from_directory("photos", filename)
 
 
 # REST API Endpoints

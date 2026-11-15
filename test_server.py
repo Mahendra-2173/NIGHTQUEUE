@@ -252,11 +252,13 @@ class TestNightQueueComprehensive23(unittest.TestCase):
             ("/api/data", 200),
             ("/api/audit", 200),
             ("/api/item-stats", 200),
+            ("/photos/stall_setup.jpg", 200),
+            ("/photos/cooking_rush.jpg", 200),
         ]
         for url, expected_code in endpoints:
             r = self.client.get(url)
             self.assertEqual(r.status_code, expected_code, f"Endpoint {url} failed with {r.status_code}")
-        print(f"✔ [20/23] Flask endpoints verified: all {len(endpoints)} routes return HTTP 200 OK.")
+        print(f"✔ [20/23] Flask endpoints verified: all {len(endpoints)} routes (including photo assets) return HTTP 200 OK.")
 
     # 21. Frontend-backend integration
     def test_21_frontend_backend_integration(self):
