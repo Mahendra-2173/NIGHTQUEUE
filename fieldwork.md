@@ -1,28 +1,39 @@
-# Fieldwork: Bipul Da's Night Stall outside Gate 1, NIT Silchar
+# Fieldwork: Bipul Da's Tea Stall ("Tapri") outside Gate 1, NIT Silchar
 
 **Location:** Roadside tin-shed stall, 80 meters outside Gate 1 (Main Gate), National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).  
-**Observation Window:** November 14–15, 2026, 23:20 to 00:15 IST (20+ minutes on-site during late-night rush).  
-**Person Interviewed:** Bipul Nath ("Bipul Da"), age 44, owner & sole cook.  
+**Signboard Name:** "NIKHIL TEA STALL" (নিখিল টি স্টল) with Campa Energy boards. Known and called by all NIT Silchar students as **Bipul Da's Tea Stall** or simply **"Tapri"**.  
+**Observation Window:** November 14–15, 2026, 23:20 to 00:15 IST (during peak late-night rush).  
+**Person Interviewed:** Bipul Nath ("Bipul Da"), age 44, stall cook and operator.  
+**Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew 10:30 PM).  
 
 ---
 
-### 1. Two Timestamped Fieldwork Photographs
+### 1. Timestamped Fieldwork Photographs
 
-#### Photo 1: Stall Setup & Counter Queue
+#### Photo 1: The Stall Front ("Tapri")
 * **Timestamp:** November 14, 2026 at 23:28:15 IST  
-* **File:** [`photos/stall_setup.jpg`](photos/stall_setup.jpg)  
-* **Context:** Front view of Bipul Da's roadside tin stall located 80 meters outside Gate 1 along the Silchar-Hailakandi Road. Shows the two-burner commercial gas stove, stacks of Maggi cartons, fresh egg crates, and hostellers from Hostel 6 and Hostel 7 waiting in 12°C winter temperatures.
+* **File:** [`photos/stall_front.jpg`](photos/stall_front.jpg) (also saved as [`photos/stall_setup.jpg`](photos/stall_setup.jpg))  
+* **Context:** Front view of the tin stall located 80 meters outside Gate 1 along the Silchar-Hailakandi Road. Shows the signboard reading "NIKHIL TEA STALL" (নিখিল টি স্টল) flanked by Campa Energy banners, bicycles and scooters parked outside, and hostellers from BH6 and BH7 waiting in the late-night cold.
 
-![Photo 1: Bipul Da's Stall Setup](photos/stall_setup.jpg)
+![Photo 1: Stall Front](photos/stall_front.jpg)
 
 ---
 
-#### Photo 2: Two-Burner Concurrency Bottleneck during Rush
+#### Photo 2: The 2-Burner Gas Stove & Tea Kettle
 * **Timestamp:** November 14, 2026 at 23:55:40 IST  
-* **File:** [`photos/cooking_rush.jpg`](photos/cooking_rush.jpg)  
-* **Context:** Close-up of Bipul Da operating both burners at maximum output. The left burner holds a pot boiling Maggi noodles, while the right burner holds a tawa frying a bun omelette. A student from Hostel 6 urgently checks his mobile clock as the 00:20 AM guard warning whistle approaches.
+* **File:** [`photos/stove_burners.jpg`](photos/stove_burners.jpg) (also saved as [`photos/cooking_rush.jpg`](photos/cooking_rush.jpg))  
+* **Context:** Close-up through the protective wire mesh showing the 2-burner domestic stove. The left burner holds an aluminum tea kettle simmering chai, while the right burner holds a tawa for frying eggs and buns. With only two burners, concurrency is strictly capped at two cooking tasks.
 
-![Photo 2: Cooking Rush and Two Burners](photos/cooking_rush.jpg)
+![Photo 2: 2-Burner Stove](photos/stove_burners.jpg)
+
+---
+
+#### Photo 3: Bipul Da Behind the Wooden Counter
+* **Timestamp:** November 15, 2026 at 00:05:10 IST  
+* **File:** [`photos/bipul_da_counter.jpg`](photos/bipul_da_counter.jpg)  
+* **Context:** View inside the stall showing Bipul Da and his helper behind the counter with stacked egg crates, metal prep bowls, and supply cartons, working late into the night.
+
+![Photo 3: Bipul Da Behind the Counter](photos/bipul_da_counter.jpg)
 
 ---
 

@@ -1,17 +1,18 @@
 # Research: NIT Silchar Late-Night Stall Queue Delay & Hostel Curfew Risk
 
 **Person:** Bipul Nath ("Bipul Da")  
-**Role:** Sole proprietor and cook at *Bipul Da's Night Canteen & Tea Stall*, situated exactly 80 meters outside Gate No. 1 (Main Gate), National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).  
+**Role:** Sole proprietor and cook at *Bipul Da's Tea Stall* (popularly called **"Tapri"** by students, signboard reads **"NIKHIL TEA STALL"**), situated exactly 80 meters outside Gate No. 1 (Main Gate), National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).  
+**Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew: 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew: 10:30 PM).  
 **Date:** November 15, 2026  
 
 ---
 
 ### 1. The Problem (in 5 lines)
-Hostel students at NIT Silchar (Hostel 6, Hostel 7, and Hostel 8) face a strict late-night hostel register sign-in and gate curfew at 00:30 AM (12:30 AM) enforced by campus security guards. 
-During late study hours, dozens of hostellers walk 400–600 meters to Bipul Da's stall outside Gate 1 for dinner snacks (Egg Maggi, Bun Omelette, Lal Saah/Chai). 
-Bipul Da cooks on a simple 2-burner commercial gas stove and systematically underestimates preparation delays, telling every anxious student "bas 5 minute lagega, bohi thaak (sit down)". 
-When 6 to 8 orders queue up, actual cooking and pan-clearing takes 20 to 28 minutes, causing students to run across the dark campus road in panic to beat the hostel guard's whistle. 
-Bipul Da faces constant counter shouting, students canceling orders midway when the 00:15 AM warning bell strikes, and chaotic disputes over UPI payments.
+Hostel students at NIT Silchar (BH1 through BH9 and GH1 through GH4) face strict hostel gate curfews (12:30 AM for boys, 10:30 PM for girls) enforced by campus security guards. 
+During late study hours, dozens of hostellers walk to Bipul Da's stall ("Tapri") outside Gate 1 for dinner snacks (Double Egg Maggi, Bun Omelette, Chai). 
+Bipul Da cooks on a simple 2-burner gas stove and routinely tells every student "bas 5 minute lagega, bohi thaak", only thinking of single-dish cooking time. 
+When 4 to 8 orders queue up, actual cooking and pan-clearing takes 18 to 28 minutes, causing students to run across the dark campus in panic to beat the hostel guard's whistle. 
+Bipul Da faces counter shouting, students canceling orders midway after eggs are already cracked, and arguments over unpaid food.
 
 ---
 
