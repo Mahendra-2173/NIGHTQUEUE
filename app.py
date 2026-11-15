@@ -273,7 +273,7 @@ def run_cli():
     print(f"  • Bipul Da's Claimed Mean: {stats['avg_claimed_mins']} mins ('Bas 5 minute')")
     print(f"  • Actual Measured Mean:    {stats['avg_actual_mins']} mins")
     print(f"  • Underestimation Gap:     +{stats['avg_underestimation_gap']} mins late")
-    print(f"  • Curfew Stress / Sprints: {stats['curfew_incident_rate_pct']}% ({stats['curfew_incident_count']} of {stats['total_orders']} observed visits)")
+    print(f"  • Curfew-Related Incidents: {stats['curfew_incident_rate_pct']}% ({stats['curfew_incident_count']} of {stats['total_orders']} observed visits)")
     print(f"  • Confirmed Late Entries:  {stats['confirmed_late_entry_pct']}% ({stats['confirmed_late_entry_count']} of {stats['total_orders']} documented register entries)")
     print(f"  • Marginal Delay/Order:    ~{stats['queue_penalty_per_order']} mins/order")
 

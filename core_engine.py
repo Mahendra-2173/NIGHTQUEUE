@@ -408,58 +408,67 @@ class NightQueueModel:
     def get_summary_stats(self) -> Dict[str, Any]:
         """
         Calculates core empirical metrics from validated fieldwork data.
-        Accurately distinguishes confirmed late-entry breaches from curfew stress & rush incidents.
+        Accurately distinguishes confirmed late-entry breaches from curfew-related stress/rush incidents.
+        Returns unavailable state with None/zero values when dataset is empty or invalid.
         """
         if self.valid_df is None or self.valid_df.empty:
             return {
                 "total_orders": 0,
-                "avg_claimed_mins": 5.0,
-                "avg_actual_mins": 18.0,
-                "avg_underestimation_gap": 13.0,
-                "curfew_breach_rate_pct": 30.0,
-                "curfew_incident_rate_pct": 30.0,
-                "confirmed_late_entry_pct": 15.0,
+                "avg_claimed_mins": None,
+                "avg_actual_mins": None,
+                "avg_underestimation_gap": None,
+                "curfew_incident_rate_pct": None,
+                "confirmed_late_entry_pct": None,
+                "curfew_breach_rate_pct": None,
                 "curfew_incident_count": 0,
                 "confirmed_late_entry_count": 0,
                 "sprint_stress_count": 0,
+                "other_curfew_incident_count": 0,
                 "is_empirically_grounded": False,
-                "queue_penalty_per_order": 2.1
+                "queue_penalty_per_order": None,
+                "status": "unavailable",
+                "message": "No empirical observation data available."
             }
 
         total_valid = len(self.valid_df)
         claimed = self.valid_df["claimed_wait_mins"].dropna()
         actual = self.valid_df["actual_wait_mins"].dropna()
         
-        # In data.csv, curfew_breach column logs all curfew-impacted visits (6 out of 20 = 30%)
+        # In data.csv, curfew_breach column logs all curfew-related incidents (6 out of 20 = 30%)
         breaches = self.valid_df[self.valid_df["curfew_breach"].astype(str).str.strip().str.lower() == "yes"]
         incident_count = len(breaches)
         incident_rate = (incident_count / total_valid) * 100.0 if total_valid > 0 else 0.0
 
-        # Accurately identify confirmed late entries (marked in late register or guard warned at hostel gate)
-        # Orders 15, 16, 17 in data.csv describe confirmed late arrivals; Orders 14, 18, 20 describe sprinting/panic/complaint
+        # Confirmed late entries strictly require actual official registration (e.g. marked in late register)
+        # Row 15 is explicitly confirmed: "Late register marked at BH7 guard desk"
+        # Sprinting (Rows 14, 18), guard whistles/warnings (Rows 16, 17), and complaints (Row 20) are curfew incidents, not confirmed breaches.
         notes_str = self.valid_df["notes"].astype(str)
         confirmed_late = self.valid_df[
-            notes_str.str.contains("late register|guard warned|blew whistle", case=False, regex=True)
+            notes_str.str.contains(r"late register|register marked", case=False, regex=True)
         ]
         confirmed_count = len(confirmed_late)
         confirmed_rate = (confirmed_count / total_valid) * 100.0 if total_valid > 0 else 0.0
+        other_incidents_count = int(incident_count - confirmed_count)
 
-        avg_claimed = float(claimed.mean()) if not claimed.empty else 5.0
-        avg_actual = float(actual.mean()) if not actual.empty else 18.0
+        avg_claimed = float(claimed.mean()) if not claimed.empty else 0.0
+        avg_actual = float(actual.mean()) if not actual.empty else 0.0
 
         return {
             "total_orders": int(total_valid),
             "avg_claimed_mins": round(avg_claimed, 1),
             "avg_actual_mins": round(avg_actual, 1),
             "avg_underestimation_gap": round(avg_actual - avg_claimed, 1),
-            "curfew_incident_rate_pct": round(incident_rate, 1),      # 30.0% (6/20 orders with sprint/stress/delays)
-            "confirmed_late_entry_pct": round(confirmed_rate, 1),      # 15.0% (3/20 orders confirmed late register entries)
+            "curfew_incident_rate_pct": round(incident_rate, 1),      # 30.0% (6/20 curfew-related incidents observed)
+            "confirmed_late_entry_pct": round(confirmed_rate, 1),      # 5.0% (1/20 confirmed late register entry)
             "curfew_breach_rate_pct": round(incident_rate, 1),        # Compatibility alias
-            "curfew_incident_count": int(incident_count),
-            "confirmed_late_entry_count": int(confirmed_count),
-            "sprint_stress_count": int(incident_count - confirmed_count),
+            "curfew_incident_count": int(incident_count),             # 6
+            "confirmed_late_entry_count": int(confirmed_count),       # 1
+            "other_curfew_incident_count": other_incidents_count,     # 5
+            "sprint_stress_count": other_incidents_count,             # 5 (compatibility alias)
             "is_empirically_grounded": True,
-            "queue_penalty_per_order": self.empirical_queue_penalty_per_order
+            "queue_penalty_per_order": self.empirical_queue_penalty_per_order,
+            "status": "available",
+            "message": "Empirical metrics successfully calculated from data.csv."
         }
 
     def get_item_statistics(self) -> Dict[str, Dict[str, Any]]:
@@ -607,8 +616,8 @@ class NightQueueModel:
 
         walk_time = NIT_SILCHAR_HOSTEL_WALK_TIMES.get(hostel, 8.0)
         assumptions_made: List[str] = [
-            f"Walking pace to {hostel} is constant (~5 km/h, {walk_time} mins one-way).",
-            f"Gate 1 security curfew strictly enforced at {curfew_time_str}."
+            f"Walking pace to {hostel} assumed at constant ~5 km/h ({walk_time:.1f} mins one-way). (Predefined assumption)",
+            f"Hostel gate closing deadline strictly enforced at {curfew_time_str}. (Predefined assumption)"
         ]
         measured_facts: List[str] = []
 
@@ -623,13 +632,14 @@ class NightQueueModel:
         is_empirical = False
         sample_count = 0
 
-        if matched_stats and matched_stats.count > 0:
+        if matched_stats and matched_stats.count >= 2:
             is_empirical = True
             base_prep = matched_stats.base_prep_estimate_mins
             sample_count = matched_stats.count
             historical_data_used = {
                 "matched_item": matched_stats.item_name,
                 "sample_count": matched_stats.count,
+                "sample_sufficiency": "sufficient (n >= 2)",
                 "mean_actual_wait": matched_stats.mean_actual_mins,
                 "median_actual_wait": matched_stats.median_actual_mins,
                 "min_observed": matched_stats.min_actual_mins,
@@ -639,7 +649,26 @@ class NightQueueModel:
                 "data_source": "data.csv genuine observations"
             }
             measured_facts.append(
-                f"Historical observations for '{matched_stats.item_name}': n={matched_stats.count}, median={matched_stats.median_actual_mins}m, base prep={base_prep:.1f}m."
+                f"Historical observations from data.csv for '{matched_stats.item_name}': n={matched_stats.count}, median={matched_stats.median_actual_mins}m, base prep={base_prep:.1f}m. (Direct empirical observation)"
+            )
+        elif matched_stats and matched_stats.count == 1:
+            is_empirical = True
+            base_prep = matched_stats.base_prep_estimate_mins
+            sample_count = 1
+            historical_data_used = {
+                "matched_item": matched_stats.item_name,
+                "sample_count": 1,
+                "sample_sufficiency": "limited (n=1, supplemented with fallback)",
+                "mean_actual_wait": matched_stats.mean_actual_mins,
+                "median_actual_wait": matched_stats.median_actual_mins,
+                "min_observed": matched_stats.min_actual_mins,
+                "max_observed": matched_stats.max_actual_mins,
+                "std_dev": 0.0,
+                "base_prep_used": base_prep,
+                "data_source": "data.csv limited observation (n=1)"
+            }
+            assumptions_made.append(
+                f"Limited historical observations for '{matched_stats.item_name}' (n=1). Single observed value ({base_prep:.1f}m) supplemented by fallback uncertainty. (Predefined assumption)"
             )
         elif dish_category in self.category_stats:
             cat_info = self.category_stats[dish_category]
@@ -649,22 +678,24 @@ class NightQueueModel:
             historical_data_used = {
                 "matched_category": dish_category,
                 "sample_count": sample_count,
+                "sample_sufficiency": "category_aggregate",
                 "category_mean": cat_info["mean"],
                 "category_median": cat_info["median"],
                 "base_prep_used": base_prep,
                 "data_source": "data.csv category aggregation"
             }
             measured_facts.append(
-                f"Category '{dish_category}' aggregation from data.csv (n={sample_count}, median={cat_info['median']}m)."
+                f"Category '{dish_category}' aggregation from data.csv (n={sample_count}, median={cat_info['median']}m). (Calculated empirical metric)"
             )
         else:
             base_prep = DOCUMENTED_FALLBACK_COOK_TIMES.get(dish_category, DOCUMENTED_FALLBACK_COOK_TIMES["default"])
             assumptions_made.append(
-                f"No historical samples for '{dish_name}'. Used documented fallback prep: {base_prep} mins."
+                f"No historical samples for '{dish_name}'. Predefined documented fallback preparation time used ({base_prep} mins). (Predefined assumption)"
             )
             historical_data_used = {
                 "matched_item": None,
                 "sample_count": 0,
+                "sample_sufficiency": "none (unobserved item)",
                 "base_prep_used": base_prep,
                 "data_source": "documented fallback constants"
             }
@@ -672,6 +703,9 @@ class NightQueueModel:
         # Step 3: Queue Waiting Time Estimation
         # Burner concurrency: 2 burners normal (multiplier 1.0); 1 burner doubles delay (multiplier 2.0)
         burner_multiplier = 2.0 / float(burners_active)
+        assumptions_made.append(
+            f"Burner concurrency adjustment: delay scales inversely ({burner_multiplier:.1f}x) for {burners_active} active burner(s). (Predefined assumption)"
+        )
 
         # Batch cooking factor: Maggi can boil 2 cakes per pot (0.75 multiplier)
         # Egg dishes require individual tawa cooking (1.0)
@@ -682,17 +716,24 @@ class NightQueueModel:
             batch_factor = 0.4
         else:
             batch_factor = 1.0
+        assumptions_made.append(
+            f"Dish batching multiplier: {batch_factor} for {dish_category} based on physical saucepan/tawa sharing capacity. (Predefined assumption)"
+        )
 
         # Pan transition overhead (1.2 mins per ~3 mixed orders)
         cleaning_overhead = (orders_ahead // 3) * PAN_CLEANING_PENALTY_MINS
+        if cleaning_overhead > 0:
+            assumptions_made.append(
+                f"Pan transition cleaning overhead: {cleaning_overhead:.1f}m for {orders_ahead} pending orders based on 1.2m per 3 mixed orders. (Predefined assumption)"
+            )
 
         if orders_ahead == 0:
             queue_wait = 0.0
-            measured_facts.append("Counter is clear (0 queue). Cook starts immediately on arrival.")
+            measured_facts.append("Counter is clear (0 queue). Cook starts immediately on arrival. (Direct operational condition)")
         else:
             queue_wait = (orders_ahead * self.empirical_queue_penalty_per_order * burner_multiplier * batch_factor) + cleaning_overhead
             measured_facts.append(
-                f"Queue delay modeled at ~{self.empirical_queue_penalty_per_order:.2f} mins/order on {burners_active} burner(s) with batch factor {batch_factor}."
+                f"Queue delay slope calibrated from 20 data.csv observations at ~{self.empirical_queue_penalty_per_order:.2f} mins/order. (Calculated empirical metric)"
             )
 
         total_kitchen_wait = base_prep + queue_wait
@@ -908,10 +949,11 @@ if __name__ == "__main__":
     rep = model.validation_report
     stats = model.get_summary_stats()
     print(f"\n[1] DATASET LOADED FROM data.csv:")
-    print(f"  • Valid Rows:           {rep.valid_rows_count} / {rep.total_rows_read} rows loaded")
-    print(f"  • Observed Mean Wait:   {stats['avg_actual_mins']} mins (Claimed mean: {stats['avg_claimed_mins']} mins)")
-    print(f"  • Underestimation Gap:  +{stats['avg_underestimation_gap']} mins late")
-    print(f"  • Curfew Stress Rate:   {stats['curfew_incident_rate_pct']}% of observed late-night visits")
+    print(f"  • Valid Rows:                {rep.valid_rows_count} / {rep.total_rows_read} rows loaded")
+    print(f"  • Observed Mean Wait:        {stats['avg_actual_mins']} mins (Claimed mean: {stats['avg_claimed_mins']} mins)")
+    print(f"  • Underestimation Gap:       +{stats['avg_underestimation_gap']} mins late")
+    print(f"  • Curfew-Related Incidents:  {stats['curfew_incident_rate_pct']}% ({stats['curfew_incident_count']}/20 visits observed)")
+    print(f"  • Confirmed Late Entries:    {stats['confirmed_late_entry_pct']}% ({stats['confirmed_late_entry_count']}/20 visits logged in late register)")
 
     print(f"\n[2] ACTIONABLE RESULT FOR BIPUL DA (Counter Guidance):")
     pred = model.predict_wait_and_curfew("Bun Omelette", "egg_toast", "Hostel 7", 6, 2, "23:45", "00:30")

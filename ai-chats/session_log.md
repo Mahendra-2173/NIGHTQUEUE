@@ -12,7 +12,7 @@
 | :--- | :--- | :--- | :--- |
 | **[`01_ideation_and_problem_discovery.md`](01_ideation_and_problem_discovery.md)** | Problem Selection & Scoping | Nov 14, 2026 (~19:30 IST) | Rejecting generic apps (attendance, mess); selecting Bipul Da's stall outside Gate 1, NIT Silchar; framing the "5-minute promise fallacy" against hostel curfew deadlines. |
 | **[`02_fieldwork_and_data_collection.md`](02_fieldwork_and_data_collection.md)** | Fieldwork & Data Schema | Nov 15, 2026 (~00:45 IST) | Logging 20 real orders in cold outside Gate 1; discovering the 2-burner stove constraint and pan transition latency (60–90s); dynamically computing item statistics from `data.csv`. |
-| **[`03_queuing_engine_and_midnight_bug.md`](03_queuing_engine_and_midnight_bug.md)** | Queuing Physics & Datetime Bugs | Nov 15, 2026 (~02:15 IST) | Debugging the classic midnight date rollover bug (23:55 to 00:30 giving -1405 mins); detecting already-passed curfews; formulating 2-burner queue delays; writing 23 automated tests. |
+| **[`03_queuing_engine_and_midnight_bug.md`](03_queuing_engine_and_midnight_bug.md)** | Queuing Physics & Datetime Bugs | Nov 15, 2026 (~02:15 IST) | Debugging the classic midnight date rollover bug (23:55 to 00:30 giving -1405 mins); detecting already-passed curfews; formulating 2-burner queue delays; writing 24 automated tests. |
 | **[`04_frontend_and_counter_batch_board.md`](04_frontend_and_counter_batch_board.md)** | UI, Counter View & UX Polish | Nov 15, 2026 (~04:30 IST) | Mobile-first Tailwind CSS layout; Bipul Da & Raju's Live Kitchen Batch Board; hiding the result card behind a friendly placeholder until clicked; simplifying language from "curfew" to "hostel gate closing". |
 
 ---

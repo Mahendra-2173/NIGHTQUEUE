@@ -593,13 +593,18 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div>
           <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Stall Menu & Real Wait Times</h2>
-          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Based on 20 genuine visits recorded outside Gate 1, NIT Silchar.</p>
+          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Calculated from genuine visits recorded outside Gate 1, NIT Silchar.</p>
         </div>
         <div class="flex items-center gap-2 text-xs">
-          <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold">
+          <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold" id="data-visits-badge">
             20 Real Visits Logged
           </span>
         </div>
+      </div>
+
+      <!-- Empty Data Alert Banner (shown only when dataset has 0 valid rows) -->
+      <div id="data-empty-alert" class="hidden p-4 rounded-xl bg-amber-500/15 border border-amber-500/40 text-xs sm:text-sm text-amber-300 font-medium leading-relaxed">
+        ⚠️ <strong>No Observation Data Available:</strong> The dataset is currently empty or unavailable. Dashboard statistics and item charts are not fabricated and will display once real observations are loaded from data.csv.
       </div>
 
       <!-- 4 Simple Numbers -->
@@ -617,12 +622,12 @@
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 font-semibold">Actual Measured Average</span>
           <div class="text-xl sm:text-2xl font-black text-rose-400 mt-1 mono" id="stat-avg-actual">17.7m</div>
-          <span class="text-[11px] text-rose-400 font-semibold">+13 mins underestimation</span>
+          <span class="text-[11px] text-rose-400 font-semibold">+12.9 mins underestimation</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Late &amp; Gate Lock Incidents</span>
+          <span class="text-xs text-slate-400 font-semibold">Curfew-Related Incidents Observed</span>
           <div class="text-xl sm:text-2xl font-black text-amber-400 mt-1 mono" id="stat-breach-pct">30.0%</div>
-          <span class="text-[11px] text-slate-400" id="stat-breach-sub">6 of 20 visits caused late gate entry or panic sprint</span>
+          <span class="text-[11px] text-slate-400" id="stat-breach-sub">6 of 20 visits (1 confirmed late register entry, 5 sprint/warning/complaints)</span>
         </div>
       </div>
 
@@ -1268,28 +1273,46 @@
         const itemStats = await itemStatsRes.json();
 
         // Summary Stats
-        document.getElementById('stat-avg-claimed').textContent = stats.avg_claimed_mins + 'm';
-        document.getElementById('stat-avg-actual').textContent = stats.avg_actual_mins + 'm';
-        document.getElementById('stat-breach-pct').textContent = (stats.curfew_incident_rate_pct || stats.curfew_breach_rate_pct) + '%';
-        
-        if (stats.curfew_incident_count !== undefined) {
+        const alertBox = document.getElementById('data-empty-alert');
+        const visitsBadge = document.getElementById('data-visits-badge');
+
+        if (!stats.total_orders || stats.avg_actual_mins === null) {
+          // Display explicit unavailable state - NEVER display fabricated statistics
+          document.getElementById('stat-avg-claimed').textContent = 'N/A';
+          document.getElementById('stat-avg-actual').textContent = 'N/A';
+          document.getElementById('stat-breach-pct').textContent = 'N/A';
+          document.getElementById('stat-breach-sub').textContent = 'No observation records in data.csv';
+          if (alertBox) alertBox.classList.remove('hidden');
+          if (visitsBadge) visitsBadge.textContent = '0 Visits (Empty Dataset)';
+        } else {
+          document.getElementById('stat-avg-claimed').textContent = stats.avg_claimed_mins + 'm';
+          document.getElementById('stat-avg-actual').textContent = stats.avg_actual_mins + 'm';
+          document.getElementById('stat-breach-pct').textContent = stats.curfew_incident_rate_pct + '%';
           document.getElementById('stat-breach-sub').textContent = 
-            `${stats.curfew_incident_count} of ${stats.total_orders} visits (3 late entries, 3 sprinted in panic)`;
+            `${stats.curfew_incident_count} of ${stats.total_orders} visits (${stats.confirmed_late_entry_count} confirmed late entry, ${stats.other_curfew_incident_count || stats.sprint_stress_count} sprint/warning/complaints)`;
+          if (alertBox) alertBox.classList.add('hidden');
+          if (visitsBadge) visitsBadge.textContent = `${stats.total_orders} Real Visits Logged`;
         }
 
         renderScatterPlot(allOrdersData);
 
         // Render Item-Wise Statistics Table
         const itemTbody = document.getElementById('item-stats-body');
-        itemTbody.innerHTML = Object.values(itemStats).map(s => `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-3 px-3 font-bold text-white font-sans">${s.item_name}</td>
-            <td class="py-3 px-2 text-slate-400 text-xs font-sans">${s.dish_category}</td>
-            <td class="py-3 px-2 text-center text-amber-300 font-bold">${s.count}</td>
-            <td class="py-3 px-3 text-amber-400 font-bold">${s.median_actual_mins.toFixed(1)}m (avg: ${s.mean_actual_mins.toFixed(1)}m)</td>
-            <td class="py-3 px-3 text-emerald-400 font-bold">${s.base_prep_estimate_mins.toFixed(1)} mins</td>
-          </tr>
-        `).join('');
+        if (itemTbody) {
+          if (!itemStats || Object.keys(itemStats).length === 0) {
+            itemTbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-slate-400">No item-level observations available in data.csv.</td></tr>';
+          } else {
+            itemTbody.innerHTML = Object.values(itemStats).map(s => `
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3 px-3 font-bold text-white font-sans">${s.item_name}</td>
+                <td class="py-3 px-2 text-slate-400 text-xs font-sans">${s.dish_category}</td>
+                <td class="py-3 px-2 text-center text-amber-300 font-bold">${s.count}</td>
+                <td class="py-3 px-3 text-amber-400 font-bold">${s.median_actual_mins.toFixed(1)}m (avg: ${s.mean_actual_mins.toFixed(1)}m)</td>
+                <td class="py-3 px-3 text-emerald-400 font-bold">${s.base_prep_estimate_mins.toFixed(1)} mins</td>
+              </tr>
+            `).join('');
+          }
+        }
 
         renderTable();
       } catch (err) {
@@ -1299,7 +1322,11 @@
 
     function renderScatterPlot(data) {
       const svg = document.getElementById('scatter-svg');
-      if (!svg || !data || data.length === 0) return;
+      if (!svg) return;
+      if (!data || data.length === 0) {
+        svg.innerHTML = '<text x="360" y="160" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">No observation data points available in data.csv</text>';
+        return;
+      }
 
       const width = 720;
       const height = 320;
@@ -1409,12 +1436,24 @@
 
     function renderTable() {
       const tbody = document.getElementById('raw-data-body');
+      if (!tbody) return;
+
+      if (!allOrdersData || allOrdersData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-6 text-slate-400">No observation records found in data.csv.</td></tr>';
+        return;
+      }
+
       let filtered = allOrdersData.filter(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';
         if (currentFilter === 'late' && !isLate) return false;
         if (currentFilter === 'ontime' && isLate) return false;
         return true;
       });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-6 text-slate-400">No orders match the selected filter.</td></tr>';
+        return;
+      }
 
       tbody.innerHTML = filtered.map(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';

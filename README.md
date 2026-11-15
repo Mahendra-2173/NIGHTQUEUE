@@ -83,7 +83,7 @@ In reality, Bipul Da cooks on only **two domestic gas burners** (one tawa for bu
 
 - **Backend:** Python 3.10+ (tested on Python 3.14), Flask 3.x, Pandas, NumPy
 - **Frontend:** HTML5, Tailwind CSS, Mobile-Responsive Vanilla JavaScript
-- **Testing:** Python `unittest` framework (23 passing automated tests)
+- **Testing:** Python `unittest` framework (24 passing automated tests)
 
 ---
 
@@ -96,7 +96,7 @@ NIGHTQUEUE/
 ├── data.csv             # 20 real observation records collected at Gate 1
 ├── templates/
 │   └── index.html       # Mobile-first spacious dashboard (Student & Vendor modes)
-├── test_server.py       # 23-point automated test suite
+├── test_server.py       # 24-point automated test suite
 ├── fieldwork.md         # Fieldwork notes, 3 real stall photos, conversation
 ├── research.md          # 5-line problem statement, alternatives, cited papers
 ├── reflection.md        # Retrospective on mistakes, cuts, and AI usage
@@ -152,8 +152,9 @@ The application does not rely on static hardcoded values. Upon launch, `core_eng
 1. **Item-Specific Mean & Median:** Computes average and median preparation time for each dish.
 2. **Dispersion & Uncertainty ($\sigma$):** Computes sample standard deviation, minimum, and maximum for each food item.
 3. **Queue Sensitivity:** Calibrates the empirical slope of queue delays ($\approx 2.33\text{ mins/order}$).
-4. **Curfew Statistics Distinction:** Dynamically separates Curfew Stress & Rush Incidents ($30.0\%$, 6/20 orders) from Confirmed Late-Entry Breaches ($15.0\%$, 3/20 documented late entries).
-5. **Data Verification:** Verifies 20 genuine rows, zero null values, zero duplicate IDs, and correct column schemas.
+4. **Curfew Statistics Distinction:** Dynamically separates Curfew-Related Incidents Observed ($30.0\%$, 6 of 20 visits — sprinting, guard warnings/whistles, complaints) from Confirmed Late Entries ($5.0\%$, 1 of 20 visits — strictly Row 15 where a student was officially logged in the late register at BH7 guard desk).
+5. **Empty & Corrupt Data Safety:** If `data.csv` is missing, empty, or corrupted, the system returns an explicit `unavailable` status with `None` values rather than displaying fabricated or hardcoded statistics.
+6. **Data Verification:** Verifies 20 genuine rows, zero null values, zero duplicate IDs, and correct column schemas.
 
 ---
 
@@ -238,8 +239,8 @@ The dashboard is structured into four functional views:
   • Bipul Da's Claimed Mean: 4.8 mins ('Bas 5 minute')
   • Actual Measured Mean:    17.7 mins
   • Underestimation Gap:     +12.9 mins late
-  • Curfew Stress / Sprints: 30.0% (6 of 20 observed visits)
-  • Confirmed Late Entries:  15.0% (3 of 20 documented register entries)
+  • Curfew-Related Incidents: 30.0% (6 of 20 observed visits)
+  • Confirmed Late Entries:  5.0% (1 of 20 documented register entries)
   • Marginal Delay/Order:    ~2.33 mins/order
 
 [4] SAMPLE PREDICTION: 23:45 IST, Hostel 7 Student, Bun Omelette, 6 orders ahead:
@@ -252,8 +253,8 @@ The dashboard is structured into four functional views:
   • Uncertainty Buffer:              ±4.3 mins (21.5 – 30.1 mins)
   • Latest Departure Time:           11:48 PM
   • Curfew Feasibility Verdict:      [WARNING]
-  • Practical Advice:                ⚠️ WARNING: Very little time remains (3.2 mins buffer before gate lock)! Leave immediately by 11:48 PM. Pick Plain Maggi or Tea instead of slow egg items.
-  • Disclaimer:                      Disclaimer: Predictions are data-driven estimates and actual waiting times may vary due to pan changeover latency, stove flame pressure, and sudden customer arrivals.
+  • Practical Advice:                ⚠️ HURRY / TIGHT TIMING: Very little time remains (3.2 mins buffer before gate locks)! Leave immediately by 11:48 PM. Pick Plain Maggi or Tea instead of slow egg items.
+  • Disclaimer:                      Disclaimer: Times are realistic estimates based on observations at Bipul Da's stall. Actual wait times can vary if there are sudden crowds or stove delays.
 
 [5] BAD-ROW STRESS TEST (Handling negative queue & 0 burners):
   • Handled cleanly without crash. Fallback wait: 5.5 mins
@@ -262,12 +263,24 @@ The dashboard is structured into four functional views:
 
 ---
 
-## 16. Explanation of Prediction Assumptions
+## 16. Explanation of Prediction Methodology (Empirical vs Assumed)
 
-1. **Walking Pace:** Assumes an average campus walking speed of ~5 km/h across paved campus roads.
-2. **Burner Output:** Assumes uniform thermal output from the two gas burners unless manually toggled to 1 burner.
-3. **Curfew Enforcement:** Assumes Gate 1 security guards lock the gate at 00:30 AM sharp.
-4. **Batch Concurrency:** Assumes up to two Maggi orders can share boiling water in a single pot.
+The prediction engine strictly separates directly observed facts from modeling assumptions:
+
+### A. Empirical Metrics Derived Directly from `data.csv`:
+1. **Measured Baseline Cooking Times ($t_{\text{base}}$):** Derived from zero-queue or lowest-queue observations (e.g. 6.4m for Double Egg Maggi, 5.5m for Plain Maggi, 7.5m–9.4m for Egg dishes).
+2. **Empirical Queue Slope:** Ordinary least squares covariance regression of `actual_wait_mins` vs `queue_ahead` yields $\approx 2.33$ minutes marginal delay per waiting order.
+3. **Curfew Statistics:** 
+   - **Curfew-Related Incidents Observed:** $30.0\%$ (6 of 20 visits — sprinting to Gate 1, guard whistles, warnings, and complaints).
+   - **Confirmed Late Entries:** $5.0\%$ (1 of 20 visits — strictly Row 15 where a student was logged in the late register at the BH7 guard desk).
+4. **Underestimation Gap:** Measured average gap of $+12.9$ minutes between Bipul Da's universal 5-minute promise (4.8m observed mean) and reality (17.7m observed mean).
+
+### B. Predefined Modeling Assumptions:
+1. **Burner Concurrency Scaling ($2/B$):** Bipul Da operates two physical commercial gas burners ($B=2$). Concurrency scaling factor $(2/B)$ doubles queue delay if 1 burner is turned off or out of gas.
+2. **Category-Specific Batch Multipliers:** Maggi orders allow water sharing in a single pot ($\times 0.75$), whereas egg items require dedicated tawa surface ($\times 1.0$) and tea uses the auxiliary side flame ($\times 0.4$).
+3. **Pan Transition Latency ($\Delta t_{\text{clean}}$):** Adds $1.2$ minutes overhead per 3 mixed orders when wiping the tawa between boiling water and egg grease.
+4. **Campus Walking Transit:** Standard walking speed of ~5 km/h across paved campus roads yields one-way transit times between 5.0 and 11.5 minutes depending on the hostel (BH1–BH9, GH1–GH4).
+5. **Fallback Constants for Unseen Items ($n < 2$):** If an unobserved item is requested, the system transparently falls back to a 5.5-minute base cooking baseline and flags the result as ungrounded.
 
 ---
 
@@ -295,34 +308,35 @@ python test_server.py
 
 ### Verified Execution Output:
 ```text
-Ran 23 tests in 0.188s
+Ran 24 tests in 0.377s
 
 OK
-✔ [1/23] CSV loading verified: 20 genuine rows loaded without errors.
-✔ [2/23] Average calculation verified: overall mean = 17.7m, item means verified.
-✔ [3/23] Median calculation verified: robust median baselines derived per food item.
-✔ [4/23] Food-item-wise statistics verified across all 7 menu items.
-✔ [5/23] Missing values safely handled: invalid record excluded and logged.
-✔ [6/23] Invalid values handled: non-numeric string safely excluded.
-✔ [7/23] Empty dataset handled gracefully: fallback constants activated.
-✔ [8/23] Negative preparation times rejected and logged.
-✔ [9/23] Zero pending orders verified: queue wait is exactly 0.0m.
-✔ [10/23] Multiple pending orders verified: queue wait scales from 3.5m to 16.4m.
-✔ [11/23] Midnight transition verified: placed 23:55 arrives 12:14 AM.
-✔ [12/23] Curfew already passed correctly detects both post-midnight (00:45) and pre-midnight (23:15 vs 22:30) lockouts.
-✔ [13/23] Arrival near curfew verified: margin=2.3m -> Status=WARNING.
-✔ [14/23] Insufficient historical data handled with transparent fallback note.
-✔ [15/23] Invalid user inputs safely sanitized (6 warnings recorded).
-✔ [16/23] Prediction uncertainty buffer verified: ±4.5m (11.8 – 20.8 mins).
-✔ [17/23] Correct SAFE classification verified (Margin: +53.9m).
-✔ [18/23] Correct WARNING classification verified (Margin: +4.2m).
-✔ [19/23] Correct LIKELY TO MISS CURFEW verified (Late by 10.5m).
-✔ [20/23] Flask endpoints verified: all 9 routes return HTTP 200 OK.
-✔ [21/23] Frontend-backend integration verified: response schema & mathematical consistency confirmed.
-✔ [22/23] 5-Milestone Journey Timeline verified: Reach Stall (11:53 PM) -> Ready (12:02 AM) -> Return (12:10 AM). Disclaimer confirmed.
-✔ [23/23] Curfew statistics breakdown verified: 30.0% curfew incidents (3 confirmed late entries, 3 sprinting/stress cases).
+✔ [1/24] CSV loading verified: 20 genuine rows loaded without errors.
+✔ [2/24] Average calculation verified: overall mean = 17.7m, item means verified.
+✔ [3/24] Median calculation verified: robust median baselines derived per food item.
+✔ [4/24] Food-item-wise statistics verified across all 7 menu items.
+✔ [5/24] Missing values safely handled: invalid record excluded and logged.
+✔ [6/24] Invalid values handled: non-numeric string safely excluded.
+✔ [7/24] Empty dataset handled gracefully: get_summary_stats returns unavailable and fallback constants activated.
+✔ [8/24] Negative preparation times rejected and logged.
+✔ [9/24] Zero pending orders verified: queue wait is exactly 0.0m.
+✔ [10/24] Multiple pending orders verified: queue wait scales from 3.5m to 16.4m.
+✔ [11/24] Midnight transition verified: placed 23:55 arrives 12:14 AM.
+✔ [12/24] Curfew already passed correctly detects both post-midnight (00:45) and pre-midnight (23:15 vs 22:30) lockouts.
+✔ [13/24] Arrival near curfew verified: margin=2.3m -> Status=WARNING.
+✔ [14/24] Insufficient historical data handled with transparent fallback note.
+✔ [15/24] Invalid user inputs safely sanitized (6 warnings recorded).
+✔ [16/24] Prediction uncertainty buffer verified: ±4.5m (11.8 – 20.8 mins).
+✔ [17/24] Correct SAFE classification verified (Margin: +53.9m).
+✔ [18/24] Correct WARNING classification verified (Margin: +4.2m).
+✔ [19/24] Correct LIKELY TO MISS CURFEW verified (Late by 10.5m).
+✔ [20/24] Flask endpoints verified: all 11 routes (including photo assets) return HTTP 200 OK.
+✔ [21/24] Frontend-backend integration verified: response schema & mathematical consistency confirmed.
+✔ [22/24] 5-Milestone Journey Timeline verified: Reach Stall (11:53 PM) -> Ready (12:02 AM) -> Return (12:10 AM). Disclaimer confirmed.
+✔ [23/24] Curfew statistics breakdown verified: 30.0% curfew incidents (1 confirmed late entry, 5 sprinting/warning/complaint cases).
+✔ [24/24] Missing and corrupt CSV handling verified: returns unavailable without fabricating statistics.
 
-🎉 ALL 23 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!
+🎉 ALL 24 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!
 ```
 
 ---

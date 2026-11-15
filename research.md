@@ -29,11 +29,11 @@ Bipul Da faces counter shouting, students canceling orders midway after eggs are
 ### 3. Two Sources Read (with 3-line notes each)
 
 1. **Little, J. D. C. (1961). *A Proof for the Queuing Formula: $L = \lambda W$*. Operations Research, 9(3), 383–387.**
-   * *Note 1:* Formulates the fundamental queuing theorem that long-term average queue length ($L$) equals steady-state arrival rate ($\lambda$) multiplied by average waiting time ($W$).
-   * *Note 2:* Establishes that wait time escalates non-linearly when customer arrival rate approaches service capacity across Bipul Da's 2 commercial burners.
-   * *Note 3:* Demonstrates that Bipul Da's universal "5-minute" promise is physically and mathematically impossible once pending queue depth exceeds 2 tickets.
+   * *Note 1:* Formulates the fundamental queuing identity that the steady-state average number of customers in a system ($L$) equals the arrival rate ($\lambda$) multiplied by the average time in system ($W$).
+   * *Note 2:* Establishes that queue length directly ties to waiting time; non-linear queue explosions occur as arrival rate approaches the capacity limit of Bipul Da's 2 physical gas burners.
+   * *Note 3:* Demonstrates why Bipul Da's constant "5-minute" promise fails in practice: combined with measured empirical service rates from `data.csv`, any queue depth above 2 orders inevitably stretches turnaround beyond 15–20 minutes.
 
-2. **Kahneman, D., & Tversky, A. (1979). *Intuitive prediction: Biases and fallacious interpretations*. In M. K. Starr & M. Zeleny (Eds.), Multiple Criteria Decision Making, TIMS Studies in the Management Sciences (Vol. 12, pp. 313–327). Amsterdam: North-Holland Publishing Company.**
-   * *Note 1:* Formally defines the *planning fallacy*—the cognitive heuristic where human estimators anchor on an idealized best-case scenario while systematically ignoring distribution of historical completion times and operational friction.
-   * *Note 2:* Explains why roadside vendors instinctively quote "5 minutes" to prevent customers from walking away to competing stalls, despite knowing past orders routinely took 18–25 minutes.
-   * *Note 3:* Provides the theoretical justification for replacing human verbal promises with an empirical, data-calibrated algorithmic estimator that protects students from curfew lockouts.
+2. **Kahneman, D., & Tversky, A. (1979). *Intuitive prediction: Biases and fallacious interpretations*. In M. K. Starr & M. Zeleny (Eds.), *Multiple Criteria Decision Making, TIMS Studies in the Management Sciences* (Vol. 12, pp. 313–327). Amsterdam: North-Holland Publishing Company.**
+   * *Note 1:* Formulates the *planning fallacy*, where human predictors anchor on best-case execution scenarios while neglecting distributional historical data and operational delays.
+   * *Note 2:* Explains why Bipul Da habitually quotes "bas 5 minute"—cognitively anchoring on the isolated preparation time of one Maggi brick without accounting for accumulated ticket queues or pan changeovers.
+   * *Note 3:* Provides the behavioral justification for replacing subjective verbal assurances with an empirical, data-calibrated system that calculates realistic student arrival times against hostel curfew limits.

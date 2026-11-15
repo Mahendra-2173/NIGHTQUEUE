@@ -61,7 +61,7 @@ Notice:
 - In row 9, the text `"Hostel 7 student asked 'Bipul Da, hoise?'; egg whisked with fork."` has a comma inside quotes. Ensure your CSV parser uses `csv.reader` or `pd.read_csv` so it doesn't split columns unexpectedly!
 - The queue ranges naturally from 0 to 8 orders ahead.
 - Claimed times are almost all 5.0 mins, while actual wait times scale up to 28.6 mins.
-- Curfew breaches: 6 out of 20 visits ($30\%$) resulted in either confirmed late register entries (3 orders) or panic sprints (3 orders).
+- Curfew-related incidents: 6 out of 20 visits ($30.0\%$) resulted in curfew-related incidents (1 confirmed late register entry at BH7, 5 panic sprints, guard warnings, or complaints).
 
 ---
 

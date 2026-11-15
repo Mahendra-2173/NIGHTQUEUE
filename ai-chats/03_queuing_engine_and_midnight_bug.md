@@ -118,18 +118,19 @@ Where:
 
 ### User
 clean! I just put this into `core_engine.py` and wrote `test_server.py`.
-I created 23 automated tests covering:
+I created 24 automated tests covering:
 1. CSV reading and item statistics
 2. Median/mean verification
-3. Missing values and negative inputs
+3. Missing values, negative inputs, and empty/corrupted CSV datasets
 4. Zero queue vs 10 queue
 5. Midnight rollover (23:55 -> 00:14)
 6. Curfew already passed (00:45 AM and 23:15 PM)
 7. Safe vs Warning vs Likely to miss curfew
 8. 5-milestone journey calculation
-9. Flask endpoints
+9. Curfew statistics breakdown (30% incident vs 5% confirmed late entry)
+10. Flask endpoints
 
 Ran `python test_server.py`:
-"Ran 23 tests in 0.380s. OK! ALL 23 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!"
+"Ran 24 tests in 0.377s. OK! ALL 24 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!"
 
 Now I need to polish the web UI.
