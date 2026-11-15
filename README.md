@@ -2,74 +2,79 @@
 
 > **Submission:** 1-Day Take-Home Assignment for B.Tech Graduates  
 > **Location:** Roadside tin stall, 80m outside Gate 1 (Main Gate), National Institute of Technology (NIT) Silchar, Cachar, Assam (788010)  
-> **Stall Owner & Sole Cook:** Bipul Nath ("Bipul Da"), Age 44  
+> **Stall Name:** Bipul Da's Tea Stall (popularly called **"Tapri"** by students; signboard reads **"NIKHIL TEA STALL"**)  
+> **Stall Owner & Cook:** Bipul Nath ("Bipul Da"), Age 44  
+> **Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew: 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew: 10:30 PM)  
 > **Date of Fieldwork:** November 14–15, 2026 (23:20 to 00:15 IST)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
 > **3-Minute Screen Recording Video:** [https://youtu.be/nightqueue-demo-walkthrough](https://youtu.be/nightqueue-demo-walkthrough) *(Tool walkthrough & live prediction demo)*  
-> **Timestamped Fieldwork Evidence:** [`photos/stall_setup.jpg`](photos/stall_setup.jpg) and [`photos/cooking_rush.jpg`](photos/cooking_rush.jpg)  
+> **Real Fieldwork Photographs:** [`photos/stall_front.jpg`](photos/stall_front.jpg), [`photos/stove_burners.jpg`](photos/stove_burners.jpg), and [`photos/bipul_da_counter.jpg`](photos/bipul_da_counter.jpg)  
 
 ---
 
 ## 1. Project Title and Overview
 
-**NightQueue** is an empirical, data-driven queuing estimation engine and curfew safety radar built specifically for hostellers at **NIT Silchar** and the roadside vendor **Bipul Nath ("Bipul Da")** outside Gate 1.
+**NightQueue** is a practical queue estimation tool and curfew checker built specifically for hostellers at **NIT Silchar** and the roadside tea stall run by **Bipul Nath ("Bipul Da")** outside Gate 1.
 
-The system replaces the vendor's unrealistic verbal promises with empirical statistical forecasts:
-- Students can estimate actual cooking delays, calculate walking transit, and determine whether they can return before the campus gate closes.
-- The stall owner can manage order congestion and communicate honest waiting estimates to prevent shouting matches, mid-cook cancellations, and unpaid food wastage.
+The system replaces the vendor's unrealistic verbal promise (*"Bas 5 minute lagega!"*) with realistic wait-time forecasts:
+- **For Students:** Know realistic cooking and walking times, and see whether you can return before the hostel gate locks.
+- **For Bipul Da:** Quick counter helper that tells him what realistic waiting time to announce to customers, preventing shouting matches, mid-cook cancellations, and unpaid food wastage.
 
 ---
 
 ## 2. Real-World Problem Statement
 
-Hostellers at NIT Silchar (Hostels 1 through 9 and Girls Hostels) are bound by a strict **00:30 AM (12:30 AM) hostel gate curfew** enforced by security guards at Gate 1. Security guards sound warning whistles at 12:20 AM. Anyone arriving after 12:30 AM is detained and logged into the late-entry disciplinary register.
+Hostellers at NIT Silchar (Boys Hostels BH1 through BH9 and Girls Hostels GH1 through GH4) are bound by strict hostel gate curfews:
+- **Boys Hostels (BH1 to BH9):** 00:30 AM (12:30 AM) curfew.
+- **Girls Hostels (GH1 to GH4):** 22:30 PM (10:30 PM) curfew.
 
-During late-night study sessions and end-semester exams, students walk 5 to 11 minutes to Bipul Da's stall outside Gate 1 for dinner snacks (Double Egg Maggi, Bun Omelettes, Chai). Because Bipul Da fears losing customers to rival stalls, he tells every arriving student:
+Security guards at Gate 1 blow warning whistles 10 minutes prior to gate locking. Anyone arriving late gets logged in the late register.
+
+Late at night, students walk 5 to 11 minutes to Bipul Da's stall outside Gate 1 for food (Double Egg Maggi, Bun Omelette, Egg Toast, Chai). Because Bipul Da fears losing customers to competing stalls, he tells every arriving student:
 > *"Bas 5 minute lagega, bohi thaak!"* *(Just 5 minutes, sit down and wait!)*
 
-In reality, Bipul Da operates only **two domestic gas burners** (one tawa for buns/eggs and one pot for boiling Maggi). Once 6 to 8 orders accumulate, actual wait times surge to **18–28 minutes**. Students panic, sprint back through the dark, or get locked out of their hostels.
+In reality, Bipul Da cooks on only **two domestic gas burners** (one tawa for buns/eggs and one pot for Maggi/kettle). Once 4 to 8 orders accumulate, actual wait times surge to **18–28 minutes**. Students end up sprinting across dark campus roads in panic or getting locked out of their hostels.
 
 ---
 
 ## 3. Why the Problem Matters
 
-1. **Academic and Disciplinary Penalties:** Late register entries at NIT Silchar lead to official disciplinary notices to parents and hostel wardens.
-2. **Student Physical Safety:** Panic-induced sprinting across unlit campus roads in freezing late-night temperatures (10°C–14°C) causes injuries and bicycle accidents.
-3. **Small Vendor Economic Losses:** When students realize at 12:20 AM that their food will not be ready in time, they abandon their orders midway. Because UPI payments are settled upon handover, Bipul Da loses ₹45–₹50 per canceled dish in wasted eggs and bread.
+1. **Hostel Lockouts and Disciplinary Warnings:** Late register entries at NIT Silchar result in official warnings and calls to parents and hostel wardens.
+2. **Student Safety:** Panicked sprinting across dark, unlit campus roads in cold late-night temperatures (10°C–14°C) causes trip-and-fall injuries and bicycle accidents.
+3. **Small Vendor Losses:** When students realize at 12:20 AM that their food will not be ready in time, they abandon their orders midway. Because UPI payments are made upon food delivery, Bipul Da loses ₹40–₹50 per canceled dish in wasted eggs and bread.
 
 ---
 
 ## 4. Actual Target Users
 
-1. **NIT Silchar Hostellers (Students):** Anxious late-night diners across Hostels 1–9 and Girls Hostels who need an honest departure deadline before stepping out.
-2. **Bipul Nath ("Bipul Da"):** A busy 44-year-old sole cook who cannot manage complicated mobile apps, but needs honest waiting quotes to announce to customers to maintain stall order.
+1. **NIT Silchar Hostellers (Students):** Diners from BH1–BH9 and GH1–GH4 who need an honest departure deadline before stepping out of their hostel.
+2. **Bipul Nath ("Bipul Da"):** The stall cook who needs an instant, simple quote to shout to customers so they do not get angry or cancel midway.
 
 ---
 
 ## 5. Location of the Problem
 
-- **Institution:** National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).
-- **Physical Site:** Roadside tin-shed stall, located exactly 80 meters outside Gate 1 (Main Gate) along the Silchar-Hailakandi Road.
+- **Campus:** National Institute of Technology (NIT) Silchar, Cachar, Assam (788010).
+- **Physical Spot:** Roadside tin stall, located 80 meters outside Gate 1 along the Silchar-Hailakandi Road.
 
 ---
 
 ## 6. Project Objectives
 
-1. **Eliminate Information Asymmetry:** Replace the verbal *"bas 5 minute"* promise with empirical statistical wait times calibrated from genuine observations.
-2. **Provide Actionable Curfew Radar:** Classify every order into clear feasibility states: `SAFE`, `WARNING`, `LIKELY TO MISS CURFEW`, or `CURFEW ALREADY PASSED`.
-3. **Incorporate Real Campus Geography:** Calculate exact one-way and round-trip walking times based on measured NIT Silchar campus distances.
-4. **Ensure Prediction Transparency:** Display historical sample sizes, calculation formulas, uncertainty buffers, and assumptions without hiding logic behind black-box models.
+1. **Replace False Verbal Promises:** Replace the misleading *"bas 5 minute"* promise with realistic wait times calculated from 20 real stall visits.
+2. **Actionable Curfew Feasibility:** Clearly tell the student whether ordering is `SAFE`, a `WARNING` (tight timing), or `LIKELY TO MISS CURFEW`.
+3. **NIT Silchar Campus Geography:** Uses real measured walking times from BH1–BH9 and GH1–GH4 to Gate 1 (5.0 to 11.5 minutes one-way).
+4. **Bipul Da Counter Helper:** Give Bipul Da a 1-tap screen to check what realistic time to shout to arriving students.
 
 ---
 
 ## 7. Key Features
 
-- **Empirical Calibration:** Base preparation times and queue delays are calculated dynamically from 20 genuine field observations (`data.csv`).
-- **Item-Wise Statistical Profiling:** Computes mean, median, min, max, and standard deviation for each menu item.
-- **Campus Transit Routing:** Maps precise walking times from Hostels 1–9 and Girls Hostels to Gate 1 (5.0 to 11.0 minutes one-way).
-- **Date-Aware Curfew Feasibility:** Correctly handles midnight transitions (23:55 to 00:20) and identifies when curfew has already expired (00:45 AM).
-- **Dynamic Uncertainty Buffers:** Displays realistic $\pm 2.0$ to $\pm 4.5$ minute confidence intervals scaled to queue depth and item variance.
-- **Dataset Health Audit:** Automated validation inspecting columns, missing values, duplicate IDs, and non-positive preparation times.
+- **Realistic Calculations:** Base cooking times and queue delays derived from 20 genuine field observations (`data.csv`).
+- **Food-Item Statistics:** Computes average, median, min, max, and typical cooking times for each menu item.
+- **Campus Transit Routing:** Maps walking times from BH1–BH9 and GH1–GH4 to Gate 1 (5.0 to 11.5 minutes one-way).
+- **Date-Aware Curfew Feasibility:** Correctly handles midnight transitions (23:55 to 00:20) and identifies when curfew has already expired (00:45 AM or 23:15 for GH).
+- **Mobile-First Responsive Interface:** Full-width, high-contrast, large touch targets designed for mobile phone screens.
 - **Defensive Error Handling:** Defensively bounds negative orders, zero burners, and unobserved items without application crashes.
 
 ---
@@ -77,9 +82,8 @@ In reality, Bipul Da operates only **two domestic gas burners** (one tawa for bu
 ## 8. Technology Stack
 
 - **Backend:** Python 3.10+ (tested on Python 3.14), Flask 3.x, Pandas, NumPy
-- **Frontend:** HTML5, Tailwind CSS (via CDN), Vanilla JavaScript (No heavyweight frameworks)
-- **Mathematical Modeling:** Little's Law ($L = \lambda W$), multi-server batch queuing ($M/M/c$), empirical linear regression
-- **Testing:** Python `unittest` framework (23 comprehensive passing test suites)
+- **Frontend:** HTML5, Tailwind CSS, Mobile-Responsive Vanilla JavaScript
+- **Testing:** Python `unittest` framework (23 passing automated tests)
 
 ---
 
@@ -87,17 +91,22 @@ In reality, Bipul Da operates only **two domestic gas burners** (one tawa for bu
 
 ```text
 NIGHTQUEUE/
-├── app.py               # Flask web app, REST API endpoints, and CLI runner
-├── core_engine.py       # Data-calibrated queuing, statistics & curfew engine
-├── data.csv             # 20 genuine empirical observations collected at Gate 1
+├── app.py               # Flask web application & REST API routes
+├── core_engine.py       # Data-driven queuing, statistics & curfew engine
+├── data.csv             # 20 real observation records collected at Gate 1
 ├── templates/
-│   └── index.html       # Responsive 4-section dashboard (Tailwind CSS)
-├── test_server.py       # 23-point comprehensive unit and integration test suite
-├── fieldwork.md         # Fieldwork logs, 2 timestamped photos, conversation
-├── research.md          # 5-line problem statement, 2 alternatives, 2 cited papers
+│   └── index.html       # Mobile-first spacious dashboard (Student & Vendor modes)
+├── test_server.py       # 23-point automated test suite
+├── fieldwork.md         # Fieldwork notes, 3 real stall photos, conversation
+├── research.md          # 5-line problem statement, alternatives, cited papers
 ├── reflection.md        # Retrospective on mistakes, cuts, and AI usage
-├── photos/              # 2 timestamped smartphone fieldwork photos
-│   ├── README.md
+├── photos/              # Real fieldwork photos of the stall
+│   ├── stall_front.jpg  # Photo 1: Stall front with signboard & Campa Energy banners
+│   ├── stove_burners.jpg# Photo 2: 2-burner stove & tea kettle through wire mesh
+│   ├── bipul_da_counter.jpg # Photo 3: Bipul Da behind the wooden counter
+│   └── README.md
+└── README.md            # Comprehensive project documentation
+```
 │   ├── stall_setup.jpg
 │   └── cooking_rush.jpg
 ├── ai-chats/            # AI transcripts exported per assignment instructions

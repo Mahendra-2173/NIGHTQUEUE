@@ -114,6 +114,33 @@ def predict():
     return jsonify(prediction.__dict__)
 
 
+@app.route("/api/bipul-advice", methods=["POST"])
+def get_bipul_advice():
+    """
+    Returns instant counter advice for Bipul Da:
+    What realistic wait time to shout to the student, and whether the student risks curfew.
+    """
+    payload = request.get_json() or {}
+    dish_name = payload.get("dish_name", "Double Egg Maggi")
+    dish_category = payload.get("dish_category", "maggi")
+    hostel = payload.get("hostel", "BH7")
+    orders_ahead = payload.get("orders_ahead", 4)
+    burners_active = payload.get("burners_active", 2)
+    current_time = payload.get("current_time", "23:45")
+    curfew_time = payload.get("curfew_time", "00:30")
+
+    advice = model.get_counter_advice_for_bipul_da(
+        dish_name=dish_name,
+        dish_category=dish_category,
+        hostel=hostel,
+        orders_ahead=orders_ahead,
+        burners_active=burners_active,
+        current_time_str=current_time,
+        curfew_time_str=curfew_time
+    )
+    return jsonify(advice)
+
+
 @app.route("/api/test-bad-row", methods=["POST"])
 def test_bad_row():
     """
