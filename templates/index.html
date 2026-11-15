@@ -6,15 +6,34 @@
   <title>NightQueue — NIT Silchar Gate 1 Food Queue & Curfew Radar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .mono { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
 
-  <!-- Header & Navigation Bar -->
+  <!-- Top Announcement / Live Status Bar -->
+  <div class="bg-slate-900/80 border-b border-slate-800/80 px-4 py-1.5 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium text-[11px]">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Gate 1 Active
+        </span>
+        <span class="text-slate-500 hidden sm:inline">•</span>
+        <span class="hidden sm:inline text-slate-400">NIT Silchar, Cachar, Assam (788010)</span>
+      </div>
+      <div class="flex items-center gap-3 text-[11px] mono">
+        <span>Curfew: <strong class="text-amber-400">12:30 AM</strong></span>
+        <span class="text-slate-600">|</span>
+        <span>Stall: <strong class="text-slate-300">Bipul Da (2 Burners)</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
   <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
       
@@ -26,24 +45,24 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="text-base font-extrabold text-white tracking-tight">NightQueue</span>
-            <span class="text-[11px] bg-amber-500/15 text-amber-300 font-semibold px-2 py-0.5 rounded border border-amber-500/30">NIT Silchar</span>
+            <span class="text-[10px] bg-amber-500/15 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">NIT Silchar</span>
           </div>
-          <p class="text-xs text-slate-400">Bipul Da's Stall @ Gate 1 • Data-Calibrated Radar</p>
+          <p class="text-xs text-slate-400">Gate 1 Food Wait & Curfew Radar</p>
         </div>
       </a>
 
-      <!-- 4 Primary Sections Navigation -->
+      <!-- 4 Primary Sections Navigation (Section 5B) -->
       <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-semibold overflow-x-auto">
-        <button id="nav-checker" onclick="showPage('checker')" class="nav-btn px-3 py-1.5 rounded-lg text-amber-300 bg-slate-800/80 transition flex items-center gap-1.5 whitespace-nowrap">
+        <button id="nav-checker" onclick="showPage('checker')" class="nav-btn px-3.5 py-1.5 rounded-lg text-amber-300 bg-slate-800/90 transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
           <span>🕒</span> <span>Curfew Checker</span>
         </button>
-        <button id="nav-data" onclick="showPage('data')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+        <button id="nav-data" onclick="showPage('data')" class="nav-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
           <span>📊</span> <span>Stall Data</span>
         </button>
-        <button id="nav-story" onclick="showPage('story')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+        <button id="nav-story" onclick="showPage('story')" class="nav-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
           <span>📖</span> <span>The Story</span>
         </button>
-        <button id="nav-test" onclick="showPage('test')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+        <button id="nav-test" onclick="showPage('test')" class="nav-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
           <span>🧪</span> <span>Simple Test</span>
         </button>
       </nav>
@@ -55,7 +74,7 @@
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-7">
 
     <!-- ================================================================= -->
-    <!-- SECTION A: CURFEW CHECKER                                         -->
+    <!-- SECTION A: CURFEW CHECKER (MAIN PREDICTION SCREEN)                -->
     <!-- ================================================================= -->
     <section id="page-checker" class="page-content space-y-6">
       
@@ -65,21 +84,21 @@
           Will you make it back before <span class="text-amber-400">12:30 AM Curfew</span>?
         </h2>
         <p class="text-xs sm:text-sm text-slate-400">
-          Bipul Da always tells hostellers: <em class="text-amber-300 font-medium">"Bas 5 minute lagega, bohi thaak!"</em><br>
-          This radar uses <strong>actual observations from data.csv</strong> to calculate realistic cooking, queue, and walking times.
+          Bipul Da tells everyone: <em class="text-amber-300 font-medium">"Bas 5 minute lagega, bohi thaak!"</em><br>
+          This radar uses <strong>genuine observations from data.csv</strong> to predict actual cooking, queue, and walking times.
         </p>
       </div>
 
       <!-- 2-Column Responsive Layout -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         <!-- Input Form (5 cols) -->
-        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
           <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
             <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
               <span>📋</span> Order & Transit Inputs
             </h3>
-            <span class="text-[11px] text-amber-400 font-mono">Gate 1 Stall</span>
+            <span class="text-[11px] text-amber-400 mono">Gate 1 Stall</span>
           </div>
 
           <form id="checker-form" class="space-y-4" onsubmit="return false;">
@@ -88,23 +107,23 @@
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5 flex justify-between">
                 <span>Food Item</span>
-                <span id="badge-item-stat" class="text-amber-400 mono text-[11px]">Historical n=4</span>
+                <span id="badge-item-stat" class="text-amber-400 mono text-[11px]">Empirical (n=4)</span>
               </label>
               <select id="input-food" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
-                <option value="Double Egg Maggi|maggi|50" selected>Double Egg Maggi (₹50) — Pan shared, high demand</option>
+                <option value="Double Egg Maggi|maggi|50" selected>Double Egg Maggi (₹50) — Pan shared, popular (n=4)</option>
                 <option value="Plain Maggi|maggi|35">Plain Maggi (₹35) — Fast batch cooking (n=5)</option>
                 <option value="Bun Omelette|egg_toast|45">Bun Omelette (₹45) — Toasted bun + egg tawa (n=4)</option>
                 <option value="Egg Toast|egg_toast|40">Egg Toast (₹40) — Tawa fried bread (n=4)</option>
                 <option value="Dudh Saah x2|beverage|30">Milk Tea / Dudh Saah x2 (₹30) — Fast simmer (n=1)</option>
                 <option value="Lal Saah x2|beverage|20">Black Tea / Lal Saah x2 (₹20) — Quick turnaround (n=1)</option>
-                <option value="Custom / Unobserved Dish|unknown|40">Unobserved Food Item (Tests Fallback)</option>
+                <option value="Unobserved Special Dish|unknown|40">Unobserved Dish (Triggers Fallback)</option>
               </select>
             </div>
 
             <!-- Hostel Selection -->
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5 flex justify-between">
-                <span>Select Your Hostel</span>
+                <span>Your Hostel</span>
                 <span id="badge-walk-time" class="text-amber-400 mono font-semibold">8.0 mins walk</span>
               </label>
               <select id="input-hostel" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
@@ -122,7 +141,7 @@
               </select>
             </div>
 
-            <!-- Pending Orders Ahead Slider -->
+            <!-- Orders Ahead Slider -->
             <div>
               <div class="flex items-center justify-between text-xs font-bold text-slate-300 mb-1.5">
                 <span>Orders Ahead at Counter:</span>
@@ -133,45 +152,45 @@
               <!-- Quick Select Buttons -->
               <div class="grid grid-cols-4 gap-1.5 mt-2">
                 <button type="button" onclick="setQueue(0)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">0 (Clear)</button>
-                <button type="button" onclick="setQueue(3)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">3 (Few)</button>
-                <button type="button" onclick="setQueue(6)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-amber-400 border-amber-500/30 transition">6 (Rush)</button>
-                <button type="button" onclick="setQueue(10)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">10 (Packed)</button>
+                <button type="button" onclick="setQueue(3)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">3 (Light)</button>
+                <button type="button" onclick="setQueue(6)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-amber-400 border-amber-500/30 transition font-bold">6 (Rush)</button>
+                <button type="button" onclick="setQueue(10)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">10 (Jam)</button>
               </div>
             </div>
 
             <!-- Time Inputs -->
-            <div class="grid grid-cols-2 gap-3 pt-2">
+            <div class="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Current Time</label>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Current Clock Time</label>
                 <input type="time" id="input-time" value="23:45" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white mono">
               </div>
               <div>
-                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Curfew Deadline</label>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Hostel Curfew</label>
                 <input type="time" id="input-curfew" value="00:30" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 mono font-bold">
               </div>
             </div>
 
             <!-- Active Burner Status Toggle -->
             <div>
-              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Stall Preparation Capacity</label>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Stove Preparation Capacity</label>
               <select id="input-burners" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
-                <option value="2" selected>2 Gas Burners (Normal Operation)</option>
-                <option value="1">1 Gas Burner (Row 7 Condition: Low LPG Cylinder)</option>
+                <option value="2" selected>2 Gas Burners (Normal Stall Concurrency)</option>
+                <option value="1">1 Gas Burner (Row 7 Condition: Low LPG Pressure)</option>
               </select>
             </div>
 
           </form>
         </div>
 
-        <!-- Result & Transparency Card (7 cols) -->
-        <div class="md:col-span-7 space-y-5">
+        <!-- Result Card & Transparency (7 cols) -->
+        <div class="lg:col-span-7 space-y-5">
           
           <!-- Big Feasibility Verdict Card -->
           <div id="card-verdict" class="bg-slate-900 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-2xl transition duration-300">
             
             <div class="flex items-start justify-between gap-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Feasibility Result</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Feasibility Status</span>
                 <div id="verdict-headline" class="text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400">
                   <span>🟢</span> SAFE
                 </div>
@@ -182,7 +201,7 @@
               </div>
             </div>
 
-            <!-- Recommendation Callout -->
+            <!-- Practical Recommendation -->
             <div id="verdict-advice" class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed">
               Calculating empirical prediction...
             </div>
@@ -216,13 +235,13 @@
 
             </div>
 
-            <!-- Departure Deadline Banner -->
+            <!-- Departure Deadline Callout -->
             <div class="mt-3.5 flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs">
               <span class="text-slate-400">Latest Departure from Hostel:</span>
               <span class="font-bold text-amber-300 mono" id="val-departure-deadline">Leave by 12:00 AM</span>
             </div>
 
-            <!-- Transparency Card (Section 6) -->
+            <!-- Prediction Transparency Box (Section 6) -->
             <div class="mt-4 pt-3 border-t border-slate-800 space-y-2 text-xs">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-white flex items-center gap-1.5">
@@ -251,6 +270,15 @@
 
           </div>
 
+          <!-- The Asymmetric Gap Comparison Callout -->
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl text-xs text-slate-300 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <div>
+              <strong class="text-white block font-semibold mb-0.5">The 2-Burner Bottleneck:</strong>
+              <span>Bipul Da operates only two domestic burners (one tawa for buns/eggs and one pot for boiling Maggi). With 6 orders ahead, cooking physically takes ~18–25 minutes! He quotes "5 minutes" so students don't walk away to competing tea stalls.</span>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -258,15 +286,15 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION B: STALL DATA (ITEM STATISTICS & AUDIT)                   -->
+    <!-- SECTION B: STALL DATA (STATISTICS & CHARTS)                       -->
     <!-- ================================================================= -->
     <section id="page-data" class="page-content hidden space-y-6">
       
       <!-- Top Title & Dataset Integrity Badge -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
         <div>
-          <h2 class="text-2xl font-extrabold text-white tracking-tight">Verified Stall Observations & Item Statistics</h2>
-          <p class="text-xs text-slate-400 mt-0.5">Derived from 20 genuine field observations collected at Gate 1, NIT Silchar.</p>
+          <h2 class="text-2xl font-extrabold text-white tracking-tight">Verified Stall Observations & Statistics</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Calculated dynamically from 20 genuine field observations collected at Gate 1, NIT Silchar.</p>
         </div>
         <div id="badge-dataset-audit" class="flex items-center gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold flex items-center gap-1.5">
@@ -276,7 +304,7 @@
         </div>
       </div>
 
-      <!-- 4 Core Empirical Proof Numbers -->
+      <!-- 4 Core Empirical KPI Numbers -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 font-semibold">Valid Observations</span>
@@ -297,6 +325,32 @@
           <span class="text-xs text-slate-400 font-semibold">Curfew Breach Rate</span>
           <div class="text-2xl font-black text-red-500 mt-1 mono" id="stat-breach-pct">30.0%</div>
           <span class="text-[11px] text-red-400/80">6 of 20 marked in late register</span>
+        </div>
+      </div>
+
+      <!-- Visual Comparative Chart Card (Section 5D) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>📊</span> Reality vs Promise: Food Preparation Delay Breakdown
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Dynamic comparison: Actual Median Preparation Time vs Bipul Da's "5-Minute" Promise</p>
+          </div>
+          <span class="text-xs bg-slate-950 text-slate-400 px-3 py-1 rounded-lg border border-slate-800 mono">
+            Empirical Visualization
+          </span>
+        </div>
+
+        <!-- Dynamic Visual Bar Chart Container -->
+        <div id="visual-chart-container" class="space-y-3 pt-1">
+          <!-- Populated dynamically by JavaScript -->
+          <div class="text-center py-4 text-xs text-slate-500">Loading dynamic comparative charts...</div>
+        </div>
+
+        <div class="flex items-center justify-end gap-4 text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+          <span class="flex items-center gap-1.5"><span class="h-2 w-3 rounded bg-amber-500 inline-block"></span> Bipul Da's Claim (5m)</span>
+          <span class="flex items-center gap-1.5"><span class="h-2 w-3 rounded bg-rose-500 inline-block"></span> Actual Median Wait (data.csv)</span>
         </div>
       </div>
 
@@ -430,6 +484,7 @@
           <ul class="list-disc list-inside space-y-2 pl-2 text-slate-300">
             <li><strong>The 2-Burner Hardware Constraint:</strong> Bipul Da operates only two burners: Burner 1 holds a tawa for frying eggs and buns; Burner 2 holds a pot for boiling water/Maggi. Concurrency is capped at 2 orders at a time.</li>
             <li><strong>Pan Transition Dead Time:</strong> Switching between dish types (e.g., Egg Toast after Maggi) requires wiping down the tawa with a coarse rag, re-oiling, and egg whisking. This creates <strong>60 to 90 seconds of zero-cooking overhead</strong> invisible to waiting students.</li>
+            <li><strong>Why Existing Alternatives Fail:</strong> Food delivery apps (Swiggy/Zomato) do not service unregistered roadside stalls for ₹40 midnight snacks. Phone calls or WhatsApp cannot be answered while flipping hot eggs with one hand and boiling Maggi with the other.</li>
             <li><strong>The 12:20 AM Warning Whistle:</strong> Security guards blow whistles 10 minutes before the 12:30 AM gate closure. That is when anxious students begin shouting at the counter, demanding instant food or canceling orders after eggs are already cracked.</li>
           </ul>
           <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-slate-400">
@@ -441,38 +496,38 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION D: SIMPLE TEST & DIAGNOSTICS                              -->
+    <!-- SECTION D: SIMPLE TEST (INTERACTIVE EXPERIMENTATION)              -->
     <!-- ================================================================= -->
     <section id="page-test" class="page-content hidden space-y-6">
       
       <div class="pb-2 border-b border-slate-800">
-        <h2 class="text-2xl font-extrabold text-white tracking-tight">Simple Test & Queuing Simulator</h2>
-        <p class="text-xs text-slate-400 mt-0.5">Test how predictions change under different queue sizes, food items, and boundary conditions.</p>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">Interactive Queuing Simulator & Diagnostics</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Experiment with different queue depths, food items, and boundary conditions to see how predictions change.</p>
       </div>
 
-      <!-- Queue Sensitivity Experiment Cards -->
+      <!-- Queue Sensitivity Experiment Cards (Section 5F) -->
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Queue Sensitivity: How Wait Times Change</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Queue Sensitivity: How Pending Orders Affect Curfew Feasibility</h3>
         <p class="text-xs text-slate-300">
-          Click below to observe how the estimated wait and curfew feasibility change as pending orders accumulate on Bipul Da's two burners:
+          Click any preset below to see how wait times grow on Bipul Da's 2 burners and why curfew status flips from SAFE to WARNING to LIKELY TO MISS CURFEW:
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-          <button onclick="runSensitivityTest(0)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-emerald-400 block">Queue = 0 (Clear)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Solo prep time (~6.4 mins). Safely returns to hostel.</span>
+          <button onclick="runSensitivityTest(0)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-emerald-400 block">Queue = 0 (Clear Stall)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Solo prep delay (~6.4m). Plentiful margin to return. Status: SAFE.</span>
           </button>
-          <button onclick="runSensitivityTest(3)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
+          <button onclick="runSensitivityTest(3)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/40 rounded-xl text-left transition">
             <span class="text-xs font-bold text-amber-300 block">Queue = 3 (Moderate)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait increases to ~11.5 mins. Leaves slight buffer.</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait increases to ~11.5 mins. Leaves slight buffer. Status: SAFE.</span>
           </button>
-          <button onclick="runSensitivityTest(6)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-amber-400 block">Queue = 6 (Rush)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait surges to ~18–20 mins. WARNING / Tight margin.</span>
+          <button onclick="runSensitivityTest(6)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/40 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-amber-400 block">Queue = 6 (Rush Hour)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait surges to ~18–20 mins. Buffer shrinks. Status: WARNING.</span>
           </button>
-          <button onclick="runSensitivityTest(10)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-rose-400 block">Queue = 10 (Jam)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait exceeds 25 mins. LIKELY TO MISS CURFEW.</span>
+          <button onclick="runSensitivityTest(10)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/40 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-rose-400 block">Queue = 10 (Severe Jam)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait exceeds 25 mins. Status flips: LIKELY TO MISS CURFEW.</span>
           </button>
         </div>
       </div>
@@ -481,26 +536,26 @@
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
         <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400">2. Boundary & Time Edge Cases</h3>
         <p class="text-xs text-slate-300">
-          Click any scenario to verify that date-aware calculations and input validations execute correctly:
+          Verify that date-aware calculations, midnight transitions, and defensive input sanitizations execute cleanly:
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <button onclick="runDiagnosticTest('midnight_rollover')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
-            🌙 Midnight Rollover (23:55 -> 00:20)
+          <button onclick="runDiagnosticTest('midnight_rollover')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
+            🌙 Midnight Rollover (23:55 -> 00:14 AM)
           </button>
-          <button onclick="runDiagnosticTest('curfew_passed')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
+          <button onclick="runDiagnosticTest('curfew_passed')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
             ⛔ Curfew Already Passed (00:45 AM)
           </button>
-          <button onclick="runDiagnosticTest('negative_orders')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
+          <button onclick="runDiagnosticTest('negative_orders')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
             🛡️ Negative Orders (-15 Bound to 0)
           </button>
-          <button onclick="runDiagnosticTest('zero_burners')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
+          <button onclick="runDiagnosticTest('zero_burners')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
             🛡️ Zero Active Burners (Clamped to 1)
           </button>
-          <button onclick="runDiagnosticTest('unobserved_food')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
+          <button onclick="runDiagnosticTest('unobserved_food')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
             🥣 Unobserved Food Item (Fallback)
           </button>
-          <button onclick="runDiagnosticTest('curfew_exact')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
+          <button onclick="runDiagnosticTest('curfew_exact')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
             ⏱️ Arrival Exactly at Curfew (Margin = 0m)
           </button>
         </div>
@@ -532,7 +587,7 @@
     function showPage(pageId) {
       document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-slate-800/80', 'text-amber-300');
+        btn.classList.remove('bg-slate-800/90', 'text-amber-300', 'shadow-sm');
         btn.classList.add('text-slate-400');
       });
 
@@ -542,7 +597,7 @@
       const currentNavBtn = document.getElementById('nav-' + pageId);
       if (currentNavBtn) {
         currentNavBtn.classList.remove('text-slate-400');
-        currentNavBtn.classList.add('bg-slate-800/80', 'text-amber-300');
+        currentNavBtn.classList.add('bg-slate-800/90', 'text-amber-300', 'shadow-sm');
       }
 
       window.location.hash = pageId;
@@ -595,6 +650,11 @@
         document.getElementById('val-departure-deadline').textContent = 'Leave hostel by ' + d.departure_deadline;
         document.getElementById('val-curfew-tag').textContent = d.curfew_time;
         document.getElementById('val-uncertainty').textContent = 'Buffer: ±' + d.uncertainty_buffer_mins + 'm';
+
+        // Sample count badge
+        document.getElementById('badge-item-stat').textContent = d.is_empirically_grounded 
+          ? `Empirical (n=${d.item_sample_count})` 
+          : `Fallback Assumption`;
 
         // Verdict Styling
         const card = document.getElementById('card-verdict');
@@ -652,7 +712,7 @@
       }
     }
 
-    // Load Data Page (Item Statistics and Raw Table)
+    // Load Data Page (Item Statistics, Visual Bar Charts, and Raw Table)
     async function loadDataPage() {
       try {
         const [statsRes, dataRes, auditRes, itemStatsRes] = await Promise.all([
@@ -671,6 +731,9 @@
         document.getElementById('stat-avg-claimed').textContent = stats.avg_claimed_mins + 'm';
         document.getElementById('stat-avg-actual').textContent = stats.avg_actual_mins + 'm';
         document.getElementById('stat-breach-pct').textContent = stats.curfew_breach_rate_pct + '%';
+
+        // Render Dynamic Comparative Bar Chart (Section 5D)
+        renderComparativeChart(itemStats);
 
         // Render Item-Wise Statistics Table
         const itemTbody = document.getElementById('item-stats-body');
@@ -692,6 +755,39 @@
       } catch (err) {
         console.error('Failed to load data page:', err);
       }
+    }
+
+    // Render Dynamic Comparative Bar Chart
+    function renderComparativeChart(itemStats) {
+      const container = document.getElementById('visual-chart-container');
+      const items = Object.values(itemStats);
+      if (items.length === 0) return;
+
+      const maxWait = 30.0; // scale up to 30 mins
+
+      container.innerHTML = items.map(it => {
+        const claimPct = Math.round((5.0 / maxWait) * 100);
+        const actualPct = Math.round((it.median_actual_mins / maxWait) * 100);
+        const gap = (it.median_actual_mins - 5.0).toFixed(1);
+
+        return `
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-white">${it.item_name} <span class="text-slate-500 font-normal">(${it.dish_category})</span></span>
+              <span class="mono text-xs"><strong class="text-rose-400">${it.median_actual_mins.toFixed(1)}m</strong> vs <span class="text-amber-400">5.0m</span> <span class="text-slate-500 text-[11px]">(+${gap}m gap)</span></span>
+            </div>
+            <!-- Double Bar Container -->
+            <div class="h-4 bg-slate-950 rounded-full overflow-hidden flex relative border border-slate-800">
+              <!-- Actual Median Bar -->
+              <div style="width: ${actualPct}%;" class="h-full bg-rose-500/80 rounded-full transition-all duration-500 flex items-center justify-end pr-2 text-[10px] text-white font-mono font-bold">
+                ${it.median_actual_mins.toFixed(1)}m
+              </div>
+              <!-- Claimed Reference Marker -->
+              <div style="left: ${claimPct}%;" class="absolute top-0 bottom-0 w-1 bg-amber-400 z-10 shadow-sm" title="Bipul Da's Claim (5m)"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderTable() {
@@ -735,7 +831,7 @@
       renderTable();
     }
 
-    // Queuing Sensitivity Simulator
+    // Queuing Sensitivity Simulator (Section 5F)
     async function runSensitivityTest(q) {
       const out = document.getElementById('test-output-terminal');
       out.classList.remove('hidden');
@@ -757,12 +853,12 @@
         });
         const d = await res.json();
         out.innerHTML = `
-<span class="text-amber-400 font-bold">🧪 QUEUE SIMULATION RESULT (Queue = ${q} orders ahead):</span>
-• Dish: Bun Omelette | Hostel: Hostel 7 (~8.0m walk each way)
-• Base Prep Time: ${d.historical_prep_mins}m | Queue Waiting: ${d.queue_wait_mins}m
-• Total Trip Time: ${d.total_trip_mins}m | Room Arrival: ${d.estimated_return_time}
-• Curfew Feasibility: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400'}">${d.curfew_status}</strong> (Margin: ${d.curfew_margin_mins}m)
-• Why it changed: With ${q} orders ahead on 2 burners, queue delay changed to ${d.queue_wait_mins}m based on ~2.1m marginal delay per order.
+<span class="text-amber-400 font-bold">🧪 QUEUE SENSITIVITY SIMULATION RESULT (Queue = ${q} orders ahead):</span>
+• Food: Bun Omelette | Hostel: Hostel 7 (~8.0m walk each way)
+• Base Prep Time: ${d.historical_prep_mins}m | Queue Waiting Delay: ${d.queue_wait_mins}m
+• Total Kitchen Delay: ${d.estimated_cook_wait_mins}m | Room Arrival: ${d.estimated_return_time}
+• Curfew Feasibility: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong> (Margin: ${d.curfew_margin_mins}m)
+• Why it changed: With ${q} orders ahead on 2 burners, queue congestion delay changed to ${d.queue_wait_mins}m based on ~2.33m marginal delay per waiting order.
         `.trim();
       } catch (err) {
         out.textContent = "Error running test: " + err;
@@ -785,7 +881,7 @@
       } else if (key === 'zero_burners') {
         payload = { dish_name: "Bun Omelette", dish_category: "egg_toast", hostel: "Hostel 7", orders_ahead: 4, burners_active: 0, current_time: "23:45" };
       } else if (key === 'unobserved_food') {
-        payload = { dish_name: "Exotic Special Dish", dish_category: "unseen", hostel: "Unknown Hostel", orders_ahead: 2, current_time: "23:45" };
+        payload = { dish_name: "Unobserved Special Dish", dish_category: "unseen", hostel: "Unknown Hostel", orders_ahead: 2, current_time: "23:45" };
       } else if (key === 'curfew_exact') {
         payload = { dish_name: "Dudh Saah x1", dish_category: "beverage", hostel: "Hostel 1", orders_ahead: 3, current_time: "00:10", curfew_time: "00:30" };
       }
@@ -799,7 +895,7 @@
         const d = await res.json();
         out.innerHTML = `
 <span class="text-emerald-400 font-bold">✔ SCENARIO TEST: ${key}</span>
-• Status: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400'}">${d.curfew_status}</strong>
+• Status: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong>
 • Current Time: ${payload.current_time} -> Arrival: ${d.estimated_return_time} vs Curfew: ${d.curfew_time}
 • Curfew Margin: ${d.curfew_margin_mins} mins
 • Warnings: ${d.validation_warnings.length > 0 ? d.validation_warnings.join(' | ') : 'None'}
