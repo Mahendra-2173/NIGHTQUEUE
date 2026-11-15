@@ -1,7 +1,7 @@
 # AI Chat Export: Ideation, Queue Formulation & UI Build
 
 **Model Used:** Gemini 3.8 Flash (High)  
-**Session Scope:** Brainstorming hyper-local take-home problems, queueing math, data schema design, and Flask application.  
+**Session Scope:** Brainstorming hyper-local take-home problems, queueing math, data schema design, data-driven engine calibration, and Flask application.  
 
 ---
 
@@ -23,3 +23,10 @@
 * **Prompt Discussion:** Formulating queue wait time based on $M/M/c$ batch queuing with pan changeover latency.
 * **AI Output Summary:**
   Derived the queuing formula accounting for burner concurrency ($c=2$), batch cooking factor (up to 2 Maggis sharing a pot), and pan cleaning penalty (1.2 mins when transitioning between egg and water-based cooking). Implemented defensive boundary clamps for negative orders or zero burners to satisfy the interviewer's "bad row" evaluation test.
+
+---
+
+### Excerpt 4: Data-Driven Refinement & Comprehensive 19-Point Test Suite
+* **Prompt Discussion:** Eliminating hardcoded defaults, deriving item-wise mean/median/std statistics from `data.csv`, date-aware midnight transitions, and implementing complete 19-point test suite.
+* **AI Output Summary:**
+  Re-engineered `core_engine.py` to calculate item-specific statistical profiles (mean, median, min, max, std), dynamic uncertainty buffer, and curfew feasibility (SAFE, WARNING, LIKELY TO MISS CURFEW, CURFEW ALREADY PASSED). Implemented 19 automated tests in `test_server.py` verifying data loading, invalid data exclusions, zero queues, midnight boundaries, and defensive input sanitization.
