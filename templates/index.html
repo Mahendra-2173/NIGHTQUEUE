@@ -1,65 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bipul Da's Tea Stall ("Tapri") — NIT Silchar Gate 1 Curfew & Food Wait Checker</title>
+  <title>विपुल दा टी स्टॉल ("टपरी") — NIT Silchar Gate 1 Curfew & Food Wait Checker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { 
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #080c14;
       color: #e2e8f0;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
     
-    /* Mobile-first touch targets */
+    /* Touch-friendly interactive targets */
     button, select, input {
       touch-action: manipulation;
     }
 
-    /* High contrast focus ring */
     *:focus-visible {
       outline: 2px solid #f59e0b;
       outline-offset: 2px;
     }
 
-    /* Custom range slider thumb */
     input[type=range]::-webkit-slider-thumb {
       background: #f59e0b;
-      height: 22px;
-      width: 22px;
+      height: 24px;
+      width: 24px;
       border-radius: 9999px;
       border: 2px solid #ffffff;
       box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
     }
 
-    /* Tooltip */
     #chart-tooltip {
       position: absolute;
       pointer-events: none;
       transition: opacity 0.15s ease-in-out;
       z-index: 100;
     }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+      70% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+    }
+    .card-highlight {
+      animation: pulse-ring 1.2s cubic-bezier(0.24, 0, 0.38, 1);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
 
-  <!-- Top Campus Notice Bar -->
-  <aside aria-label="Campus Status" class="bg-slate-900 border-b border-slate-800 px-4 py-2.5 text-xs text-slate-300">
+  <!-- Top Campus Notice Bar (Hindi + English) -->
+  <aside aria-label="Campus Status" class="bg-slate-900 border-b border-slate-800 px-4 py-2 text-xs text-slate-300">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold text-xs">
           <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Gate 1 Stall Open
+          दुकान खुली है (Open)
         </span>
         <span class="text-slate-500">•</span>
-        <span class="text-slate-300 font-medium">Bipul Da's Tea Stall (Tapri) • 80m outside Gate 1, NIT Silchar</span>
+        <span class="text-slate-300 font-medium">विपुल दा टी स्टॉल ("टपरी") • गेट 1, एनआईटी सिलचर (80 मीटर बाहर)</span>
       </div>
       <div class="flex items-center gap-3 text-xs mono">
-        <span>Curfew: Boys <strong class="text-amber-400 font-bold">12:30 AM</strong> | Girls <strong class="text-rose-400 font-bold">10:30 PM</strong></span>
+        <span>कर्फ्यू समय: लड़के (BH1–BH9) <strong class="text-amber-400 font-bold">12:30 AM</strong> | लड़कियाँ (GH1–GH4) <strong class="text-rose-400 font-bold">10:30 PM</strong></span>
       </div>
     </div>
   </aside>
@@ -75,29 +81,29 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Bipul Da's Tea Stall</span>
-            <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">Tapri</span>
+            <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">विपुल दा टी स्टॉल</span>
+            <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">टपरी (Tapri)</span>
           </div>
-          <p class="text-xs text-slate-400">NIT Silchar Gate 1 • Food Wait Time & Curfew Checker</p>
+          <p class="text-xs text-slate-400">NIT Silchar Gate 1 • खाना प्रतीक्षा समय और हॉस्टल कर्फ्यू चेकर</p>
         </div>
       </a>
 
       <!-- Primary Navigation Tabs -->
       <nav class="flex items-center space-x-1 sm:space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold overflow-x-auto w-full sm:w-auto mt-2 sm:mt-0" aria-label="Main Navigation">
-        <button id="nav-checker" onclick="showPage('checker')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-amber-300 bg-slate-800 transition flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
-          <span>🕒</span> <span>Curfew Checker</span>
+        <button id="nav-checker" onclick="showPage('checker')" class="nav-btn flex-1 sm:flex-initial px-4 py-2.5 rounded-lg text-amber-300 bg-slate-800 transition flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm font-bold">
+          <span>🕒</span> <span>कर्फ्यू चेकर (Students)</span>
         </button>
-        <button id="nav-counter" onclick="showPage('counter')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
-          <span>👨‍🍳</span> <span>Bipul Da Helper</span>
+        <button id="nav-counter" onclick="showPage('counter')" class="nav-btn flex-1 sm:flex-initial px-4 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap font-bold">
+          <span>👨‍🍳</span> <span>दुकान काउंटर (Bipul Da & Raju)</span>
         </button>
-        <button id="nav-data" onclick="showPage('data')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
-          <span>📊</span> <span>Stall Data & Menu</span>
+        <button id="nav-data" onclick="showPage('data')" class="nav-btn flex-1 sm:flex-initial px-4 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap font-bold">
+          <span>📊</span> <span>मेनू और डेटा (Menu & Stats)</span>
         </button>
-        <button id="nav-story" onclick="showPage('story')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
-          <span>📷</span> <span>The Tapri Story</span>
+        <button id="nav-story" onclick="showPage('story')" class="nav-btn flex-1 sm:flex-initial px-4 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap font-bold">
+          <span>📷</span> <span>टपरी की कहानी (Photos)</span>
         </button>
-        <button id="nav-test" onclick="showPage('test')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
-          <span>🧪</span> <span>Quick Test</span>
+        <button id="nav-test" onclick="showPage('test')" class="nav-btn flex-1 sm:flex-initial px-4 py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap font-bold">
+          <span>🧪</span> <span>क्विक टेस्ट (Test)</span>
         </button>
       </nav>
 
@@ -112,37 +118,37 @@
     <!-- ================================================================= -->
     <section id="page-checker" class="page-content space-y-6">
       
-      <!-- Headline & Introduction -->
+      <!-- Headline & Introduction in Hindi -->
       <div class="text-center max-w-3xl mx-auto space-y-2">
         <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Will you make it back before <span class="text-amber-400">Hostel Curfew</span>?
+          क्या आप हॉस्टल कर्फ्यू से पहले <span class="text-amber-400">वापस पहुँच पाएंगे?</span>
         </h1>
         <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-          Bipul Da always says: <em class="text-amber-300 font-semibold">"Bas 5 minute lagega, bohi thaak!"</em><br class="hidden sm:inline">
-          Check realistic cooking and walking times so you never get locked out at the hostel gate.
+          विपुल दा हमेशा कहते हैं: <em class="text-amber-300 font-semibold">"बस 5 मिनट लगेगा भैया, बैठो!"</em><br class="hidden sm:inline">
+          लेकिन जब आगे 4-6 लोग खड़े होते हैं, तो असल में 15 से 25 मिनट लगते हैं। यहाँ चेक करें कि आपका खाना कब तक मिलेगा।
         </p>
       </div>
 
-      <!-- Mode Switcher Notice: Student vs Bipul Da -->
+      <!-- Quick Switch Banner -->
       <div class="flex items-center justify-center gap-2">
-        <span class="text-xs bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-          <span>🎓</span> <strong>Student View</strong> — Checking if you can eat and return safely
+        <span class="text-xs bg-slate-900 border border-slate-800 text-slate-300 px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
+          <span>🎓</span> <strong>छात्र मोड (Student View)</strong> — कर्फ्यू समय जाँचें
         </span>
-        <button onclick="showPage('counter')" class="text-xs bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-full transition font-semibold">
-          Switch to Bipul Da's Counter Helper ➔
+        <button onclick="showPage('counter')" class="text-xs bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full transition font-semibold">
+          दुकानदार काउंटर मोड (Bipul Da & Raju) ➔
         </button>
       </div>
 
       <!-- 2-Column Responsive Layout -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <!-- Input Form (5 cols on desktop, full width on mobile) -->
+        <!-- Input Form (5 cols) -->
         <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
           <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
             <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>📋</span> Enter Your Order Details
+              <span>📋</span> अपना ऑर्डर चुनें (Order Details)
             </h2>
-            <span class="text-xs text-amber-400 mono font-semibold">80m from Gate 1</span>
+            <span class="text-xs text-amber-400 mono font-semibold">गेट 1 से 80 मी</span>
           </div>
 
           <form id="checker-form" class="space-y-4" onsubmit="return false;">
@@ -150,26 +156,26 @@
             <!-- Hostel Selection (BH1 to BH9, GH1 to GH4) -->
             <div>
               <label for="input-hostel" class="block text-xs font-bold text-slate-200 mb-1.5 flex justify-between items-center">
-                <span>1. Which Hostel Do You Live In?</span>
-                <span id="badge-walk-time" class="text-amber-400 mono font-semibold text-xs">8.0 mins walk</span>
+                <span>1. आपका हॉस्टल कौन सा है?</span>
+                <span id="badge-walk-time" class="text-amber-400 mono font-semibold text-xs">8.0 मिनट पैदल</span>
               </label>
               <select id="input-hostel" onchange="onHostelChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-medium">
-                <optgroup label="Boys Hostels (Curfew: 12:30 AM)">
-                  <option value="BH1">BH1 (Freshers — 5.0 mins walk)</option>
-                  <option value="BH2">BH2 (Freshers — 5.0 mins walk)</option>
-                  <option value="BH3">BH3 (6.0 mins walk)</option>
-                  <option value="BH4">BH4 (6.5 mins walk)</option>
-                  <option value="BH5">BH5 (7.0 mins walk)</option>
-                  <option value="BH6">BH6 (7.5 mins walk)</option>
-                  <option value="BH7" selected>BH7 (Senior — 8.0 mins walk)</option>
-                  <option value="BH8">BH8 (Senior — 9.0 mins walk)</option>
-                  <option value="BH9">BH9 (PG Hostel — 11.0 mins walk)</option>
+                <optgroup label="लड़कों के हॉस्टल / Boys Hostels (कर्फ्यू: 12:30 AM)">
+                  <option value="BH1">BH1 (जूनियर हॉस्टल — 5.0 मिनट पैदल)</option>
+                  <option value="BH2">BH2 (5.0 मिनट पैदल)</option>
+                  <option value="BH3">BH3 (6.0 मिनट पैदल)</option>
+                  <option value="BH4">BH4 (6.5 मिनट पैदल)</option>
+                  <option value="BH5">BH5 (7.0 मिनट पैदल)</option>
+                  <option value="BH6">BH6 (7.5 मिनट पैदल)</option>
+                  <option value="BH7" selected>BH7 (सीनियर हॉस्टल — 8.0 मिनट पैदल)</option>
+                  <option value="BH8">BH8 (सीनियर हॉस्टल — 9.0 मिनट पैदल)</option>
+                  <option value="BH9">BH9 (पीजी हॉस्टल — 11.0 मिनट पैदल)</option>
                 </optgroup>
-                <optgroup label="Girls Hostels (Curfew: 10:30 PM)">
-                  <option value="GH1">GH1 (Girls Hostel 1 — 10.0 mins walk)</option>
-                  <option value="GH2">GH2 (Girls Hostel 2 — 10.5 mins walk)</option>
-                  <option value="GH3">GH3 (Girls Hostel 3 — 11.0 mins walk)</option>
-                  <option value="GH4">GH4 (Girls Hostel 4 — 11.5 mins walk)</option>
+                <optgroup label="लड़कियों के हॉस्टल / Girls Hostels (कर्फ्यू: 10:30 PM)">
+                  <option value="GH1">GH1 (गर्ल्स हॉस्टल 1 — 10.0 मिनट पैदल)</option>
+                  <option value="GH2">GH2 (गर्ल्स हॉस्टल 2 — 10.5 मिनट पैदल)</option>
+                  <option value="GH3">GH3 (गर्ल्स हॉस्टल 3 — 11.0 मिनट पैदल)</option>
+                  <option value="GH4">GH4 (गर्ल्स हॉस्टल 4 — 11.5 मिनट पैदल)</option>
                 </optgroup>
               </select>
             </div>
@@ -177,66 +183,67 @@
             <!-- Food Item Selection -->
             <div>
               <label for="input-food" class="block text-xs font-bold text-slate-200 mb-1.5 flex justify-between items-center">
-                <span>2. What Are You Ordering?</span>
-                <span id="badge-item-stat" class="text-amber-400 mono text-xs font-semibold">Observed at Stall</span>
+                <span>2. आप क्या खाना चाहते हैं?</span>
+                <span id="badge-item-stat" class="text-amber-400 mono text-xs font-semibold">स्टॉल मेनू</span>
               </label>
               <select id="input-food" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-medium">
-                <option value="Double Egg Maggi|maggi|50" selected>Double Egg Maggi (₹50) — Most Popular</option>
-                <option value="Plain Maggi|maggi|35">Plain Maggi (₹35) — Fast</option>
-                <option value="Bun Omelette|egg_toast|45">Bun Omelette (₹45) — Toasted bun & egg</option>
-                <option value="Egg Toast|egg_toast|40">Egg Toast (₹40) — Tawa fried</option>
-                <option value="Dudh Saah x2|beverage|30">Milk Tea / Dudh Saah (₹15 each) — Very Fast</option>
-                <option value="Lal Saah x2|beverage|20">Black Tea / Lal Saah (₹10 each) — Instant</option>
+                <option value="Double Egg Maggi|maggi|50" selected>डबल एग मैगी / Double Egg Maggi (₹50) — सबसे लोकप्रिय</option>
+                <option value="Plain Maggi|maggi|35">सादा मैगी / Plain Maggi (₹35) — जल्दी बनती है</option>
+                <option value="Bun Omelette|egg_toast|45">बन ऑमलेट / Bun Omelette (₹45) — बटर टोस्टेड बन और अंडा</option>
+                <option value="Egg Toast|egg_toast|40">एग टोस्ट / Egg Toast (₹40) — तवा फ्राई ब्रेड</option>
+                <option value="Doodh Chai x2|beverage|30">दूध वाली चाय / Doodh Chai (₹15 प्रति कप) — बहुत तेज़</option>
+                <option value="Lal Chai x2|beverage|20">लाल चाय / Black Tea (₹10 प्रति कप) — तुरंत तैयार</option>
               </select>
             </div>
 
             <!-- Orders Ahead Slider & Quick Buttons -->
             <div>
               <div class="flex items-center justify-between text-xs font-bold text-slate-200 mb-1.5">
-                <span>3. How Many Orders Are Waiting Ahead?</span>
-                <span id="badge-queue-count" class="mono text-amber-400 font-bold bg-amber-500/15 px-3 py-1 rounded border border-amber-500/30 text-xs">4 orders</span>
+                <span>3. दुकान पर आगे कितने ऑर्डर पेंडिंग हैं?</span>
+                <span id="badge-queue-count" class="mono text-amber-400 font-bold bg-amber-500/15 px-3 py-1 rounded border border-amber-500/30 text-xs">4 ऑर्डर आगे हैं</span>
               </div>
               <input type="range" id="input-queue" min="0" max="15" value="4" oninput="onQueueSlider(this.value)" class="w-full h-3 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500 my-2">
               
               <!-- Large Touch Quick Select Buttons -->
               <div class="grid grid-cols-4 gap-2 mt-2">
-                <button type="button" onclick="setQueue(0)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-slate-300 hover:text-white transition font-medium">0 (Empty)</button>
-                <button type="button" onclick="setQueue(2)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-slate-300 hover:text-white transition font-medium">2 (Light)</button>
-                <button type="button" onclick="setQueue(4)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-amber-500/40 text-xs rounded-xl text-amber-400 transition font-bold">4 (Normal)</button>
-                <button type="button" onclick="setQueue(8)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-rose-300 hover:text-white transition font-medium">8 (Rush)</button>
+                <button type="button" onclick="setQueue(0)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-slate-300 hover:text-white transition font-medium">0 (दुकान खाली)</button>
+                <button type="button" onclick="setQueue(2)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-slate-300 hover:text-white transition font-medium">2 (कम भीड़)</button>
+                <button type="button" onclick="setQueue(4)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-amber-500/40 text-xs rounded-xl text-amber-400 transition font-bold">4 (सामान्य)</button>
+                <button type="button" onclick="setQueue(8)" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs rounded-xl text-rose-300 hover:text-white transition font-medium">8+ (भारी भीड़)</button>
               </div>
             </div>
 
-            <!-- Time Settings (Smart Defaults) -->
+            <!-- Time Settings -->
             <div class="grid grid-cols-2 gap-3 pt-2">
               <div>
-                <label for="input-time" class="block text-xs font-bold text-slate-300 mb-1">Current Time</label>
+                <label for="input-time" class="block text-xs font-bold text-slate-300 mb-1">अभी का समय (Current Time)</label>
                 <input type="time" id="input-time" value="23:45" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono font-semibold">
               </div>
               <div>
-                <label for="input-curfew" class="block text-xs font-bold text-slate-300 mb-1">Hostel Curfew</label>
+                <label for="input-curfew" class="block text-xs font-bold text-slate-300 mb-1">हॉस्टल कर्फ्यू (Curfew Time)</label>
                 <input type="time" id="input-curfew" value="00:30" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-amber-400 mono font-bold">
               </div>
             </div>
 
-            <!-- Stove Status (Simple & Plain) -->
+            <!-- Stove Status -->
             <div>
-              <label for="input-burners" class="block text-xs font-bold text-slate-300 mb-1">Stall Stove Status</label>
+              <label for="input-burners" class="block text-xs font-bold text-slate-300 mb-1">चूल्हे की स्थिति (Stove Concurrency)</label>
               <select id="input-burners" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
-                <option value="2" selected>Both 2 Burners Working (Normal)</option>
-                <option value="1">1 Burner Only (Low Gas / One pan broken)</option>
+                <option value="2" selected>दोनों 2 चूल्हे चालू हैं (सामान्य स्थिति)</option>
+                <option value="1">1 चूल्हा धीमा / गैस कम है (समय दोगुना)</option>
               </select>
             </div>
 
-            <!-- Big Check Button -->
-            <button type="button" onclick="updatePrediction()" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-amber-500/20 text-sm flex items-center justify-center gap-2">
-              <span>🔍</span> Check If I Can Make Curfew
+            <!-- Big Check Button with Immediate Tactile Feedback & Smooth Scroll -->
+            <button id="btn-check-curfew" type="button" onclick="handleCheckButtonClick(event)" class="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg shadow-amber-500/25 text-base flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
+              <span id="btn-check-icon">🔍</span>
+              <span id="btn-check-text">चेक करें: क्या कर्फ्यू से पहले खाना मिलेगा?</span>
             </button>
 
           </form>
         </div>
 
-        <!-- Result Card & Plain Journey Breakdown (7 cols on desktop) -->
+        <!-- Result Card & 5-Step Journey Breakdown (7 cols) -->
         <div class="lg:col-span-7 space-y-5">
           
           <!-- Big Feasibility Verdict Card -->
@@ -244,65 +251,63 @@
             
             <div class="flex items-start justify-between gap-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Result</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">कर्फ्यू रिपोर्ट (Curfew Verdict)</span>
                 <div id="verdict-headline" class="text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400">
-                  <span>🟢</span> SAFE TO GO
+                  <span>🟢</span> सुरक्षित (SAFE TO GO)
                 </div>
               </div>
               <div class="text-right bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
-                <span class="text-[11px] text-slate-400 block font-semibold">GATE CLOSES AT</span>
+                <span class="text-[11px] text-slate-400 block font-semibold">गेट बंद होने का समय</span>
                 <span class="text-base font-bold text-amber-400 mono" id="val-curfew-tag">12:30 AM</span>
               </div>
             </div>
 
-            <!-- Practical Advice in Plain Simple Words -->
+            <!-- Practical Advice in Plain Hindi -->
             <div id="verdict-advice" class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
-              Checking your timings...
+              समय की गणना हो रही है...
             </div>
 
-            <!-- ========================================================= -->
-            <!-- 5-STAGE JOURNEY BREAKDOWN (PLAIN LANGUAGE)                -->
-            <!-- ========================================================= -->
+            <!-- 5-Stage Journey Breakdown -->
             <div class="border-t border-slate-800/80 pt-4 space-y-3">
               <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">
-                How Your Time Is Spent
+                समय कहाँ और कैसे खर्च होगा (Time Breakdown)
               </span>
 
               <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
                 
                 <!-- Stage 1 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-1">
-                  <span class="text-[11px] text-slate-400 block font-semibold">1. Walk to Stall</span>
+                  <span class="text-[11px] text-slate-400 block font-semibold">1. दुकान तक पैदल</span>
                   <span class="text-sm font-bold text-white mono mt-1 block" id="m-reach-stall">11:53 PM</span>
-                  <span class="text-[11px] text-slate-400" id="m-walk-out">8.0 mins</span>
+                  <span class="text-[11px] text-slate-400" id="m-walk-out">8.0 मिनट</span>
                 </div>
 
                 <!-- Stage 2 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-1">
-                  <span class="text-[11px] text-amber-400 block font-semibold">2. Wait & Cooking</span>
-                  <span class="text-sm font-bold text-amber-300 mono mt-1 block" id="m-kitchen-wait">17.7 mins</span>
-                  <span class="text-[11px] text-slate-400">line + stove</span>
+                  <span class="text-[11px] text-amber-400 block font-semibold">2. लाइन व पकाना</span>
+                  <span class="text-sm font-bold text-amber-300 mono mt-1 block" id="m-kitchen-wait">17.7 मिनट</span>
+                  <span class="text-[11px] text-slate-400">चूल्हे पर समय</span>
                 </div>
 
                 <!-- Stage 3 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-1">
-                  <span class="text-[11px] text-slate-400 block font-semibold">3. Food Ready</span>
+                  <span class="text-[11px] text-slate-400 block font-semibold">3. खाना तैयार</span>
                   <span class="text-sm font-bold text-white mono mt-1 block" id="m-food-ready">12:11 AM</span>
-                  <span class="text-[11px] text-slate-400">eat or pack</span>
+                  <span class="text-[11px] text-slate-400">गरमा-गरम प्लेट</span>
                 </div>
 
                 <!-- Stage 4 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-1">
-                  <span class="text-[11px] text-emerald-400 block font-semibold">4. Walk Back</span>
+                  <span class="text-[11px] text-emerald-400 block font-semibold">4. वापस हॉस्टल</span>
                   <span class="text-sm font-bold text-emerald-300 mono mt-1 block" id="m-room-return">12:19 AM</span>
-                  <span class="text-[11px] text-slate-400" id="m-walk-back">reach hostel</span>
+                  <span class="text-[11px] text-slate-400" id="m-walk-back">कमरे में वापसी</span>
                 </div>
 
                 <!-- Stage 5 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-2 sm:col-span-1">
-                  <span class="text-[11px] font-bold uppercase text-slate-400 block" id="m-margin-label">5. Buffer Left</span>
+                  <span class="text-[11px] font-bold uppercase text-slate-400 block" id="m-margin-label">5. बचा हुआ समय</span>
                   <span class="text-sm font-bold mono mt-1 block" id="m-curfew-margin">+11.0m</span>
-                  <span class="text-[11px] text-slate-400" id="m-margin-sub">before lock</span>
+                  <span class="text-[11px] text-slate-400" id="m-margin-sub">सुरक्षित मार्जिन</span>
                 </div>
 
               </div>
@@ -311,40 +316,40 @@
             <!-- What Bipul Da Says vs Reality Box -->
             <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
               <div>
-                <span class="text-slate-400 block text-xs">Bipul Da's Promise:</span>
-                <span class="font-bold text-amber-400 text-sm sm:text-base">"Bas 5 minute lagega!"</span>
+                <span class="text-slate-400 block text-xs">विपुल दा का वादा:</span>
+                <span class="font-bold text-amber-400 text-sm sm:text-base">"बस 5 मिनट लगेगा भैया!"</span>
               </div>
               <div class="sm:text-right">
-                <span class="text-slate-400 block text-xs">Reality with orders ahead:</span>
-                <span class="font-bold text-rose-400 text-sm sm:text-base" id="val-reality-wait">~18 mins actual wait</span>
+                <span class="text-slate-400 block text-xs">लाइन के साथ असली समय:</span>
+                <span class="font-bold text-rose-400 text-sm sm:text-base" id="val-reality-wait">~18 मिनट असली समय</span>
               </div>
             </div>
 
             <!-- Departure Deadline Callout -->
             <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm">
-              <span class="text-slate-300 font-medium">Latest time to leave your room:</span>
-              <span class="font-bold text-amber-300 mono text-sm sm:text-base" id="val-departure-deadline">Leave by 12:00 AM</span>
+              <span class="text-slate-300 font-medium">हॉस्टल से निकलने का आखिरी समय:</span>
+              <span class="font-bold text-amber-300 mono text-sm sm:text-base" id="val-departure-deadline">12:00 AM तक निकलें</span>
             </div>
 
-            <!-- Plain Explanation Box -->
+            <!-- Timing explanation -->
             <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed font-mono" id="val-explanation-box">
-              Loading timing breakdown...
+              समय विवरण लोड हो रहा है...
             </div>
 
-            <!-- Simple Note -->
+            <!-- Note -->
             <p class="text-xs text-slate-400 italic" id="val-disclaimer-box">
               Disclaimer: Times are realistic estimates based on observations at Bipul Da's stall. Actual wait times can vary if there are sudden crowds or stove delays.
             </p>
 
           </div>
 
-          <!-- Educational Callout on Why 5 Mins is Never 5 Mins -->
+          <!-- Why 5 minutes is 20 minutes -->
           <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl text-xs sm:text-sm text-slate-300 flex items-start gap-3.5">
             <span class="text-2xl">💡</span>
             <div class="space-y-1">
-              <strong class="text-white block font-bold text-sm">Why does Bipul Da always say "5 minutes"?</strong>
+              <strong class="text-white block font-bold text-sm">विपुल दा हमेशा "5 मिनट" क्यों बोलते हैं?</strong>
               <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                Bipul Da operates only 2 domestic gas burners. One holds a tawa for frying eggs and buns, and the other holds a kettle or pot for Maggi. When 4 to 6 people are already waiting, food takes 15 to 25 minutes. He quotes "5 minutes" so students don't walk away to competing stalls.
+                विपुल दा के पास सिर्फ 2 घरेलू गैस बर्नर हैं। एक पर ऑमलेट/बन का तवा रहता है और दूसरे पर मैगी या चाय का पैन। जब आगे 4-6 लोग खड़े होते हैं, तो खाना बनने में 15 से 25 मिनट लगते हैं। वे "5 मिनट" इसलिए बोलते हैं ताकि छात्र किसी दूसरी दुकान पर न चले जाएं।
               </p>
             </div>
           </div>
@@ -356,7 +361,7 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION 2: BIPUL DA'S COUNTER HELPER (FOR STALL OPERATOR)         -->
+    <!-- SECTION 2: BIPUL DA & RAJU'S COUNTER HELPER & LIVE KITCHEN BOARD   -->
     <!-- ================================================================= -->
     <section id="page-counter" class="page-content hidden space-y-6">
       
@@ -366,89 +371,186 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="text-2xl">👨‍🍳</span>
-              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Bipul Da's Counter Helper</h2>
-              <span class="text-xs bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded">দোকানের জন্য</span>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">दुकान काउंटर हेल्पर (Bipul Da & Raju)</h2>
+              <span class="text-xs bg-amber-500 text-slate-950 font-bold px-2.5 py-0.5 rounded">दुकान के लिए</span>
             </div>
             <p class="text-xs sm:text-sm text-slate-300 mt-1">
-              Tap the buttons below to see what realistic time to shout to the student and check if they will miss curfew.
+              विपुल दा और उनके हेल्पर <strong>राजू (Raju, उम्र 21 वर्ष)</strong> के लिए। यहाँ से तुरंत जानें कि छात्र को क्या टाइम बोलना है और किचन में अभी कुल कितने आइटम तैयार करने हैं।
             </p>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-300 font-semibold">
+              संचालक: राजू (ऑर्डर व बिलिंग) • कुक: विपुल दा
+            </span>
           </div>
         </div>
       </div>
 
-      <!-- Quick Tap Controls for Counter Worker -->
+      <!-- LIVE KITCHEN BATCH BOARD (WHAT BIPUL DA NEEDS TO PREP RIGHT NOW) -->
+      <div class="bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-5 sm:p-6 space-y-4 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+              <span>🔥</span> विपुल दा का लाइव किचन बोर्ड (Live Kitchen Batch Board)
+            </h3>
+            <p class="text-xs text-slate-300 mt-0.5">
+              राजू द्वारा काउंटर पर दर्ज किए गए ऑर्डर के अनुसार विपुल दा को अभी चूल्हे पर क्या-क्या चढ़ाना है:
+            </p>
+          </div>
+          <span class="text-xs font-mono font-bold bg-amber-500 text-slate-950 px-3 py-1 rounded-lg" id="live-total-orders-badge">
+            कुल पेंडिंग: 6 ऑर्डर
+          </span>
+        </div>
+
+        <!-- 4 Live Cooking Summary Counters -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+            <span class="text-xs text-slate-400 font-semibold block">🥚 तवे पर अंडे (Eggs to Crack)</span>
+            <div class="text-2xl sm:text-3xl font-black text-amber-400 mono mt-1" id="prep-eggs">6 अंडे</div>
+            <span class="text-[11px] text-slate-500">मैगी + ऑमलेट + टोस्ट</span>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+            <span class="text-xs text-slate-400 font-semibold block">🍜 मैगी पैकेट (Maggi to Boil)</span>
+            <div class="text-2xl sm:text-3xl font-black text-amber-400 mono mt-1" id="prep-maggi">3 पैकेट</div>
+            <span class="text-[11px] text-slate-500">बर्नर 2 के सॉसपैन में</span>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+            <span class="text-xs text-slate-400 font-semibold block">🥪 पाव/बन (Buns to Toast)</span>
+            <div class="text-2xl sm:text-3xl font-black text-amber-400 mono mt-1" id="prep-buns">1 पाव</div>
+            <span class="text-[11px] text-slate-500">बटर में सेंकने के लिए</span>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+            <span class="text-xs text-slate-400 font-semibold block">☕ चाय के कप (Tea to Pour)</span>
+            <div class="text-2xl sm:text-3xl font-black text-sky-400 mono mt-1" id="prep-tea">2 कप</div>
+            <span class="text-[11px] text-slate-500">केटल में तैयार</span>
+          </div>
+
+        </div>
+
+        <!-- Quick Live Order Buttons for Helper Raju -->
+        <div class="pt-3 border-t border-slate-800 space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">
+            राजू के लिए: काउंटर से ऑर्डर जोड़ें या पूरा मार्क करें (Quick Order Management)
+          </span>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <span class="text-xs font-bold text-white block">डबल एग मैगी (₹50)</span>
+              <div class="flex items-center justify-between mt-2 gap-1">
+                <button type="button" onclick="modifyLiveOrder('Double Egg Maggi', 'complete')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs rounded font-bold">✓ बन गया</button>
+                <span class="text-xs font-mono font-bold text-amber-400" id="live-count-Double-Egg-Maggi">2</span>
+                <button type="button" onclick="modifyLiveOrder('Double Egg Maggi', 'add')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs rounded font-bold">+1 नया</button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <span class="text-xs font-bold text-white block">सादा मैगी (₹35)</span>
+              <div class="flex items-center justify-between mt-2 gap-1">
+                <button type="button" onclick="modifyLiveOrder('Plain Maggi', 'complete')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs rounded font-bold">✓ बन गया</button>
+                <span class="text-xs font-mono font-bold text-amber-400" id="live-count-Plain-Maggi">1</span>
+                <button type="button" onclick="modifyLiveOrder('Plain Maggi', 'add')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs rounded font-bold">+1 नया</button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <span class="text-xs font-bold text-white block">बन ऑमलेट (₹45)</span>
+              <div class="flex items-center justify-between mt-2 gap-1">
+                <button type="button" onclick="modifyLiveOrder('Bun Omelette', 'complete')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs rounded font-bold">✓ बन गया</button>
+                <span class="text-xs font-mono font-bold text-amber-400" id="live-count-Bun-Omelette">1</span>
+                <button type="button" onclick="modifyLiveOrder('Bun Omelette', 'add')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs rounded font-bold">+1 नया</button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <span class="text-xs font-bold text-white block">एग टोस्ट (₹40)</span>
+              <div class="flex items-center justify-between mt-2 gap-1">
+                <button type="button" onclick="modifyLiveOrder('Egg Toast', 'complete')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs rounded font-bold">✓ बन गया</button>
+                <span class="text-xs font-mono font-bold text-amber-400" id="live-count-Egg-Toast">0</span>
+                <button type="button" onclick="modifyLiveOrder('Egg Toast', 'add')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs rounded font-bold">+1 नया</button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <span class="text-xs font-bold text-white block">दूध वाली चाय (₹15)</span>
+              <div class="flex items-center justify-between mt-2 gap-1">
+                <button type="button" onclick="modifyLiveOrder('Doodh Chai', 'complete')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs rounded font-bold">✓ बन गया</button>
+                <span class="text-xs font-mono font-bold text-amber-400" id="live-count-Doodh-Chai">2</span>
+                <button type="button" onclick="modifyLiveOrder('Doodh Chai', 'add')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs rounded font-bold">+1 नया</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Shouting Quote for Customer at the Counter -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         
         <!-- Selection Controls (5 cols) -->
-        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-5">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">Step 1: Tap What the Customer Asked For</h3>
+        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">काउंटर पूछताछ: ग्राहक क्या मांग रहा है?</h3>
           
-          <!-- Quick Dish Buttons -->
           <div class="grid grid-cols-2 gap-2">
             <button type="button" onclick="setCounterDish('Plain Maggi', 'maggi', 35)" class="counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500 text-left transition font-semibold text-xs text-white">
-              🍜 Plain Maggi (₹35)
+              🍜 सादा मैगी (₹35)
             </button>
             <button type="button" onclick="setCounterDish('Double Egg Maggi', 'maggi', 50)" class="counter-dish-btn p-3 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-left transition font-bold text-xs text-amber-300">
-              🍳 Egg Maggi (₹50)
+              🍳 एग मैगी (₹50)
             </button>
             <button type="button" onclick="setCounterDish('Bun Omelette', 'egg_toast', 45)" class="counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500 text-left transition font-semibold text-xs text-white">
-              🥪 Bun Omelette (₹45)
+              🥪 बन ऑमलेट (₹45)
             </button>
             <button type="button" onclick="setCounterDish('Egg Toast', 'egg_toast', 40)" class="counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500 text-left transition font-semibold text-xs text-white">
-              🍞 Egg Toast (₹40)
+              🍞 एग टोस्ट (₹40)
             </button>
-            <button type="button" onclick="setCounterDish('Dudh Saah x2', 'beverage', 30)" class="counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500 text-left transition font-semibold text-xs text-white col-span-2">
-              ☕ Tea / Dudh Saah (₹15) — Fast!
+            <button type="button" onclick="setCounterDish('Doodh Chai x2', 'beverage', 30)" class="counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500 text-left transition font-semibold text-xs text-white col-span-2">
+              ☕ चाय (₹15 प्रति कप) — तेज़
             </button>
           </div>
 
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 pt-2 border-t border-slate-800">Step 2: How Many People in Line Right Now?</h3>
-          <div class="grid grid-cols-5 gap-1.5">
-            <button type="button" onclick="setCounterQueue(0)" class="counter-q-btn py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold hover:bg-slate-800">0</button>
-            <button type="button" onclick="setCounterQueue(2)" class="counter-q-btn py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold hover:bg-slate-800">2</button>
-            <button type="button" onclick="setCounterQueue(4)" class="counter-q-btn py-2.5 rounded-lg bg-amber-500 text-slate-950 text-xs font-bold">4</button>
-            <button type="button" onclick="setCounterQueue(6)" class="counter-q-btn py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold hover:bg-slate-800">6</button>
-            <button type="button" onclick="setCounterQueue(8)" class="counter-q-btn py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold hover:bg-slate-800">8+</button>
-          </div>
-
-          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 pt-2 border-t border-slate-800">Step 3: What Hostel Is the Customer From?</h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 pt-2 border-t border-slate-800">ग्राहक किस हॉस्टल का है?</h3>
           <div class="grid grid-cols-2 gap-2">
             <button type="button" onclick="setCounterHostelGroup('BH')" id="btn-counter-bh" class="py-2.5 px-3 rounded-xl bg-amber-500 text-slate-950 text-xs font-bold transition">
-              👦 Boys (BH1–BH9) • 12:30 AM
+              👦 लड़कों का हॉस्टल (BH1–BH9) • 12:30 AM
             </button>
             <button type="button" onclick="setCounterHostelGroup('GH')" id="btn-counter-gh" class="py-2.5 px-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-800 transition">
-              👧 Girls (GH1–GH4) • 10:30 PM
+              👧 लड़कियों का हॉस्टल (GH1–GH4) • 10:30 PM
             </button>
           </div>
         </div>
 
-        <!-- Big Shouting Display for Bipul Da (7 cols) -->
+        <!-- Big Shouting Advice Display -->
         <div class="md:col-span-7 bg-slate-900 border-2 border-amber-500/50 rounded-2xl p-6 sm:p-8 space-y-6 flex flex-col justify-between">
           
           <div class="space-y-4">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block">
-              📢 What to shout to the student at the counter:
+              📢 छात्र को मुँह से क्या बोलना है:
             </span>
 
             <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center space-y-2">
-              <span class="text-xs text-slate-400 block">Realistic cooking & wait time:</span>
+              <span class="text-xs text-slate-400 block">असली वेटिंग टाइम:</span>
               <div id="counter-shout-time" class="text-3xl sm:text-5xl font-black text-amber-400 mono">
-                16–18 minutes
+                16–18 मिनट
               </div>
-              <p class="text-xs text-slate-400 mt-2">
-                Say: <strong class="text-white">"Bhaiya 15-18 minute lagega, shanti te bosho."</strong> (Do NOT say 5 minutes!)
+              <p class="text-xs text-slate-300 mt-2 font-medium">
+                विपुल दा या राजू आवाज़ दें: <strong class="text-white">"भैया 15-18 मिनट लगेगा, आराम से बैठो!"</strong> (5 मिनट मत बोलो!)
               </p>
             </div>
 
-            <!-- Immediate Curfew Risk Box for Counter -->
-            <div id="counter-curfew-box" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium">
-              🟢 Safe to take order. Customer has plenty of time to return to BH7 before 12:30 AM.
+            <!-- Curfew Risk Warning Box in Hindi -->
+            <div id="counter-curfew-box" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium leading-relaxed">
+              🟢 सुरक्षित: ऑर्डर ले सकते हैं। छात्र आराम से 12:30 AM से पहले BH7 पहुँच जाएगा।
             </div>
           </div>
 
           <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-            <span>Stall has 2 active gas burners</span>
-            <span>Prevents students fighting or canceling after eggs are cracked</span>
+            <span>दुकान में 2 गैस चूल्हे चालू हैं</span>
+            <span>अंडे फोड़ने के बाद छात्र ऑर्डर कैंसिल न करे, इसलिए सच बताएं</span>
           </div>
 
         </div>
@@ -458,19 +560,19 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION 3: STALL DATA & MENU                                      -->
+    <!-- SECTION 3: STALL MENU & REAL DATA                                 -->
     <!-- ================================================================= -->
     <section id="page-data" class="page-content hidden space-y-6">
       
       <!-- Top Title -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div>
-          <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Stall Menu & Real Wait Times</h2>
-          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Based on 20 visits recorded at Bipul Da's stall outside Gate 1, NIT Silchar.</p>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">स्टॉल मेनू, रेट और असली समय</h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">गेट 1 टपरी पर दर्ज किए गए 20 ऑन-साइट ऑर्डर्स के वास्तविक आंकड़े।</p>
         </div>
         <div class="flex items-center gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold">
-            20 Real Visits Recorded
+            20 असली विज़िट दर्ज
           </span>
         </div>
       </div>
@@ -478,24 +580,24 @@
       <!-- 4 Simple Numbers -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Stall Location</span>
-          <div class="text-lg sm:text-xl font-bold text-white mt-1">Gate 1 Tapri</div>
-          <span class="text-[11px] text-slate-400">80 meters out</span>
+          <span class="text-xs text-slate-400 font-semibold">दुकान की लोकेशन</span>
+          <div class="text-lg sm:text-xl font-bold text-white mt-1">गेट 1 टपरी</div>
+          <span class="text-[11px] text-slate-400">80 मीटर बाहर</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">What Bipul Da Claims</span>
+          <span class="text-xs text-slate-400 font-semibold">विपुल दा का दावा</span>
           <div class="text-xl sm:text-2xl font-black text-amber-400 mt-1 mono" id="stat-avg-claimed">4.8m</div>
-          <span class="text-[11px] text-slate-400">"Bas 5 minute"</span>
+          <span class="text-[11px] text-slate-400">"बस 5 मिनट"</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Actual Average Wait</span>
+          <span class="text-xs text-slate-400 font-semibold">औसत असली समय</span>
           <div class="text-xl sm:text-2xl font-black text-rose-400 mt-1 mono" id="stat-avg-actual">17.7m</div>
-          <span class="text-[11px] text-rose-400 font-semibold">~13 mins longer than promised</span>
+          <span class="text-[11px] text-rose-400 font-semibold">+13 मिनट की देरी</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Curfew Incidents</span>
+          <span class="text-xs text-slate-400 font-semibold">कर्फ्यू में भाग-दौड़</span>
           <div class="text-xl sm:text-2xl font-black text-amber-400 mt-1 mono" id="stat-breach-pct">30.0%</div>
-          <span class="text-[11px] text-slate-400" id="stat-breach-sub">6 of 20 visits caused panic or late entry</span>
+          <span class="text-[11px] text-slate-400" id="stat-breach-sub">20 में से 6 छात्र लेट हुए या भागे</span>
         </div>
       </div>
 
@@ -504,9 +606,9 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>🍳</span> Stall Menu, Prices & Cooking Times
+              <span>🍳</span> मेनू रेट और पकाने का समय (Menu & Cooking Times)
             </h3>
-            <p class="text-xs text-slate-300 mt-0.5">Average wait times observed when visiting the stall</p>
+            <p class="text-xs text-slate-300 mt-0.5">दुकान पर दर्ज की गई विभिन्न खाद्य पदार्थों की तैयारी समय</p>
           </div>
         </div>
 
@@ -514,66 +616,65 @@
           <table class="w-full text-left text-xs sm:text-sm text-slate-300 divide-y divide-slate-800">
             <thead class="bg-slate-950 text-slate-400 uppercase font-semibold text-xs">
               <tr>
-                <th class="py-3 px-3">Item Name</th>
-                <th class="py-3 px-2">Category</th>
-                <th class="py-3 px-2 text-center">Observed Visits</th>
-                <th class="py-3 px-3 text-amber-400">Typical Wait</th>
-                <th class="py-3 px-3 text-emerald-400">Solo Cooking Time</th>
+                <th class="py-3 px-3">आइटम का नाम (Item)</th>
+                <th class="py-3 px-2">श्रेणी</th>
+                <th class="py-3 px-2 text-center">कुल ऑर्डर्स</th>
+                <th class="py-3 px-3 text-amber-400">भीड़ में सामान्य समय</th>
+                <th class="py-3 px-3 text-emerald-400">अकेले पकाने का समय</th>
               </tr>
             </thead>
             <tbody id="item-stats-body" class="divide-y divide-slate-800/60 font-mono">
               <tr>
-                <td colspan="5" class="text-center py-4 text-slate-400 font-sans">Loading menu details...</td>
+                <td colspan="5" class="text-center py-4 text-slate-400 font-sans">लोड हो रहा है...</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Queue Length vs Waiting Time Chart -->
+      <!-- Queue vs Waiting Time Scatter Chart -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>📈</span> How Waiting Time Grows with the Queue
+              <span>📈</span> लाइन बढ़ने पर प्रतीक्षा समय कैसे बढ़ता है
             </h3>
-            <p class="text-xs text-slate-300 mt-0.5">Each dot is a real visit recorded outside Gate 1</p>
+            <p class="text-xs text-slate-300 mt-0.5">हर बिंदु गेट 1 स्टॉल पर ली गई एक वास्तविक विज़िट है</p>
           </div>
           <div class="flex items-center gap-3 text-xs mono">
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-400 inline-block"></span> Maggi</span>
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-orange-500 inline-block"></span> Egg Toast / Bun</span>
-            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-sky-400 inline-block"></span> Tea</span>
+            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-400 inline-block"></span> मैगी</span>
+            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-orange-500 inline-block"></span> ऑमलेट / बन</span>
+            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-sky-400 inline-block"></span> चाय</span>
           </div>
         </div>
 
-        <!-- SVG Container for Scatter Plot -->
         <div class="relative w-full overflow-x-auto bg-slate-950 rounded-xl p-3 border border-slate-800" id="scatter-chart-wrapper">
-          <svg id="scatter-svg" viewBox="0 0 720 320" class="w-full h-auto max-h-80" aria-label="Chart of actual wait time versus queue size"></svg>
+          <svg id="scatter-svg" viewBox="0 0 720 320" class="w-full h-auto max-h-80" aria-label="Wait time vs queue chart"></svg>
           <div id="chart-tooltip" class="hidden bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg px-3 py-2 shadow-2xl pointer-events-none"></div>
         </div>
 
         <div class="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 pt-1">
           <div class="flex items-center gap-4">
-            <span class="flex items-center gap-1.5"><span class="w-4 h-0.5 bg-rose-400 inline-block"></span> Realistic wait time curve (+2.3 mins per order)</span>
-            <span class="flex items-center gap-1.5"><span class="w-4 h-0.5 border-t border-dashed border-amber-400 inline-block"></span> Bipul Da's 5-minute promise</span>
+            <span class="flex items-center gap-1.5"><span class="w-4 h-0.5 bg-rose-400 inline-block"></span> वास्तविक प्रतीक्षा रेखा (+2.33 मिनट प्रति ऑर्डर)</span>
+            <span class="flex items-center gap-1.5"><span class="w-4 h-0.5 border-t border-dashed border-amber-400 inline-block"></span> विपुल दा का 5 मिनट का वादा</span>
           </div>
-          <span class="italic">Tap on any point to see what happened on that visit.</span>
+          <span class="italic">किसी भी बिंदु पर टैप करके विवरण देखें।</span>
         </div>
       </div>
 
-      <!-- Raw Fieldwork Log Table -->
+      <!-- Raw Log Table -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl space-y-3 p-4 sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3 text-xs">
           <div>
             <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>📋</span> All 20 Real Visits Recorded
+              <span>📋</span> सभी 20 दर्ज ऑर्डर्स (Fieldwork Log)
             </h3>
-            <p class="text-xs text-slate-300 mt-0.5">Recorded on-site Nov 14–15 outside Gate 1</p>
+            <p class="text-xs text-slate-300 mt-0.5">14–15 नवंबर की रात गेट 1 के बाहर दर्ज</p>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="filterTable('all')" id="filter-all" class="filter-btn px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold">All (20)</button>
-            <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">Curfew Incidents (6)</button>
-            <button onclick="filterTable('ontime')" id="filter-ontime" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">On Time (14)</button>
+            <button onclick="filterTable('all')" id="filter-all" class="filter-btn px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold">सभी (20)</button>
+            <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">कर्फ्यू में भागे/लेट (6)</button>
+            <button onclick="filterTable('ontime')" id="filter-ontime" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">समय पर पहुंचे (14)</button>
           </div>
         </div>
 
@@ -582,19 +683,19 @@
             <thead class="bg-slate-950 text-slate-400 uppercase font-semibold">
               <tr>
                 <th class="py-2.5 px-3">#</th>
-                <th class="py-2.5 px-3">Time</th>
-                <th class="py-2.5 px-3">Food Item</th>
-                <th class="py-2.5 px-2 text-center">Queue</th>
-                <th class="py-2.5 px-3">Claimed</th>
-                <th class="py-2.5 px-3">Actual Wait</th>
-                <th class="py-2.5 px-3">Hostel</th>
-                <th class="py-2.5 px-3">Curfew Impact</th>
-                <th class="py-2.5 px-4">What Happened</th>
+                <th class="py-2.5 px-3">समय</th>
+                <th class="py-2.5 px-3">ऑर्डर</th>
+                <th class="py-2.5 px-2 text-center">लाइन</th>
+                <th class="py-2.5 px-3">बोला गया</th>
+                <th class="py-2.5 px-3">असल समय</th>
+                <th class="py-2.5 px-3">हॉस्टल</th>
+                <th class="py-2.5 px-3">कर्फ्यू स्थिति</th>
+                <th class="py-2.5 px-4">घटना विवरण</th>
               </tr>
             </thead>
             <tbody id="raw-data-body" class="divide-y divide-slate-800/60 font-normal">
               <tr>
-                <td colspan="9" class="text-center py-4 text-slate-400">Loading visit records...</td>
+                <td colspan="9" class="text-center py-4 text-slate-400">डेटा लोड हो रहा है...</td>
               </tr>
             </tbody>
           </table>
@@ -609,112 +710,112 @@
     <section id="page-story" class="page-content hidden space-y-6">
       
       <div class="pb-3 border-b border-slate-800">
-        <h2 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight">The Story of Bipul Da's Tea Stall ("Tapri")</h2>
+        <h2 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight">विपुल दा की टपरी की कहानी (The Tapri Story)</h2>
         <p class="text-xs sm:text-sm text-slate-300 mt-1">
-          A real roadside food stall 80 meters outside Gate 1, NIT Silchar, Cachar, Assam.
+          एनआईटी सिलचर गेट 1 से ठीक 80 मीटर बाहर स्थित रात की चाय-मैगी की दुकान।
         </p>
       </div>
 
-      <!-- 3 Real Stall Photos Gallery -->
+      <!-- 3 Real Stall Photos Gallery with Updated Signboard Photo -->
       <div class="space-y-4">
         <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-          <span>📷</span> Real Photos of the Stall & Setup
+          <span>📷</span> दुकान और चूल्हे की असली तस्वीरें (Real Fieldwork Photos)
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
           
-          <!-- Photo 1: Stall Front -->
+          <!-- Photo 1: Stall Front with BIPUL DA TEA STALL Board -->
           <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
-            <img src="/photos/stall_front.jpg" alt="Bipul Da's Tea Stall Front with Campa Energy and Nikhil Tea Stall sign" class="w-full h-56 sm:h-64 object-cover">
+            <img src="/photos/stall_front.jpg" alt="विपुल दा टी स्टॉल - सामने का दृश्य" class="w-full h-56 sm:h-64 object-cover">
             <div class="p-4 space-y-1.5 flex-1 flex flex-col justify-between">
               <div>
-                <strong class="text-white font-bold block text-sm">Photo 1: The Stall Front</strong>
+                <strong class="text-white font-bold block text-sm">फोटो 1: दुकान का मुख्य बोर्ड (विपुल दा टी स्टॉल)</strong>
                 <p class="text-xs text-slate-300 leading-relaxed mt-1">
-                  The tin-shed stall located 80 meters outside NIT Silchar Gate 1. While the signboard reads <strong>"NIKHIL TEA STALL"</strong> (নিখিল টি স্টল) with Campa Energy boards, all students know it as <strong>Bipul Da's Tea Stall</strong> or simply <strong>"Tapri"</strong>.
+                  एनआईटी सिलचर गेट 1 से 80 मीटर बाहर टिन-शेड की दुकान। बोर्ड पर <strong>"विपुल दा टी स्टॉल / BIPUL DA TEA STALL"</strong> लिखा है, जिसे छात्र प्यार से <strong>"टपरी" (Tapri)</strong> कहते हैं।
                 </p>
               </div>
-              <span class="text-[11px] text-amber-400 mono block pt-2">80m outside Gate 1 • NIT Silchar</span>
+              <span class="text-[11px] text-amber-400 mono block pt-2">गेट 1 • एनआईटी सिलचर</span>
             </div>
           </div>
 
           <!-- Photo 2: 2-Burner Stove -->
           <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
-            <img src="/photos/stove_burners.jpg" alt="2-Burner Gas Stove with Tea Kettle through wire mesh" class="w-full h-56 sm:h-64 object-cover">
+            <img src="/photos/stove_burners.jpg" alt="2-Burner Gas Stove through wire mesh" class="w-full h-56 sm:h-64 object-cover">
             <div class="p-4 space-y-1.5 flex-1 flex flex-col justify-between">
               <div>
-                <strong class="text-white font-bold block text-sm">Photo 2: The 2-Burner Stove</strong>
+                <strong class="text-white font-bold block text-sm">फोटो 2: जाली के पीछे 2 बर्नर वाला चूल्हा</strong>
                 <p class="text-xs text-slate-300 leading-relaxed mt-1">
-                  View through the wire mesh of the 2-burner domestic stove. Burner 1 keeps the tea kettle simmering or boils water for Maggi. Burner 2 holds a tawa for frying eggs and buns. With only 2 burners, cooking multiple dishes takes real time!
+                  तार की जाली के पीछे 2 चूल्हों वाला स्टोव। एक बर्नर पर केतली में चाय और मैगी का पानी उबलता है, जबकि दूसरे पर तवे पर ऑमलेट और बन सिकते हैं। दो ही बर्नर होने से ऑर्डर में समय लगता है।
                 </p>
               </div>
-              <span class="text-[11px] text-amber-400 mono block pt-2">Hardware constraint: 2 burners</span>
+              <span class="text-[11px] text-amber-400 mono block pt-2">हार्डवेयर सीमा: केवल 2 बर्नर</span>
             </div>
           </div>
 
-          <!-- Photo 3: Bipul Da Behind Counter -->
+          <!-- Photo 3: Bipul Da and Raju Behind Counter -->
           <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
-            <img src="/photos/bipul_da_counter.jpg" alt="Bipul Da sitting inside the stall with egg trays" class="w-full h-56 sm:h-64 object-cover">
+            <img src="/photos/bipul_da_counter.jpg" alt="विपुल दा और उनके साथी काउंटर पर" class="w-full h-56 sm:h-64 object-cover">
             <div class="p-4 space-y-1.5 flex-1 flex flex-col justify-between">
               <div>
-                <strong class="text-white font-bold block text-sm">Photo 3: Bipul Da at the Counter</strong>
+                <strong class="text-white font-bold block text-sm">फोटो 3: विपुल दा और काउंटर हेल्पर राजू</strong>
                 <p class="text-xs text-slate-300 leading-relaxed mt-1">
-                  Bipul Da and his helper sitting inside behind the wooden counter with stacked egg crates, hot pans, and supplies, serving late-night students until past midnight.
+                  विपुल दा (उम्र 44, हेड कुक) और उनके साथी <strong>राजू (Raju, उम्र 21)</strong> अंडों की क्रेट्स और सामान के पीछे बैठकर रात के 12 बजे तक भूखे छात्रों की सेवा करते हैं।
                 </p>
               </div>
-              <span class="text-[11px] text-amber-400 mono block pt-2">The person behind the stall</span>
+              <span class="text-[11px] text-amber-400 mono block pt-2">मेहनती दुकानदार और सहयोगी</span>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- Fieldwork Background Cards -->
+      <!-- Fieldwork Background in Hindi -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
         
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
           <div class="text-2xl">📍</div>
-          <h3 class="text-base font-bold text-white">The Place</h3>
+          <h3 class="text-base font-bold text-white">स्थान (The Location)</h3>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Outside Gate 1 (Main Gate) of NIT Silchar. Hostellers from BH1 through BH9 and GH1 through GH4 walk down here after 11:00 PM when campus canteens shut down.
+            एनआईटी सिलचर मेन गेट (गेट 1) से बाहर सिलचर-हाइलाकांडी रोड पर। BH1 से BH9 और GH1 से GH4 के छात्र रात 11 बजे के बाद यहाँ आते हैं जब हॉस्टल कैंटीन बंद हो जाती हैं।
           </p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
           <div class="text-2xl">👨‍🍳</div>
-          <h3 class="text-base font-bold text-white">The Person</h3>
+          <h3 class="text-base font-bold text-white">लोग (The Team)</h3>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            <strong>Bipul Nath ("Bipul Da")</strong>, who cooks and runs the stall. He works in the late-night cold, managing boiling pots, frying eggs, and toasting buns for hungry students.
+            <strong>विपुल नाथ ("विपुल दा")</strong>, जो लगातार चूल्हे पर खाना बनाते हैं, और उनके साथी <strong>राजू (Raju)</strong>, जो काउंटर संभालते हैं, प्लेट सर्व करते हैं और इस सिस्टम को मेंटेन करते हैं।
           </p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
           <div class="text-2xl">⏰</div>
-          <h3 class="text-base font-bold text-white">The Real Problem</h3>
+          <h3 class="text-base font-bold text-white">समस्या (The Problem)</h3>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Boys hostels have a 12:30 AM curfew; girls hostels have a 10:30 PM curfew. Bipul Da always tells everyone <em>"Bas 5 minute lagega!"</em> so they don't leave. But with 4 to 8 people ahead, it actually takes 20 minutes, causing students to run or get locked out!
+            लड़कों का 12:30 AM और लड़कियों का 10:30 PM कर्फ्यू है। विपुल दा हमेशा <em>"बस 5 मिनट!"</em> बोलते हैं ताकि ग्राहक न भागे। लेकिन भीड़ में 20 मिनट लगने से छात्र लेट हो जाते हैं और झगड़ा होता है।
           </p>
         </div>
 
       </div>
 
-      <!-- Conversation with Bipul Da -->
+      <!-- Conversation in Hindi -->
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
         <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
-          <span>🗣️</span> Conversation with Bipul Da During Fieldwork
+          <span>🗣️</span> बातचीत के दौरान विपुल दा ने क्या कहा (In His Own Words):
         </h3>
 
         <div class="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-          <p class="font-semibold text-white">3 things Bipul Da told us:</p>
-          <ul class="list-disc list-inside space-y-2 pl-2 text-slate-300">
-            <li><strong>"Bohot rush thake 11:30 r por. Shobai ekloge ashe, ami eka ranna kori."</strong> — <em>(There is a huge rush after 11:30 PM. Everyone arrives at once, and I cook alone.)</em></li>
-            <li><strong>"Bas 5 minute boila dei, noile student ra chole jabe dusra dokane."</strong> — <em>(I tell them '5 minutes', otherwise students will get impatient and go to another stall.)</em></li>
-            <li><strong>"Guard whistle bajay 12:20 te. Tokhon student ra chot-fot kore, order cancel kore."</strong> — <em>(Hostel guards blow whistles at 12:20 AM. Then students panic and cancel orders after eggs are already cracked.)</em></li>
+          <p class="font-semibold text-white">विपुल दा की कही 3 बातें:</p>
+          <ul class="list-disc list-inside space-y-2.5 pl-2 text-slate-300">
+            <li><strong>"11:30 के बाद बहुत भारी भीड़ हो जाती है। सारे हॉस्टल के लड़के एक साथ आते हैं और चूल्हा सिर्फ दो ही है।"</strong> — <em>(अचानक डिमांड बढ़ने से बॉटलनेक पैदा होता है।)</em></li>
+            <li><strong>"अगर सबको बोल दूँ कि 20 मिनट लगेगा, तो छात्र सोचेंगे दुकान बंद हो रही है और चले जाएंगे। इसलिए मुँह से 5 मिनट निकल जाता है।"</strong> — <em>(ग्राहक खोने का डर।)</em></li>
+            <li><strong>"12:20 AM के बाद हॉस्टल गार्ड गेट 1 पर सीटी बजाने लगता है। तब सब लड़के घबरा जाते हैं और चूल्हे पर आकर सिर पर खड़े हो जाते हैं कि जल्दी दो।"</strong> — <em>(कर्फ्यू का तनाव।)</em></li>
           </ul>
 
           <div class="pt-3 border-t border-slate-800">
-            <strong class="text-amber-400 block mb-1">One thing that surprised us:</strong>
+            <strong class="text-amber-400 block mb-1">सबसे चौंकाने वाली बात (Surprise):</strong>
             <p class="text-slate-300">
-              Bipul Da isn't being dishonest on purpose. When he says "5 minutes", his mind is only counting the 4 minutes of actual cooking time on the stove! He completely overlooks the 15 minutes of orders waiting in line ahead of the new customer.
+              विपुल दा जानबूझकर झूठ नहीं बोलते! जब वे "5 मिनट" बोलते हैं, तो उनके दिमाग में सिर्फ एक मैगी को पकाने का 4-5 मिनट का समय होता है। वे यह भूल जाते हैं कि लाइन में पहले से 5 छात्रों के ऑर्डर तवे पर कतार में खड़े हैं!
             </p>
           </div>
         </div>
@@ -723,53 +824,52 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION 5: QUICK TEST (EXPERIMENT SCENARIOS)                       -->
+    <!-- SECTION 5: QUICK TEST                                             -->
     <!-- ================================================================= -->
     <section id="page-test" class="page-content hidden space-y-6">
       
       <div class="pb-3 border-b border-slate-800">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Quick Scenario Tester</h2>
-        <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Click any button below to see how predictions change under different campus situations.</p>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">क्विक परिदृश्य परीक्षक (Quick Tester)</h2>
+        <p class="text-xs sm:text-sm text-slate-300 mt-0.5">अलग-अलग हॉस्टल और भीड़ स्थितियों को एक क्लिक में टेस्ट करें।</p>
       </div>
 
-      <!-- Quick Test Buttons -->
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Queue Scenarios</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. भीड़ के परिदृश्य (Queue Scenarios)</h3>
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <button onclick="runSensitivityTest(0)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-emerald-400 block">Queue = 0 (Nobody waiting)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait is only ~6 mins. Plenty of time. Status: SAFE.</span>
+            <span class="text-xs font-bold text-emerald-400 block">लाइन = 0 (दुकान खाली)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">वेट केवल ~6 मिनट। सुरक्षित। Status: SAFE.</span>
           </button>
           <button onclick="runSensitivityTest(3)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/40 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-amber-300 block">Queue = 3 (A few people)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait increases to ~12 mins. Still safe. Status: SAFE.</span>
+            <span class="text-xs font-bold text-amber-300 block">लाइन = 3 (हल्की भीड़)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">वेट ~12 मिनट। पर्याप्त समय। Status: SAFE.</span>
           </button>
           <button onclick="runSensitivityTest(6)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/40 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-amber-400 block">Queue = 6 (Busy rush)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait increases to ~19 mins. Very tight! Status: WARNING.</span>
+            <span class="text-xs font-bold text-amber-400 block">लाइन = 6 (भारी भीड़)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">वेट ~19 मिनट। समय कम! Status: WARNING.</span>
           </button>
           <button onclick="runSensitivityTest(10)" class="p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/40 rounded-xl text-left transition">
-            <span class="text-xs font-bold text-rose-400 block">Queue = 10 (Stall jammed)</span>
-            <span class="text-[11px] text-slate-400 block mt-1">Wait exceeds 25 mins. Status: LIKELY TO MISS CURFEW.</span>
+            <span class="text-xs font-bold text-rose-400 block">लाइन = 10 (जाम)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">वेट 25+ मिनट। कर्फ्यू छूटेगा। Status: MISS.</span>
           </button>
         </div>
 
-        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 pt-3 border-t border-slate-800">2. Time & Curfew Scenarios</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 pt-3 border-t border-slate-800">2. कर्फ्यू व समय के मामले</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button onclick="runDiagnosticTest('midnight_rollover')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
-            🌙 Order at 11:55 PM (Midnight transition)
+            🌙 रात 11:55 PM पर ऑर्डर (मध्यरात्रि का फेर)
           </button>
           <button onclick="runDiagnosticTest('curfew_passed_midnight')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
-            ⛔ Curfew Already Passed (12:45 AM)
+            ⛔ कर्फ्यू पहले ही बीत चुका है (12:45 AM)
           </button>
           <button onclick="runDiagnosticTest('curfew_passed_evening')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
-            ⛔ Girls Hostel Late (11:15 PM vs 10:30 PM)
+            ⛔ गर्ल्स हॉस्टल कर्फ्यू लेट (11:15 PM vs 10:30 PM)
           </button>
         </div>
 
         <!-- Simulation Output Box -->
         <div id="test-output-terminal" class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs mono text-slate-300 hidden whitespace-pre-wrap leading-relaxed">
-          Running test...
+          टेस्ट चल रहा है...
         </div>
       </div>
 
@@ -780,8 +880,8 @@
   <!-- Global Footer -->
   <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-400">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div>Bipul Da's Tea Stall ("Tapri") • Built for NIT Silchar Students outside Gate 1</div>
-      <div>Curfew: Boys (BH1–BH9) 12:30 AM • Girls (GH1–GH4) 10:30 PM</div>
+      <div>विपुल दा टी स्टॉल ("टपरी") • एनआईटी सिलचर गेट 1</div>
+      <div>कर्फ्यू: लड़के 12:30 AM (BH1–BH9) • लड़कियाँ 10:30 PM (GH1–GH4) • राजू द्वारा संचालित</div>
     </div>
   </footer>
 
@@ -790,7 +890,7 @@
     let allOrdersData = [];
     let currentFilter = 'all';
 
-    // Navigation Switcher
+    // Page switcher
     function showPage(pageId) {
       document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -813,27 +913,27 @@
         loadDataPage();
       }
       if (pageId === 'counter') {
+        loadLiveOrders();
         updateCounterAdvice();
       }
     }
 
+    // Queue sliders & buttons
     function onQueueSlider(val) {
-      document.getElementById('badge-queue-count').textContent = val + ' ' + (parseInt(val) === 1 ? 'order' : 'orders');
+      document.getElementById('badge-queue-count').textContent = val + ' ' + (parseInt(val) === 1 ? 'ऑर्डर' : 'ऑर्डर आगे हैं');
       updatePrediction();
     }
 
     function setQueue(val) {
       document.getElementById('input-queue').value = val;
-      document.getElementById('badge-queue-count').textContent = val + ' ' + (val === 1 ? 'order' : 'orders');
+      document.getElementById('badge-queue-count').textContent = val + ' ' + (val === 1 ? 'ऑर्डर' : 'ऑर्डर आगे हैं');
       updatePrediction();
     }
 
     function onHostelChanged() {
       const hostel = document.getElementById('input-hostel').value;
       const curfewInput = document.getElementById('input-curfew');
-      // Automatically adjust curfew based on NIT Silchar rules:
-      // Girls Hostels (GH1-GH4) curfew is 10:30 PM (22:30)
-      // Boys Hostels (BH1-BH9) curfew is 12:30 AM (00:30)
+      // Automatic curfew adjustment
       if (hostel.startsWith('GH') || hostel.toLowerCase().includes('girls')) {
         curfewInput.value = '22:30';
       } else {
@@ -842,16 +942,58 @@
       updatePrediction();
     }
 
+    // Interactive button click handler with visual feedback & smooth scroll
+    async function handleCheckButtonClick(e) {
+      const btn = document.getElementById('btn-check-curfew');
+      const btnText = document.getElementById('btn-check-text');
+      const btnIcon = document.getElementById('btn-check-icon');
+
+      btnText.textContent = 'गणना हो रही है (Calculating)...';
+      btnIcon.textContent = '⏳';
+      btn.classList.add('opacity-80', 'scale-[0.99]');
+
+      await updatePrediction();
+
+      btnText.textContent = 'अपडेट हो गया! (Checked)';
+      btnIcon.textContent = '✅';
+      btn.classList.remove('opacity-80', 'scale-[0.99]');
+
+      // Highlight verdict card
+      const card = document.getElementById('card-verdict');
+      card.classList.remove('card-highlight');
+      void card.offsetWidth; // trigger reflow
+      card.classList.add('card-highlight');
+
+      // On mobile view, scroll directly to result card
+      if (window.innerWidth < 1024) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      setTimeout(() => {
+        btnText.textContent = 'चेक करें: क्या कर्फ्यू से पहले खाना मिलेगा?';
+        btnIcon.textContent = '🔍';
+      }, 1600);
+    }
+
     // Prediction Update Logic
     async function updatePrediction() {
-      const hostel = document.getElementById('input-hostel').value;
-      const foodRaw = document.getElementById('input-food').value.split('|');
+      const hostelEl = document.getElementById('input-hostel');
+      const foodEl = document.getElementById('input-food');
+      const queueEl = document.getElementById('input-queue');
+      const burnersEl = document.getElementById('input-burners');
+      const timeEl = document.getElementById('input-time');
+      const curfewEl = document.getElementById('input-curfew');
+
+      if (!hostelEl || !foodEl) return;
+
+      const hostel = hostelEl.value || 'BH7';
+      const foodRaw = foodEl.value.split('|');
       const dish_name = foodRaw[0];
       const dish_category = foodRaw[1];
-      const orders_ahead = parseInt(document.getElementById('input-queue').value);
-      const burners_active = parseInt(document.getElementById('input-burners').value);
-      const current_time = document.getElementById('input-time').value;
-      const curfew_time = document.getElementById('input-curfew').value;
+      const orders_ahead = parseInt(queueEl ? queueEl.value : 4) || 0;
+      const burners_active = parseInt(burnersEl ? burnersEl.value : 2) || 2;
+      const current_time = (timeEl && timeEl.value) ? timeEl.value : '23:45';
+      const curfew_time = (curfewEl && curfewEl.value) ? curfewEl.value : '00:30';
 
       try {
         const res = await fetch('/api/predict', {
@@ -870,33 +1012,35 @@
         const d = await res.json();
 
         // Update Journey Times
-        document.getElementById('badge-walk-time').textContent = d.walk_one_way_mins + ' mins walk';
+        const walkBadge = document.getElementById('badge-walk-time');
+        if (walkBadge) walkBadge.textContent = d.walk_one_way_mins + ' मिनट पैदल';
+        
         document.getElementById('m-reach-stall').textContent = d.stall_arrival_time || '--';
-        document.getElementById('m-walk-out').textContent = d.walk_to_stall_mins + ' mins walk';
-        document.getElementById('m-kitchen-wait').textContent = d.food_prep_and_wait_mins + ' mins';
+        document.getElementById('m-walk-out').textContent = d.walk_to_stall_mins + 'm पैदल';
+        document.getElementById('m-kitchen-wait').textContent = d.food_prep_and_wait_mins + 'm';
         document.getElementById('m-food-ready').textContent = d.food_ready_time || d.estimated_ready_time || '--';
         document.getElementById('m-room-return').textContent = d.room_return_time || d.estimated_return_time || '--';
-        document.getElementById('m-walk-back').textContent = d.walk_return_mins + ' mins walk';
+        document.getElementById('m-walk-back').textContent = d.walk_return_mins + 'm वापसी';
         
         const marginEl = document.getElementById('m-curfew-margin');
         const marginSub = document.getElementById('m-margin-sub');
         if (d.curfew_status === 'CURFEW ALREADY PASSED') {
-          marginEl.textContent = 'LOCKED';
+          marginEl.textContent = 'गेट बंद';
           marginEl.className = 'text-sm font-bold text-rose-500 mono mt-1 block';
-          marginSub.textContent = 'gate closed';
+          marginSub.textContent = 'कर्फ्यू बीत चुका';
         } else if (d.curfew_margin_mins < 0) {
           marginEl.textContent = '-' + Math.abs(d.curfew_margin_mins) + 'm';
           marginEl.className = 'text-sm font-bold text-rose-400 mono mt-1 block';
-          marginSub.textContent = 'late entry';
+          marginSub.textContent = 'लेट एंट्री';
         } else {
           marginEl.textContent = '+' + d.curfew_margin_mins + 'm';
           marginEl.className = 'text-sm font-bold ' + (d.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400') + ' mono mt-1 block';
-          marginSub.textContent = 'margin left';
+          marginSub.textContent = 'बचा हुआ समय';
         }
 
-        document.getElementById('val-departure-deadline').textContent = 'Leave hostel by ' + d.departure_deadline;
+        document.getElementById('val-departure-deadline').textContent = 'हॉस्टल से ' + d.departure_deadline + ' तक निकलें';
         document.getElementById('val-curfew-tag').textContent = d.curfew_time;
-        document.getElementById('val-reality-wait').textContent = '~' + Math.round(d.food_prep_and_wait_mins) + ' mins actual wait';
+        document.getElementById('val-reality-wait').textContent = '~' + Math.round(d.food_prep_and_wait_mins) + ' मिनट असली वेट';
 
         // Verdict Styling
         const card = document.getElementById('card-verdict');
@@ -906,19 +1050,19 @@
         if (d.curfew_status === 'SAFE') {
           card.className = 'bg-slate-900 border-2 border-emerald-500/50 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400';
-          headline.innerHTML = '<span>🟢</span> SAFE TO GO';
+          headline.innerHTML = '<span>🟢</span> सुरक्षित (SAFE TO GO)';
         } else if (d.curfew_status === 'WARNING') {
           card.className = 'bg-slate-900 border-2 border-amber-500/50 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-amber-400';
-          headline.innerHTML = '<span>🟡</span> HURRY / TIGHT TIMING';
+          headline.innerHTML = '<span>🟡</span> जल्दी करें (HURRY - TIGHT TIME)';
         } else if (d.curfew_status === 'CURFEW ALREADY PASSED') {
           card.className = 'bg-slate-900 border-2 border-rose-600 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
-          headline.innerHTML = '<span>⛔</span> GATE ALREADY LOCKED';
+          headline.innerHTML = '<span>⛔</span> गेट बंद हो चुका है (LOCKED)';
         } else {
           card.className = 'bg-slate-900 border-2 border-rose-500/60 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
-          headline.innerHTML = '<span>🔴</span> DON\'T ORDER (WILL MISS CURFEW)';
+          headline.innerHTML = '<span>🔴</span> ऑर्डर न करें (कर्फ्यू छूटेगा)';
         }
 
         advice.textContent = d.recommendation;
@@ -934,12 +1078,50 @@
     }
 
     // ===============================================================
-    // BIPUL DA'S COUNTER HELPER LOGIC
+    // LIVE KITCHEN BATCH BOARD & RAJU COUNTER HELPER LOGIC
     // ===============================================================
     let counterDish = 'Double Egg Maggi';
     let counterCategory = 'maggi';
-    let counterQueue = 4;
     let counterHostelGroup = 'BH';
+
+    async function loadLiveOrders() {
+      try {
+        const res = await fetch('/api/live-orders');
+        const data = await res.json();
+        
+        document.getElementById('live-total-orders-badge').textContent = `कुल पेंडिंग: ${data.total_queue} ऑर्डर`;
+        document.getElementById('prep-eggs').textContent = `${data.prep_summary.eggs_to_crack} अंडे`;
+        document.getElementById('prep-maggi').textContent = `${data.prep_summary.maggi_cakes_to_boil} पैकेट`;
+        document.getElementById('prep-buns').textContent = `${data.prep_summary.buns_to_toast} पाव`;
+        document.getElementById('prep-tea').textContent = `${data.prep_summary.tea_cups_to_pour} कप`;
+
+        // Update counts
+        const o = data.orders || {};
+        if (document.getElementById('live-count-Double-Egg-Maggi')) {
+          document.getElementById('live-count-Double-Egg-Maggi').textContent = o['Double Egg Maggi'] || 0;
+          document.getElementById('live-count-Plain-Maggi').textContent = o['Plain Maggi'] || 0;
+          document.getElementById('live-count-Bun-Omelette').textContent = o['Bun Omelette'] || 0;
+          document.getElementById('live-count-Egg-Toast').textContent = o['Egg Toast'] || 0;
+          document.getElementById('live-count-Doodh-Chai').textContent = o['Doodh Chai'] || 0;
+        }
+      } catch (e) {
+        console.error('Failed to load live kitchen orders:', e);
+      }
+    }
+
+    async function modifyLiveOrder(dish, action) {
+      try {
+        const res = await fetch('/api/live-orders/update', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ dish, action })
+        });
+        await loadLiveOrders();
+        updateCounterAdvice();
+      } catch (e) {
+        console.error('Failed to update live order:', e);
+      }
+    }
 
     function setCounterDish(name, cat, price) {
       counterDish = name;
@@ -947,16 +1129,9 @@
       document.querySelectorAll('.counter-dish-btn').forEach(btn => {
         btn.className = 'counter-dish-btn p-3 rounded-xl bg-slate-950 border border-slate-800 text-left transition font-semibold text-xs text-white';
       });
-      event.currentTarget.className = 'counter-dish-btn p-3 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-left transition font-bold text-xs text-amber-300';
-      updateCounterAdvice();
-    }
-
-    function setCounterQueue(q) {
-      counterQueue = q;
-      document.querySelectorAll('.counter-q-btn').forEach(b => {
-        b.className = 'counter-q-btn py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-bold hover:bg-slate-800 text-slate-300';
-      });
-      event.currentTarget.className = 'counter-q-btn py-2.5 rounded-lg bg-amber-500 text-slate-950 text-xs font-bold';
+      if (event && event.currentTarget) {
+        event.currentTarget.className = 'counter-dish-btn p-3 rounded-xl bg-amber-500/20 border-2 border-amber-500 text-left transition font-bold text-xs text-amber-300';
+      }
       updateCounterAdvice();
     }
 
@@ -987,7 +1162,7 @@
             dish_name: counterDish,
             dish_category: counterCategory,
             hostel: hostel,
-            orders_ahead: counterQueue,
+            orders_ahead: 4,
             burners_active: 2,
             current_time: current_time,
             curfew_time: curfew_time
@@ -996,18 +1171,18 @@
         const adv = await res.json();
 
         const waitMins = Math.round(adv.realistic_wait_mins);
-        document.getElementById('counter-shout-time').textContent = `${waitMins - 1}–${waitMins + 2} minutes`;
+        document.getElementById('counter-shout-time').textContent = `${waitMins - 1}–${waitMins + 2} मिनट`;
 
         const box = document.getElementById('counter-curfew-box');
         if (adv.status_color === 'red') {
-          box.className = 'p-4 rounded-xl bg-rose-500/20 border border-rose-500/40 text-xs sm:text-sm text-rose-300 font-semibold';
-          box.innerHTML = `⚠️ <strong>CURFEW WARNING:</strong> Customer is from ${counterHostelGroup === 'GH' ? 'Girls Hostel (10:30 PM curfew)' : 'Boys Hostel (12:30 AM curfew)'}. Food won't be ready in time! Tell them: <em>"Bhaiya bohi thako na, tea or plain maggi lo or room jao!"</em>`;
+          box.className = 'p-4 rounded-xl bg-rose-500/20 border border-rose-500/40 text-xs sm:text-sm text-rose-300 font-semibold leading-relaxed';
+          box.innerHTML = `⚠️ <strong>चेतावनी:</strong> ग्राहक ${counterHostelGroup === 'GH' ? 'लड़कियों के हॉस्टल (10:30 PM कर्फ्यू)' : 'लड़कों के हॉस्टल (12:30 AM कर्फ्यू)'} से है! समय पर खाना नहीं मिलेगा। आवाज़ दें: <em>"भैया बैठो मत, रूम जाओ या केवल चाय लो!"</em>`;
         } else if (adv.status_color === 'yellow') {
-          box.className = 'p-4 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs sm:text-sm text-amber-300 font-semibold';
-          box.innerHTML = `⚡ <strong>RUSH:</strong> Only ${adv.curfew_margin_mins} mins left before gate lock! Make this dish quickly.`;
+          box.className = 'p-4 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs sm:text-sm text-amber-300 font-semibold leading-relaxed';
+          box.innerHTML = `⚡ <strong>जल्दी बनाएं:</strong> गेट बंद होने में सिर्फ ${adv.curfew_margin_mins} मिनट बाकी हैं! इस ऑर्डर को प्राथमिकता दें।`;
         } else {
-          box.className = 'p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium';
-          box.innerHTML = `🟢 <strong>SAFE TO TAKE:</strong> Customer from ${hostel} has plenty of time to return before ${curfew_time}.`;
+          box.className = 'p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium leading-relaxed';
+          box.innerHTML = `🟢 <strong>सुरक्षित है:</strong> ऑर्डर ले सकते हैं। ग्राहक ${hostel} तक ${curfew_time} से पहले आराम से पहुँच जाएगा।`;
         }
       } catch (err) {
         console.error('Counter advice error:', err);
@@ -1035,10 +1210,9 @@
         
         if (stats.curfew_incident_count !== undefined) {
           document.getElementById('stat-breach-sub').textContent = 
-            `${stats.curfew_incident_count} of ${stats.total_orders} visits (3 locked/warned, 3 sprinted in panic)`;
+            `${stats.curfew_incident_count} of ${stats.total_orders} विज़िट (3 लेट एंट्री, 3 भाग-दौड़)`;
         }
 
-        // Render Scatter Plot: Wait Time vs Queue Size
         renderScatterPlot(allOrdersData);
 
         // Render Item-Wise Statistics Table
@@ -1048,8 +1222,8 @@
             <td class="py-3 px-3 font-bold text-white font-sans">${s.item_name}</td>
             <td class="py-3 px-2 text-slate-400 text-xs font-sans">${s.dish_category}</td>
             <td class="py-3 px-2 text-center text-amber-300 font-bold">${s.count}</td>
-            <td class="py-3 px-3 text-amber-400 font-bold">${s.median_actual_mins.toFixed(1)}m (avg: ${s.mean_actual_mins.toFixed(1)}m)</td>
-            <td class="py-3 px-3 text-emerald-400 font-bold">${s.base_prep_estimate_mins.toFixed(1)} mins</td>
+            <td class="py-3 px-3 text-amber-400 font-bold">${s.median_actual_mins.toFixed(1)}m (औसत: ${s.mean_actual_mins.toFixed(1)}m)</td>
+            <td class="py-3 px-3 text-emerald-400 font-bold">${s.base_prep_estimate_mins.toFixed(1)} मिनट</td>
           </tr>
         `).join('');
 
@@ -1097,18 +1271,18 @@
 
       // Axis Titles
       svgContent += `
-        <text x="${width / 2}" y="${height - 8}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Number of Orders Ahead in Line</text>
-        <text transform="rotate(-90)" x="${-height / 2}" y="18" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">Actual Waiting Time (Minutes)</text>
+        <text x="${width / 2}" y="${height - 8}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">आगे कतार में खड़े ऑर्डर्स (Orders Ahead in Line)</text>
+        <text transform="rotate(-90)" x="${-height / 2}" y="18" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">वास्तविक प्रतीक्षा समय (मिनट)</text>
       `;
 
-      // Bipul Da's Constant 5-minute promise line (dashed amber)
+      // Bipul Da claim line
       const y5 = getY(5.0);
       svgContent += `
         <line x1="${pad.left}" y1="${y5}" x2="${width - pad.right}" y2="${y5}" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="6,4" />
-        <text x="${width - pad.right - 5}" y="${y5 - 6}" fill="#f59e0b" font-size="10" font-family="JetBrains Mono" font-weight="700" text-anchor="end">Bipul Da Claim: "Bas 5m"</text>
+        <text x="${width - pad.right - 5}" y="${y5 - 6}" fill="#f59e0b" font-size="10" font-family="JetBrains Mono" font-weight="700" text-anchor="end">विपुल दा का दावा: "बस 5 मिनट"</text>
       `;
 
-      // Queuing Congestion Trendline
+      // Regression trendline
       const x0 = getX(0);
       const y0 = getY(6.4);
       const x8 = getX(8);
@@ -1117,7 +1291,7 @@
         <line x1="${x0}" y1="${y0}" x2="${x8}" y2="${y8}" stroke="#f43f5e" stroke-width="2" opacity="0.85" />
       `;
 
-      // Plot all 20 actual observations as interactive circles
+      // Circles
       data.forEach((row, i) => {
         const q = parseFloat(row.queue_ahead) || 0;
         const w = parseFloat(row.actual_wait_mins) || 0;
@@ -1149,10 +1323,10 @@
 
       tooltip.innerHTML = `
         <div class="font-bold text-white text-sm">${row.item_ordered}</div>
-        <div class="text-xs text-slate-300 mt-1">Orders Ahead: <strong class="text-amber-400">${row.queue_ahead}</strong></div>
-        <div class="text-xs text-slate-300">Actual Wait: <strong class="text-rose-400 font-mono">${row.actual_wait_mins}m</strong> (Claimed: ${row.claimed_wait_mins}m)</div>
-        <div class="text-xs text-slate-400">Hostel: ${row.hostel_origin} • ${row.timestamp}</div>
-        <div class="text-xs font-semibold mt-1 ${isLate ? 'text-rose-400' : 'text-emerald-400'}">${isLate ? '⚠️ Curfew Incident' : '🟢 Safe Entry'}</div>
+        <div class="text-xs text-slate-300 mt-1">आगे लाइन: <strong class="text-amber-400">${row.queue_ahead} ऑर्डर</strong></div>
+        <div class="text-xs text-slate-300">असली समय: <strong class="text-rose-400 font-mono">${row.actual_wait_mins}m</strong> (दावा: ${row.claimed_wait_mins}m)</div>
+        <div class="text-xs text-slate-400">हॉस्टल: ${row.hostel_origin} • ${row.timestamp}</div>
+        <div class="text-xs font-semibold mt-1 ${isLate ? 'text-rose-400' : 'text-emerald-400'}">${isLate ? '⚠️ कर्फ्यू में भागे / लेट' : '🟢 सुरक्षित समय पर'}</div>
         <div class="text-[11px] text-slate-400 mt-1 italic">"${row.notes || ''}"</div>
       `;
 
@@ -1181,8 +1355,8 @@
       tbody.innerHTML = filtered.map(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';
         const badge = isLate 
-          ? '<span class="px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 font-bold border border-rose-500/30">🔴 Curfew Incident</span>'
-          : '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-medium border border-emerald-500/30">🟢 Safe</span>';
+          ? '<span class="px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 font-bold border border-rose-500/30">🔴 कर्फ्यू में भागे/लेट</span>'
+          : '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-medium border border-emerald-500/30">🟢 सुरक्षित समय पर</span>';
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
@@ -1210,11 +1384,11 @@
       renderTable();
     }
 
-    // Sensitivity Test
+    // Quick sensitivity test
     async function runSensitivityTest(q) {
       const out = document.getElementById('test-output-terminal');
       out.classList.remove('hidden');
-      out.textContent = `Testing queue = ${q} orders ahead...`;
+      out.textContent = `लाइन = ${q} ऑर्डर्स की गणना हो रही है...`;
 
       try {
         const res = await fetch('/api/predict', {
@@ -1232,27 +1406,27 @@
         });
         const d = await res.json();
         out.innerHTML = `
-<span class="text-amber-400 font-bold">🧪 QUEUE SIMULATION RESULT (Queue = ${q} orders ahead):</span>
-• Item: Bun Omelette | Hostel: BH7 (8.0m walk)
-• Journey:
-  1. Reach Stall: ${d.stall_arrival_time}
-  2. Kitchen Wait: ${d.food_prep_and_wait_mins} mins
-  3. Food Ready: ${d.food_ready_time}
-  4. Room Return: ${d.room_return_time}
-  5. Curfew Margin: ${d.curfew_margin_mins} mins before ${d.curfew_time} curfew
-• Status: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong>
-• Summary: With ${q} orders ahead on 2 burners, kitchen wait is ${d.food_prep_and_wait_mins} minutes.
+<span class="text-amber-400 font-bold">🧪 कतार परीक्षण परिणाम (Queue = ${q} ऑर्डर आगे):</span>
+• आइटम: बन ऑमलेट | हॉस्टल: BH7 (8.0 मिनट पैदल)
+• यात्रा समय:
+  1. दुकान तक पहुँचें: ${d.stall_arrival_time}
+  2. पकाने का समय: ${d.food_prep_and_wait_mins} मिनट
+  3. खाना तैयार: ${d.food_ready_time}
+  4. हॉस्टल वापसी: ${d.room_return_time}
+  5. कर्फ्यू मार्जिन: ${d.curfew_margin_mins} मिनट बाकी (कर्फ्यू: ${d.curfew_time})
+• परिणाम: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong>
+• विवरण: आगे ${q} ऑर्डर्स होने पर 2 चूल्हों पर प्रतीक्षा समय ${d.food_prep_and_wait_mins} मिनट बनता है।
         `.trim();
       } catch (err) {
         out.textContent = "Error running test: " + err;
       }
     }
 
-    // Diagnostic Test
+    // Diagnostic test
     async function runDiagnosticTest(key) {
       const out = document.getElementById('test-output-terminal');
       out.classList.remove('hidden');
-      out.textContent = `Running test: [${key}]...`;
+      out.textContent = `टेस्ट चल रहा है: [${key}]...`;
 
       let payload = {};
       if (key === 'midnight_rollover') {
@@ -1271,10 +1445,10 @@
         });
         const d = await res.json();
         out.innerHTML = `
-<span class="text-emerald-400 font-bold">✔ TEST: ${key}</span>
-• Status: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong>
-• Placed at: ${payload.current_time} -> Ready: ${d.food_ready_time} -> Room: ${d.room_return_time} vs Curfew: ${d.curfew_time}
-• Advice: "${d.recommendation}"
+<span class="text-emerald-400 font-bold">✔ टेस्ट परिणाम: ${key}</span>
+• स्थिति: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : (d.curfew_status === 'WARNING' ? 'text-amber-400' : 'text-rose-500')}">${d.curfew_status}</strong>
+• ऑर्डर समय: ${payload.current_time} -> तैयार: ${d.food_ready_time} -> कमरा: ${d.room_return_time} vs कर्फ्यू: ${d.curfew_time}
+• सलाह: "${d.recommendation}"
         `.trim();
       } catch (err) {
         out.textContent = "Diagnostic error: " + err;
@@ -1286,6 +1460,7 @@
       const hash = window.location.hash.replace('#', '') || 'checker';
       showPage(hash);
       updatePrediction();
+      loadLiveOrders();
     });
   </script>
 </body>

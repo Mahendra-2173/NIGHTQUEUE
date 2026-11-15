@@ -141,6 +141,72 @@ def get_bipul_advice():
     return jsonify(advice)
 
 
+# ==============================================================================
+# Live Kitchen Orders & Prep Batching (Maintained at counter by helper Raju)
+# ==============================================================================
+LIVE_KITCHEN_ORDERS = {
+    "Double Egg Maggi": 2,
+    "Plain Maggi": 1,
+    "Bun Omelette": 1,
+    "Egg Toast": 0,
+    "Doodh Chai": 2,
+}
+
+
+@app.route("/api/live-orders", methods=["GET"])
+def get_live_orders():
+    """
+    Returns active orders in queue and physical cooking batching requirements
+    so Bipul Da knows exactly how many eggs to crack, Maggi cakes to boil,
+    and buns to toast right now. Maintained at counter by Raju.
+    """
+    total_orders = sum(LIVE_KITCHEN_ORDERS.values())
+    eggs_needed = (
+        LIVE_KITCHEN_ORDERS.get("Double Egg Maggi", 0) * 2 +
+        LIVE_KITCHEN_ORDERS.get("Bun Omelette", 0) * 2 +
+        LIVE_KITCHEN_ORDERS.get("Egg Toast", 0) * 2
+    )
+    maggi_cakes_needed = (
+        LIVE_KITCHEN_ORDERS.get("Double Egg Maggi", 0) +
+        LIVE_KITCHEN_ORDERS.get("Plain Maggi", 0)
+    )
+    buns_needed = LIVE_KITCHEN_ORDERS.get("Bun Omelette", 0)
+    bread_slices_needed = LIVE_KITCHEN_ORDERS.get("Egg Toast", 0) * 2
+    tea_cups_needed = LIVE_KITCHEN_ORDERS.get("Doodh Chai", 0)
+
+    return jsonify({
+        "orders": LIVE_KITCHEN_ORDERS,
+        "total_queue": total_orders,
+        "prep_summary": {
+            "eggs_to_crack": eggs_needed,
+            "maggi_cakes_to_boil": maggi_cakes_needed,
+            "buns_to_toast": buns_needed,
+            "bread_slices_to_toast": bread_slices_needed,
+            "tea_cups_to_pour": tea_cups_needed
+        },
+        "stall_staff": {
+            "cook": "Bipul Nath (Bipul Da, Age 44, Head Cook)",
+            "helper": "Raju (Age 21, Counter Helper & System Maintainer)"
+        }
+    })
+
+
+@app.route("/api/live-orders/update", methods=["POST"])
+def update_live_order():
+    """Allows counter helper Raju to increment or complete dishes in real time."""
+    payload = request.get_json() or {}
+    dish = payload.get("dish", "")
+    action = payload.get("action", "add")  # "add" or "complete"
+
+    if dish in LIVE_KITCHEN_ORDERS:
+        if action == "add":
+            LIVE_KITCHEN_ORDERS[dish] += 1
+        elif action == "complete" and LIVE_KITCHEN_ORDERS[dish] > 0:
+            LIVE_KITCHEN_ORDERS[dish] -= 1
+
+    return get_live_orders()
+
+
 @app.route("/api/test-bad-row", methods=["POST"])
 def test_bad_row():
     """

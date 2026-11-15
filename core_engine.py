@@ -876,13 +876,13 @@ class NightQueueModel:
         shout_time = f"{low_range}–{high_range} mins" if high_range > low_range else f"{int(round(prep_time))} mins"
         
         if pred.curfew_status in ["LIKELY TO MISS CURFEW", "CURFEW ALREADY PASSED"]:
-            vendor_action = f"⚠️ Tell student from {hostel}: Food takes {shout_time}, they will miss curfew ({pred.curfew_time})! Suggest fast Plain Maggi or Tea instead."
+            vendor_action = f"⚠️ {hostel} के छात्र को बोलें: खाना बनने में {shout_time} लगेगा और कर्फ्यू ({pred.curfew_time}) छूट जाएगा! उन्हें सादा मैगी या चाय लेने को कहें।"
             status_color = "red"
         elif pred.curfew_status == "WARNING":
-            vendor_action = f"⚡ Tell student from {hostel}: Takes {shout_time}. They only have {pred.curfew_margin_mins} mins buffer before gate lock! Make this fast."
+            vendor_action = f"⚡ {hostel} के छात्र को बोलें: {shout_time} लगेगा। गेट बंद होने में सिर्फ {pred.curfew_margin_mins} मिनट बचे हैं! जल्दी बनाएं।"
             status_color = "yellow"
         else:
-            vendor_action = f"🟢 Safe: Tell student '{shout_time}'. They have plenty of time to reach {hostel} before curfew."
+            vendor_action = f"🟢 सुरक्षित: छात्र को बोलें '{shout_time}'। कर्फ्यू से पहले {hostel} पहुँचने का पर्याप्त समय है।"
             status_color = "green"
 
         return {
@@ -890,7 +890,7 @@ class NightQueueModel:
             "hostel": hostel,
             "orders_ahead": orders_ahead,
             "realistic_wait_mins": prep_time,
-            "shout_quote": f"Tell student: '{shout_time}' (instead of '5 minute')",
+            "shout_quote": f"छात्र को बोलें: '{shout_time}' ('5 मिनट' मत बोलें)",
             "vendor_action": vendor_action,
             "status_color": status_color,
             "room_return_time": pred.room_return_time,
