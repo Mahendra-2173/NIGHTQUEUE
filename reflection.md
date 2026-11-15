@@ -17,3 +17,8 @@ AI was genuinely useful in two places:
 AI tried to over-engineer the core problem from the very beginning. When I first asked it for advice, it kept proposing XGBoost regression models, LSTM time-series forecasting, and an end-to-end React native app with Twilio SMS integration. All of that was completely useless for a 20-row real dataset and a vendor who doesn't even have a smartphone mount on his cart. 
 
 It also generated an unquoted comma inside my CSV notes on row 9 (`'Bipul Da, hoise?'`), which broke the Pandas C-parser with an extra column error that cost me 15 minutes of manual debugging. I had to rein the AI back and force it to stick to clean, deterministic operational physics rather than bloated buzzword architecture.
+
+### What Was Learned During Implementation
+1. **Physical constraints dominate mathematical elegance:** A vendor with 2 gas burners cannot violate thermal physics. No software can cook faster than gas heat transfer allows; software can only eliminate human optimism bias and information asymmetry.
+2. **Fieldwork invalidates desk assumptions:** Without standing in the cold at 23:45 outside Gate 1, I would have modeled cooking as a pure arrival-rate function and completely missed the pan-cleaning dead time and the security guard's 12:20 AM warning whistle.
+3. **Defensive design matters for real users:** An edge case like ordering at 00:35 AM (past 12:30 AM curfew) or entering bad values (-10 orders) must degrade safely with clear warnings rather than failing or reporting nonsensical next-day deadlines.
