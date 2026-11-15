@@ -5,6 +5,7 @@
 **Observation Window:** November 14–15, 2026, 23:20 to 00:15 IST (during peak late-night rush).  
 **Person Interviewed:** Bipul Nath ("Bipul Da"), age 44, stall cook and operator.  
 **Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew 10:30 PM).  
+**Live Web Application:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
 
 ---
 

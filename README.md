@@ -7,6 +7,7 @@
 > **Hostels Serviced:** Boys Hostels (BH1 to BH9, Curfew: 12:30 AM) and Girls Hostels (GH1 to GH4, Curfew: 10:30 PM)  
 > **Date of Fieldwork:** November 14–15, 2026 (23:20 to 00:15 IST)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
+> **Live Web Application:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
 > **3-Minute Screen Recording Video:** [https://youtu.be/nightqueue-demo-walkthrough](https://youtu.be/nightqueue-demo-walkthrough) *(Tool walkthrough & live prediction demo)*  
 > **Real Fieldwork Photographs:** [`photos/stall_front.jpg`](photos/stall_front.jpg), [`photos/stove_burners.jpg`](photos/stove_burners.jpg), and [`photos/bipul_da_counter.jpg`](photos/bipul_da_counter.jpg)  
 
@@ -177,7 +178,11 @@ pip install flask flask-cors pandas numpy
 
 ## 13. How to Run the Project
 
-### Interactive Web Dashboard
+### 🌐 Live Production Web Application
+The system is deployed live on Render with automatic HTTPS and production WSGI workers:
+* **Production URL:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)
+
+### Local Interactive Web Dashboard
 ```bash
 python app.py
 ```
