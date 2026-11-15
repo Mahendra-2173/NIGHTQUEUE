@@ -8,7 +8,7 @@
 > **Date of Fieldwork:** November 14–15, 2026 (23:20 to 00:15 IST)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
 > **Live Web Application:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
-> **3-Minute Screen Recording Video:** [https://youtu.be/nightqueue-demo-walkthrough](https://youtu.be/nightqueue-demo-walkthrough) *(Tool walkthrough & live prediction demo)*  
+> **3-Minute Screen Recording Video:** [`demo.mp4`](demo.mp4) *(Watch directly on GitHub: [demo.mp4](https://github.com/Mahendra-2173/NIGHTQUEUE/blob/main/demo.mp4))*  
 > **Real Fieldwork Photographs:** [`photos/stall_front.jpg`](photos/stall_front.jpg), [`photos/stove_burners.jpg`](photos/stove_burners.jpg), and [`photos/bipul_da_counter.jpg`](photos/bipul_da_counter.jpg)  
 
 ---
