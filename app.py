@@ -3,6 +3,7 @@ NightQueue: Flask Web Application & Technical CLI Runner
 Grounds wait-time and curfew predictions in empirical data from Gate 1, NIT Silchar.
 """
 
+import os
 import sys
 import argparse
 from flask import Flask, render_template, request, jsonify, send_from_directory
@@ -327,5 +328,6 @@ if __name__ == "__main__":
     if args.cli:
         run_cli()
     else:
-        print(f"🚀 Starting NightQueue Web Server at http://127.0.0.1:{args.port}...")
-        app.run(host="127.0.0.1", port=args.port, debug=False)
+        port = int(os.environ.get("PORT", args.port))
+        print(f"🚀 Starting NightQueue Web Server on port {port}...")
+        app.run(host="0.0.0.0", port=port, debug=False)
