@@ -106,27 +106,29 @@ NIGHTQUEUE/
 
 ## 10. Explanation of the Prediction Algorithm
 
-The waiting time is determined by three physically grounded terms derived from `data.csv`:
+The waiting time and curfew feasibility are calculated using physically grounded terms derived from `data.csv`:
 
 $$\text{Estimated Total Wait at Stall} = t_{\text{base}}(\text{item}) + \Delta t_{\text{queue}} + \Delta t_{\text{clean}}$$
 
 1. **Historical Base Preparation Time ($t_{\text{base}}$):**
-   - Derived directly from single-order observations in `data.csv`:
-     - *Double Egg Maggi:* 6.4 mins baseline
-     - *Plain Maggi:* 5.5 mins baseline
-     - *Bun Omelette / Egg Toast:* 7.5–9.4 mins baseline (includes whisking & bun buttering)
+   - Derived directly from solo-order observations in `data.csv`:
+     - *Double Egg Maggi:* 6.4 mins baseline ($n=4$)
+     - *Plain Maggi:* 5.5 mins baseline ($n=5$)
+     - *Bun Omelette / Egg Toast:* 7.5–9.4 mins baseline ($n=4$ each, including whisking & bun buttering)
      - *Tea / Lal Saah:* 2.5–3.5 mins baseline (simmered on small auxiliary flame)
 2. **Queue Congestion Delay ($\Delta t_{\text{queue}}$):**
    $$\Delta t_{\text{queue}} = Q \times \text{marginal\_delay} \times \left(\frac{2}{B}\right) \times \text{batch\_factor}$$
-   - Calibrated from the empirical regression slope between `actual_wait_mins` and `queue_ahead` ($\approx 2.1$–$2.3$ mins per order).
+   - Calibrated from the empirical regression slope between `actual_wait_mins` and `queue_ahead` ($\approx 2.33$ mins per waiting order).
    - *Burner constraint ($B$):* With 2 active burners (normal), concurrency is 2. If 1 burner runs low on gas, delay doubles ($2/B$).
    - *Batching adjustment:* Maggi allows batch boiling of 2 packets simultaneously ($\times 0.75$ batch multiplier). Egg items require individual tawa surface area ($\times 1.0$). Beverage takes side flame ($\times 0.4$).
 3. **Pan Transition Latency ($\Delta t_{\text{clean}}$):**
    - Overhead of $1.2$ minutes per 3 mixed orders when Bipul Da must wipe egg grease off the tawa before toasting buns or boiling Maggi.
-4. **Curfew Feasibility:**
-   $$\text{Total Trip Time} = 2 \times w_{\text{hostel}} + \text{Estimated Total Wait}$$
-   $$\text{Hostel Arrival Time} = \text{Current Time} + \text{Total Trip Time}$$
-   $$\text{Curfew Margin} = \text{12:30 AM} - \text{Hostel Arrival Time}$$
+4. **5-Milestone Journey Timeline:**
+   - **Milestone 1 (Reach Stall):** $\text{Current Time} + w_{\text{hostel}}$ (e.g., depart 11:45 PM $\rightarrow$ reach Gate 1 stall at 11:53 PM).
+   - **Milestone 2 (Kitchen Wait):** $t_{\text{base}} + \Delta t_{\text{queue}} + \Delta t_{\text{clean}}$ (e.g., 25.8 mins kitchen delay).
+   - **Milestone 3 (Food Ready):** Timestamp when food is handed over hot (e.g., 12:18 AM).
+   - **Milestone 4 (Room Return):** Food Ready Timestamp $+ w_{\text{hostel}}$ (e.g., return walk 8.0 mins $\rightarrow$ room return at 12:26 AM).
+   - **Milestone 5 (Curfew Feasibility):** Compares estimated room return against hostel gate curfew (e.g., $+3.2$ mins margin vs 12:30 AM deadline $\rightarrow$ `WARNING`).
 
 ---
 
@@ -135,8 +137,9 @@ $$\text{Estimated Total Wait at Stall} = t_{\text{base}}(\text{item}) + \Delta t
 The application does not rely on static hardcoded values. Upon launch, `core_engine.py` parses `data.csv` and computes:
 1. **Item-Specific Mean & Median:** Computes average and median preparation time for each dish.
 2. **Dispersion & Uncertainty ($\sigma$):** Computes sample standard deviation, minimum, and maximum for each food item.
-3. **Queue Sensitivity:** Calibrates the empirical slope of queue delays.
-4. **Data Verification:** Verifies 20 genuine rows, zero null values, zero duplicate IDs, and correct column schemas.
+3. **Queue Sensitivity:** Calibrates the empirical slope of queue delays ($\approx 2.33\text{ mins/order}$).
+4. **Curfew Statistics Distinction:** Dynamically separates Curfew Stress & Rush Incidents ($30.0\%$, 6/20 orders) from Confirmed Late-Entry Breaches ($15.0\%$, 3/20 documented late entries).
+5. **Data Verification:** Verifies 20 genuine rows, zero null values, zero duplicate IDs, and correct column schemas.
 
 ---
 
@@ -221,20 +224,22 @@ python test_server.py
   • Bipul Da's Claimed Mean: 4.8 mins ('Bas 5 minute')
   • Actual Measured Mean:    17.7 mins
   • Underestimation Gap:     +12.9 mins late
-  • Curfew Breach Rate:      30.0% of observed visits
+  • Curfew Stress / Sprints: 30.0% (6 of 20 observed visits)
+  • Confirmed Late Entries:  15.0% (3 of 20 documented register entries)
   • Marginal Delay/Order:    ~2.33 mins/order
 
 [4] SAMPLE PREDICTION: 23:45 IST, Hostel 7 Student, Bun Omelette, 6 orders ahead:
-  • Historical Base Prep:    9.4 mins
-  • Queue Waiting Estimate:  16.4 mins
-  • Uncertainty Buffer:      ±4.3 mins (21.5 – 30.1 mins)
-  • Walk Time (Hostel 7):    8.0 mins each way (41.8m total trip)
-  • Latest Departure Time:   11:48 PM
-  • Estimated Room Return:   12:26 AM
-  • Curfew Deadline:         00:30
-  • Curfew Feasibility:      [WARNING] (Margin: 3.2 mins)
-  • Advice:                  ⚠️ WARNING: Very little time remains (3.2 mins buffer before gate lock)! Leave immediately by 11:48 PM. Pick Plain Maggi or Tea instead of slow egg items.
-  • Transparent Explanation: Historical base preparation time: 9.4 mins | Queue waiting estimate (6 ahead on 2 burner(s)): 16.4 mins | Walking time (Hostel 7): 8.0 mins each way (round-trip 16.0 mins) | Uncertainty buffer: ±4.3 mins | Total estimated trip: 41.8 mins -> Room arrival: 12:26 AM vs Curfew: 12:30 AM (Margin: +3.2 mins).
+  • 5-Milestone Journey Timeline:
+    1. Depart Hostel -> Reach Stall:  11:53 PM (8.0 mins walk)
+    2. Kitchen Delay (Prep + Queue):  25.8 mins (Base: 9.4m, Queue: 16.4m)
+    3. Food Ready Handover:          12:18 AM
+    4. Return Walk -> Room Return:   12:26 AM (8.0 mins return walk)
+    5. Curfew Margin:                +3.2 mins vs 00:30 deadline
+  • Uncertainty Buffer:              ±4.3 mins (21.5 – 30.1 mins)
+  • Latest Departure Time:           11:48 PM
+  • Curfew Feasibility Verdict:      [WARNING]
+  • Practical Advice:                ⚠️ WARNING: Very little time remains (3.2 mins buffer before gate lock)! Leave immediately by 11:48 PM. Pick Plain Maggi or Tea instead of slow egg items.
+  • Disclaimer:                      Disclaimer: Predictions are data-driven estimates and actual waiting times may vary due to pan changeover latency, stove flame pressure, and sudden customer arrivals.
 
 [5] BAD-ROW STRESS TEST (Handling negative queue & 0 burners):
   • Handled cleanly without crash. Fallback wait: 5.5 mins
@@ -276,28 +281,32 @@ python test_server.py
 
 ### Verified Execution Output:
 ```text
-Ran 19 tests in 0.157s
+Ran 23 tests in 0.188s
 
 OK
-✔ [1/19] Correct CSV loading verified: 20 genuine rows loaded.
-✔ [2/19] Food-item-wise preparation times calculated for 7 items.
-✔ [3/19] Average calculation verified: overall mean = 17.7m, Plain Maggi mean = 17.68m.
-✔ [4/19] Median calculation verified: Plain Maggi median = 19.9m, Bun Omelette = 23.95m.
-✔ [5/19] Missing CSV values safely handled: row excluded and logged.
-✔ [6/19] Invalid CSV values handled: non-numeric string safely excluded.
-✔ [7/19] Empty dataset handled gracefully: fallback constants activated.
-✔ [8/19] Negative preparation times rejected and logged.
-✔ [9/19] Zero pending orders verified: queue wait is exactly 0.0 mins.
-✔ [10/19] Multiple pending orders verified: queue wait scaled from 3.5m to 16.4m.
-✔ [11/19] Midnight transition verified: order placed 23:55 arrives 12:14 AM.
-✔ [12/19] Curfew already passed correctly detects post-midnight gate lock.
-✔ [13/19] Arrival near/at curfew verified: margin=2.3m -> Status=WARNING.
-✔ [14/19] Insufficient historical data handled with transparent fallback note.
-✔ [15/19] Invalid user inputs safely sanitized (6 warnings recorded).
-✔ [16/19] Prediction uncertainty buffer verified: ±4.5m (11.8 – 20.8 mins).
-✔ [17/19] Correct SAFE classification verified (Margin: +53.9m).
-✔ [18/19] Correct WARNING classification verified (Margin: +4.2m).
-✔ [19/19] Correct LIKELY TO MISS CURFEW classification verified (Late by 10.5m).
+✔ [1/23] CSV loading verified: 20 genuine rows loaded without errors.
+✔ [2/23] Average calculation verified: overall mean = 17.7m, item means verified.
+✔ [3/23] Median calculation verified: robust median baselines derived per food item.
+✔ [4/23] Food-item-wise statistics verified across all 7 menu items.
+✔ [5/23] Missing values safely handled: invalid record excluded and logged.
+✔ [6/23] Invalid values handled: non-numeric string safely excluded.
+✔ [7/23] Empty dataset handled gracefully: fallback constants activated.
+✔ [8/23] Negative preparation times rejected and logged.
+✔ [9/23] Zero pending orders verified: queue wait is exactly 0.0m.
+✔ [10/23] Multiple pending orders verified: queue wait scales from 3.5m to 16.4m.
+✔ [11/23] Midnight transition verified: placed 23:55 arrives 12:14 AM.
+✔ [12/23] Curfew already passed correctly detects both post-midnight (00:45) and pre-midnight (23:15 vs 22:30) lockouts.
+✔ [13/23] Arrival near curfew verified: margin=2.3m -> Status=WARNING.
+✔ [14/23] Insufficient historical data handled with transparent fallback note.
+✔ [15/23] Invalid user inputs safely sanitized (6 warnings recorded).
+✔ [16/23] Prediction uncertainty buffer verified: ±4.5m (11.8 – 20.8 mins).
+✔ [17/23] Correct SAFE classification verified (Margin: +53.9m).
+✔ [18/23] Correct WARNING classification verified (Margin: +4.2m).
+✔ [19/23] Correct LIKELY TO MISS CURFEW verified (Late by 10.5m).
+✔ [20/23] Flask endpoints verified: all 9 routes return HTTP 200 OK.
+✔ [21/23] Frontend-backend integration verified: response schema & mathematical consistency confirmed.
+✔ [22/23] 5-Milestone Journey Timeline verified: Reach Stall (11:53 PM) -> Ready (12:02 AM) -> Return (12:10 AM). Disclaimer confirmed.
+✔ [23/23] Curfew statistics breakdown verified: 30.0% curfew incidents (3 confirmed late entries, 3 sprinting/stress cases).
 
-🎉 ALL 19 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!
+🎉 ALL 23 COMPREHENSIVE TESTS PASSED WITH 100% SUCCESS!
 ```

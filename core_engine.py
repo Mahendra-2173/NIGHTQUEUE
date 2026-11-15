@@ -110,6 +110,15 @@ class QueuePrediction:
     is_empirically_grounded: bool
     item_sample_count: int = 0
     empirical_error_spread_mins: float = 0.0
+    # 5 Milestones explicit tracking
+    walk_to_stall_mins: float = 0.0
+    stall_arrival_time: str = ""
+    food_prep_and_wait_mins: float = 0.0
+    food_ready_time: str = ""
+    walk_return_mins: float = 0.0
+    room_return_time: str = ""
+    remaining_curfew_mins: float = 0.0
+    prediction_disclaimer: str = ""
 
 
 class NightQueueModel:
@@ -378,32 +387,58 @@ class NightQueueModel:
                 self.empirical_queue_penalty_per_order = round(max(1.5, min(3.0, slope)), 2)
 
     def get_summary_stats(self) -> Dict[str, Any]:
-        """Calculates core empirical metrics from validated fieldwork data."""
+        """
+        Calculates core empirical metrics from validated fieldwork data.
+        Accurately distinguishes confirmed late-entry breaches from curfew stress & rush incidents.
+        """
         if self.valid_df is None or self.valid_df.empty:
             return {
                 "total_orders": 0,
                 "avg_claimed_mins": 5.0,
                 "avg_actual_mins": 18.0,
                 "avg_underestimation_gap": 13.0,
-                "curfew_breach_rate_pct": 35.0,
+                "curfew_breach_rate_pct": 30.0,
+                "curfew_incident_rate_pct": 30.0,
+                "confirmed_late_entry_pct": 15.0,
+                "curfew_incident_count": 0,
+                "confirmed_late_entry_count": 0,
+                "sprint_stress_count": 0,
                 "is_empirically_grounded": False,
                 "queue_penalty_per_order": 2.1
             }
 
+        total_valid = len(self.valid_df)
         claimed = self.valid_df["claimed_wait_mins"].dropna()
         actual = self.valid_df["actual_wait_mins"].dropna()
+        
+        # In data.csv, curfew_breach column logs all curfew-impacted visits (6 out of 20 = 30%)
         breaches = self.valid_df[self.valid_df["curfew_breach"].astype(str).str.strip().str.lower() == "yes"]
+        incident_count = len(breaches)
+        incident_rate = (incident_count / total_valid) * 100.0 if total_valid > 0 else 0.0
+
+        # Accurately identify confirmed late entries (marked in late register or guard warned at hostel gate)
+        # Orders 15, 16, 17 in data.csv describe confirmed late arrivals; Orders 14, 18, 20 describe sprinting/panic/complaint
+        notes_str = self.valid_df["notes"].astype(str)
+        confirmed_late = self.valid_df[
+            notes_str.str.contains("late register|guard warned|blew whistle", case=False, regex=True)
+        ]
+        confirmed_count = len(confirmed_late)
+        confirmed_rate = (confirmed_count / total_valid) * 100.0 if total_valid > 0 else 0.0
 
         avg_claimed = float(claimed.mean()) if not claimed.empty else 5.0
         avg_actual = float(actual.mean()) if not actual.empty else 18.0
-        breach_rate = (len(breaches) / len(self.valid_df)) * 100.0 if len(self.valid_df) > 0 else 0.0
 
         return {
-            "total_orders": int(len(self.valid_df)),
+            "total_orders": int(total_valid),
             "avg_claimed_mins": round(avg_claimed, 1),
             "avg_actual_mins": round(avg_actual, 1),
             "avg_underestimation_gap": round(avg_actual - avg_claimed, 1),
-            "curfew_breach_rate_pct": round(breach_rate, 1),
+            "curfew_incident_rate_pct": round(incident_rate, 1),      # 30.0% (6/20 orders with sprint/stress/delays)
+            "confirmed_late_entry_pct": round(confirmed_rate, 1),      # 15.0% (3/20 orders confirmed late register entries)
+            "curfew_breach_rate_pct": round(incident_rate, 1),        # Compatibility alias
+            "curfew_incident_count": int(incident_count),
+            "confirmed_late_entry_count": int(confirmed_count),
+            "sprint_stress_count": int(incident_count - confirmed_count),
             "is_empirically_grounded": True,
             "queue_penalty_per_order": self.empirical_queue_penalty_per_order
         }
@@ -651,48 +686,66 @@ class NightQueueModel:
         total_trip_mins = walk_time + total_kitchen_wait + walk_time
 
         # Step 6: Date-Aware Time Calculations & Curfew Feasibility
-        now = datetime.now()
+        # Uses reference-night formulation to reliably handle:
+        # 1. Current time before midnight (e.g. 23:45)
+        # 2. Current time after midnight (e.g. 00:15)
+        # 3. Post-midnight curfew (e.g. 00:30 for boys' hostels)
+        # 4. Pre-midnight curfew (e.g. 22:30 for girls' hostels)
+        # 5. Curfew already passed tonight (e.g. 00:35 vs 00:30, 23:15 vs 22:30)
+        # 6. Arrival exactly at curfew (curfew_margin == 0.0 -> WARNING)
+        # 7. Arrival after curfew (curfew_margin < 0.0 -> LIKELY TO MISS CURFEW)
         cur_hour, cur_min = [int(p) for p in current_time_str.split(":")]
-        now = now.replace(hour=cur_hour, minute=cur_min, second=0, microsecond=0)
-
-        ready_dt = now + timedelta(minutes=total_kitchen_wait)
-        return_dt = now + timedelta(minutes=total_trip_mins)
-
         curfew_hour, curfew_min = [int(p) for p in curfew_time_str.split(":")]
-        curfew_dt = now.replace(hour=curfew_hour, minute=curfew_min, second=0, microsecond=0)
 
-        # Detect if curfew has ALREADY PASSED tonight:
-        # e.g., current time is 00:35, curfew is 00:30 (same night)
-        is_curfew_already_passed = False
-        if now.hour < 5 and curfew_hour == 0:
-            if (now.hour > 0) or (now.hour == 0 and now.minute > curfew_min):
-                is_curfew_already_passed = True
+        # Reference anchor date: late-night session starting evening of Day T
+        base_anchor = datetime(2026, 11, 14)
+        if cur_hour >= 12:
+            now_dt = base_anchor.replace(hour=cur_hour, minute=cur_min, second=0, microsecond=0)
+            reference_night = base_anchor
+        else:
+            now_dt = (base_anchor + timedelta(days=1)).replace(hour=cur_hour, minute=cur_min, second=0, microsecond=0)
+            reference_night = base_anchor
 
-        # Handle midnight boundary transition:
-        # If current time is 23:30 and curfew is 00:30, curfew is on the next day (+1 day)
-        if not is_curfew_already_passed and curfew_dt <= now and now.hour >= 20:
-            curfew_dt += timedelta(days=1)
+        # Curfew deadline for this reference night's outing:
+        if curfew_hour >= 12:
+            # Pre-midnight curfew (e.g. 22:30 Girls' Hostel)
+            curfew_dt = reference_night.replace(hour=curfew_hour, minute=curfew_min, second=0, microsecond=0)
+        else:
+            # Post-midnight curfew (e.g. 00:30 Boys' Hostel, 00:00 Midnight)
+            curfew_dt = (reference_night + timedelta(days=1)).replace(hour=curfew_hour, minute=curfew_min, second=0, microsecond=0)
 
+        # 5-Milestone Journey Timeline:
+        # Milestone 1: Depart hostel -> Reach Gate 1 Stall
+        stall_reach_dt = now_dt + timedelta(minutes=walk_time)
+        # Milestone 2 & 3: Food Preparation & Waiting -> Food Ready
+        ready_dt = stall_reach_dt + timedelta(minutes=total_kitchen_wait)
+        # Milestone 4: Return Walk -> Reach Hostel Room
+        return_dt = ready_dt + timedelta(minutes=walk_time)
+
+        # Did curfew already expire before order placement?
+        is_curfew_already_passed = (now_dt >= curfew_dt)
+
+        # Milestone 5: Remaining time before curfew
         curfew_margin = (curfew_dt - return_dt).total_seconds() / 60.0
         latest_leave_dt = curfew_dt - timedelta(minutes=total_trip_mins)
         departure_deadline_str = latest_leave_dt.strftime("%I:%M %p")
 
         # Step 7: Classification per Requirements 12 & 13
-        # - SAFE: Expected to reach before curfew
-        # - WARNING: Very little time remains
-        # - LIKELY TO MISS CURFEW: Estimated arrival is after curfew
-        # - CURFEW ALREADY PASSED: Curfew already expired
+        # - SAFE: Expected to reach comfortably before curfew (margin > buffer)
+        # - WARNING: Very little time remains or exact curfew arrival (0 <= margin <= buffer)
+        # - LIKELY TO MISS CURFEW: Estimated arrival is strictly after curfew (margin < 0)
+        # - CURFEW ALREADY PASSED: Curfew already expired before placing order
         if is_curfew_already_passed:
             status = "CURFEW ALREADY PASSED"
             rec = (
-                f"⛔ CURFEW HAS ALREADY PASSED: Gate 1 closed at {curfew_time_str}. "
-                f"Campus security is monitoring late entries. Do not step out."
+                f"⛔ CURFEW HAS ALREADY PASSED: Gate 1 locked at {curfew_time_str}. "
+                f"Campus security is actively monitoring late entries. Do not step out tonight."
             )
         elif curfew_margin < 0:
             status = "LIKELY TO MISS CURFEW"
             minutes_late = abs(round(curfew_margin, 1))
             rec = (
-                f"🚨 LIKELY TO MISS CURFEW: You will return {minutes_late} mins after curfew! "
+                f"🚨 LIKELY TO MISS CURFEW: Estimated arrival is {minutes_late} mins after curfew! "
                 f"Gate will be locked at {curfew_time_str}. Skip tonight or choose fast tea to avoid late registration."
             )
         elif curfew_margin <= curfew_buffer_mins:
@@ -712,16 +765,16 @@ class NightQueueModel:
 
         # Step 8: Build Transparent Explanation
         explanation = (
-            f"Historical base preparation time: {base_prep:.1f} mins | "
-            f"Queue waiting estimate ({orders_ahead} ahead on {burners_active} burner(s)): {queue_wait:.1f} mins | "
-            f"Walking time ({hostel}): {walk_time:.1f} mins each way (round-trip {walk_time*2:.1f} mins) | "
-            f"Uncertainty buffer: ±{uncertainty_buffer:.1f} mins | "
-            f"Total estimated trip: {total_trip_mins:.1f} mins -> Room arrival: {return_dt.strftime('%I:%M %p')} "
-            f"vs Curfew: {curfew_dt.strftime('%I:%M %p')} (Margin: {curfew_margin:+.1f} mins)."
+            f"1. Walk to Stall ({hostel}): {walk_time:.1f}m (Reach stall: {stall_reach_dt.strftime('%I:%M %p')}) | "
+            f"2. Kitchen Delay: {total_kitchen_wait:.1f}m (Base prep: {base_prep:.1f}m + Queue delay: {queue_wait:.1f}m for {orders_ahead} ahead on {burners_active} burner(s)) | "
+            f"3. Food Ready: {ready_dt.strftime('%I:%M %p')} | "
+            f"4. Walk Return: {walk_time:.1f}m -> Room Arrival: {return_dt.strftime('%I:%M %p')} | "
+            f"5. Curfew Margin: {curfew_margin:+.1f}m vs {curfew_dt.strftime('%I:%M %p')} deadline (Buffer: ±{uncertainty_buffer:.1f}m)."
         )
 
         vendor_claimed = 5.0 if orders_ahead <= 4 else 10.0
         gap = round(total_kitchen_wait - vendor_claimed, 1)
+        disclaimer = "Disclaimer: Predictions are data-driven estimates and actual waiting times may vary due to pan changeover latency, stove flame pressure, and sudden customer arrivals."
 
         return QueuePrediction(
             item_name=dish_name,
@@ -753,7 +806,15 @@ class NightQueueModel:
             validation_warnings=validation_warnings,
             is_empirically_grounded=is_empirical,
             item_sample_count=sample_count,
-            empirical_error_spread_mins=gap
+            empirical_error_spread_mins=gap,
+            walk_to_stall_mins=round(walk_time, 1),
+            stall_arrival_time=stall_reach_dt.strftime("%I:%M %p"),
+            food_prep_and_wait_mins=round(total_kitchen_wait, 1),
+            food_ready_time=ready_dt.strftime("%I:%M %p"),
+            walk_return_mins=round(walk_time, 1),
+            room_return_time=return_dt.strftime("%I:%M %p"),
+            remaining_curfew_mins=round(curfew_margin, 1),
+            prediction_disclaimer=disclaimer
         )
 
 

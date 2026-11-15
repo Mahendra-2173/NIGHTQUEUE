@@ -174,7 +174,8 @@ def run_cli():
     print(f"  • Bipul Da's Claimed Mean: {stats['avg_claimed_mins']} mins ('Bas 5 minute')")
     print(f"  • Actual Measured Mean:    {stats['avg_actual_mins']} mins")
     print(f"  • Underestimation Gap:     +{stats['avg_underestimation_gap']} mins late")
-    print(f"  • Curfew Breach Rate:      {stats['curfew_breach_rate_pct']}% of observed visits")
+    print(f"  • Curfew Stress / Sprints: {stats['curfew_incident_rate_pct']}% ({stats['curfew_incident_count']} of {stats['total_orders']} observed visits)")
+    print(f"  • Confirmed Late Entries:  {stats['confirmed_late_entry_pct']}% ({stats['confirmed_late_entry_count']} of {stats['total_orders']} documented register entries)")
     print(f"  • Marginal Delay/Order:    ~{stats['queue_penalty_per_order']} mins/order")
 
     print("\n[4] SAMPLE PREDICTION: 23:45 IST, Hostel 7 Student, Bun Omelette, 6 orders ahead:")
@@ -187,16 +188,17 @@ def run_cli():
         current_time_str="23:45",
         curfew_time_str="00:30",
     )
-    print(f"  • Historical Base Prep:    {pred.historical_prep_mins} mins")
-    print(f"  • Queue Waiting Estimate:  {pred.queue_wait_mins} mins")
-    print(f"  • Uncertainty Buffer:      ±{pred.uncertainty_buffer_mins} mins ({pred.expected_range})")
-    print(f"  • Walk Time (Hostel 7):    {pred.walk_one_way_mins} mins each way ({pred.total_trip_mins}m total trip)")
-    print(f"  • Latest Departure Time:   {pred.departure_deadline}")
-    print(f"  • Estimated Room Return:   {pred.estimated_return_time}")
-    print(f"  • Curfew Deadline:         {pred.curfew_time}")
-    print(f"  • Curfew Feasibility:      [{pred.curfew_status}] (Margin: {pred.curfew_margin_mins} mins)")
-    print(f"  • Advice:                  {pred.recommendation}")
-    print(f"  • Transparent Explanation: {pred.calculation_explanation}")
+    print("  • 5-Milestone Journey Timeline:")
+    print(f"    1. Depart Hostel -> Reach Stall:  {pred.stall_arrival_time} ({pred.walk_to_stall_mins} mins walk)")
+    print(f"    2. Kitchen Delay (Prep + Queue):  {pred.food_prep_and_wait_mins} mins (Base: {pred.historical_prep_mins}m, Queue: {pred.queue_wait_mins}m)")
+    print(f"    3. Food Ready Handover:          {pred.food_ready_time}")
+    print(f"    4. Return Walk -> Room Return:   {pred.room_return_time} ({pred.walk_return_mins} mins return walk)")
+    print(f"    5. Curfew Margin:                {pred.remaining_curfew_mins:+.1f} mins vs {pred.curfew_time} deadline")
+    print(f"  • Uncertainty Buffer:              ±{pred.uncertainty_buffer_mins} mins ({pred.expected_range})")
+    print(f"  • Latest Departure Time:           {pred.departure_deadline}")
+    print(f"  • Curfew Feasibility Verdict:      [{pred.curfew_status}]")
+    print(f"  • Practical Advice:                {pred.recommendation}")
+    print(f"  • Disclaimer:                      {pred.prediction_disclaimer}")
 
     print("\n[5] BAD-ROW STRESS TEST (Handling negative queue & 0 burners):")
     bad_pred = model.predict_wait_and_curfew(
