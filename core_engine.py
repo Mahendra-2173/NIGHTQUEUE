@@ -766,28 +766,28 @@ class NightQueueModel:
         if is_curfew_already_passed:
             status = "CURFEW ALREADY PASSED"
             rec = (
-                f"⛔ CURFEW HAS ALREADY PASSED: Gate 1 locked at {curfew_time_str}. "
+                f"⛔ GATE ALREADY LOCKED (CURFEW ALREADY PASSED): Gate 1 locked at {curfew_time_str}. "
                 f"Campus security is actively monitoring late entries. Do not step out tonight."
             )
         elif curfew_margin < 0:
             status = "LIKELY TO MISS CURFEW"
             minutes_late = abs(round(curfew_margin, 1))
             rec = (
-                f"🚨 LIKELY TO MISS CURFEW: Estimated arrival is {minutes_late} mins after curfew! "
+                f"🚨 DON'T ORDER (WILL GET LOCKED OUT): Estimated arrival is {minutes_late} mins after hostel gate closes! "
                 f"Gate will be locked at {curfew_time_str}. Skip tonight or choose fast tea to avoid late registration."
             )
         elif curfew_margin <= curfew_buffer_mins:
             status = "WARNING"
             margin_left = round(curfew_margin, 1)
             rec = (
-                f"⚠️ WARNING: Very little time remains ({margin_left} mins buffer before gate lock)! "
+                f"⚠️ HURRY / TIGHT TIMING: Very little time remains ({margin_left} mins buffer before gate locks)! "
                 f"Leave immediately by {departure_deadline_str}. Pick Plain Maggi or Tea instead of slow egg items."
             )
         else:
             status = "SAFE"
             margin_left = round(curfew_margin, 1)
             rec = (
-                f"🟢 SAFE: Expected to reach comfortably before curfew ({margin_left} mins margin). "
+                f"🟢 SAFE — YOU'LL BE BACK IN TIME: Expected to reach hostel comfortably before gate closing ({margin_left} mins margin). "
                 f"You should leave your hostel before {departure_deadline_str}."
             )
 
@@ -797,7 +797,7 @@ class NightQueueModel:
             f"2. Kitchen Delay: {total_kitchen_wait:.1f}m (Base prep: {base_prep:.1f}m + Queue delay: {queue_wait:.1f}m for {orders_ahead} ahead on {burners_active} burner(s)) | "
             f"3. Food Ready: {ready_dt.strftime('%I:%M %p')} | "
             f"4. Walk Return: {walk_time:.1f}m -> Room Arrival: {return_dt.strftime('%I:%M %p')} | "
-            f"5. Curfew Margin: {curfew_margin:+.1f}m vs {curfew_dt.strftime('%I:%M %p')} deadline (Buffer: ±{uncertainty_buffer:.1f}m)."
+            f"5. Gate Margin: {curfew_margin:+.1f}m vs {curfew_dt.strftime('%I:%M %p')} deadline (Buffer: ±{uncertainty_buffer:.1f}m)."
         )
 
         vendor_claimed = 5.0 if orders_ahead <= 4 else 10.0

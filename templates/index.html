@@ -64,7 +64,7 @@
         <span class="text-slate-300 font-medium">Bipul Da's Tea Stall ("Tapri") • 80m outside Gate 1, NIT Silchar</span>
       </div>
       <div class="flex items-center gap-3 text-xs mono">
-        <span>Curfew: Boys <strong class="text-amber-400 font-bold">12:30 AM</strong> | Girls <strong class="text-rose-400 font-bold">10:30 PM</strong></span>
+        <span>Hostel Gate Closing: Boys <strong class="text-amber-400 font-bold">12:30 AM</strong> | Girls <strong class="text-rose-400 font-bold">10:30 PM</strong></span>
       </div>
     </div>
   </aside>
@@ -83,14 +83,14 @@
             <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Bipul Da's Tea Stall</span>
             <span class="text-xs bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/30 uppercase tracking-wider">Tapri</span>
           </div>
-          <p class="text-xs text-slate-400">NIT Silchar Gate 1 • Food Wait Time & Curfew Checker</p>
+          <p class="text-xs text-slate-400">NIT Silchar Gate 1 • Food Wait Time & Gate In-Time Checker</p>
         </div>
       </a>
 
       <!-- Primary Navigation Tabs -->
       <nav class="flex items-center space-x-1 sm:space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 text-xs sm:text-sm font-semibold overflow-x-auto w-full sm:w-auto mt-2 sm:mt-0" aria-label="Main Navigation">
         <button id="nav-checker" onclick="showPage('checker')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-amber-300 bg-slate-800 transition flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
-          <span>🕒</span> <span>Curfew Checker</span>
+          <span>🕒</span> <span>Gate In-Time Checker</span>
         </button>
         <button id="nav-counter" onclick="showPage('counter')" class="nav-btn flex-1 sm:flex-initial px-4 py-2 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5 whitespace-nowrap">
           <span>👨‍🍳</span> <span>Bipul Da & Raju</span>
@@ -113,14 +113,14 @@
   <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
     <!-- ================================================================= -->
-    <!-- SECTION 1: STUDENT CURFEW CHECKER                                 -->
+    <!-- SECTION 1: STUDENT GATE IN-TIME CHECKER                           -->
     <!-- ================================================================= -->
     <section id="page-checker" class="page-content space-y-6">
       
       <!-- Headline & Introduction -->
       <div class="text-center max-w-3xl mx-auto space-y-2">
         <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Will you make it back before <span class="text-amber-400">Hostel Curfew</span>?
+          Will you make it back before the <span class="text-amber-400">Hostel Gate Closes</span>?
         </h1>
         <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
           Bipul Da always says: <em class="text-amber-300 font-semibold">"बस 5 मिनट लगेगा भैया, बैठो!" ("Bas 5 minute lagega bhaiya, baitho!")</em><br class="hidden sm:inline">
@@ -131,7 +131,7 @@
       <!-- Mode Switcher Notice -->
       <div class="flex items-center justify-center gap-2">
         <span class="text-xs bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-          <span>🎓</span> <strong>Student View</strong> — Checking if you can eat and return safely
+          <span>🎓</span> <strong>Student View</strong> — Checking if you can eat and return before hostel gate locks
         </span>
         <button onclick="showPage('counter')" class="text-xs bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-full transition font-semibold">
           Switch to Bipul Da & Raju's Counter Helper ➔
@@ -159,7 +159,7 @@
                 <span id="badge-walk-time" class="text-amber-400 mono font-semibold text-xs">8.0 mins walk</span>
               </label>
               <select id="input-hostel" onchange="onHostelChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-medium">
-                <optgroup label="Boys Hostels (Curfew: 12:30 AM)">
+                <optgroup label="Boys Hostels (Gate Closes: 12:30 AM)">
                   <option value="BH1">BH1 (Freshers — 5.0 mins walk)</option>
                   <option value="BH2">BH2 (Freshers — 5.0 mins walk)</option>
                   <option value="BH3">BH3 (6.0 mins walk)</option>
@@ -170,7 +170,7 @@
                   <option value="BH8">BH8 (Senior — 9.0 mins walk)</option>
                   <option value="BH9">BH9 (PG Hostel — 11.0 mins walk)</option>
                 </optgroup>
-                <optgroup label="Girls Hostels (Curfew: 10:30 PM)">
+                <optgroup label="Girls Hostels (Gate Closes: 10:30 PM)">
                   <option value="GH1">GH1 (Girls Hostel 1 — 10.0 mins walk)</option>
                   <option value="GH2">GH2 (Girls Hostel 2 — 10.5 mins walk)</option>
                   <option value="GH3">GH3 (Girls Hostel 3 — 11.0 mins walk)</option>
@@ -185,7 +185,7 @@
                 <span>2. What Are You Ordering?</span>
                 <span id="badge-item-stat" class="text-amber-400 mono text-xs font-semibold">Observed at Stall</span>
               </label>
-              <select id="input-food" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-medium">
+              <select id="input-food" onchange="onFoodItemChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-medium">
                 <option value="Double Egg Maggi|maggi|50" selected>Double Egg Maggi (₹50) — Most Popular</option>
                 <option value="Plain Maggi|maggi|35">Plain Maggi (₹35) — Fast</option>
                 <option value="Bun Omelette|egg_toast|45">Bun Omelette (₹45) — Toasted bun & egg</option>
@@ -216,18 +216,18 @@
             <div class="grid grid-cols-2 gap-3 pt-2">
               <div>
                 <label for="input-time" class="block text-xs font-bold text-slate-300 mb-1">Current Time</label>
-                <input type="time" id="input-time" value="23:45" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono font-semibold">
+                <input type="time" id="input-time" value="23:45" onchange="onTimeChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white mono font-semibold">
               </div>
               <div>
-                <label for="input-curfew" class="block text-xs font-bold text-slate-300 mb-1">Hostel Curfew</label>
-                <input type="time" id="input-curfew" value="00:30" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-amber-400 mono font-bold">
+                <label for="input-curfew" class="block text-xs font-bold text-slate-300 mb-1">Hostel Gate Closes At</label>
+                <input type="time" id="input-curfew" value="00:30" onchange="onTimeChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-amber-400 mono font-bold">
               </div>
             </div>
 
             <!-- Stove Status -->
             <div>
               <label for="input-burners" class="block text-xs font-bold text-slate-300 mb-1">Stall Stove Status</label>
-              <select id="input-burners" onchange="updatePrediction()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
+              <select id="input-burners" onchange="onBurnersChanged()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
                 <option value="2" selected>Both 2 Burners Working (Normal)</option>
                 <option value="1">1 Burner Only (Low Gas / One pan broken)</option>
               </select>
@@ -236,7 +236,7 @@
             <!-- Big Check Button with Immediate Feedback & Auto Scroll -->
             <button id="btn-check-curfew" type="button" onclick="handleCheckButtonClick(event)" class="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg shadow-amber-500/25 text-base flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
               <span id="btn-check-icon">🔍</span>
-              <span id="btn-check-text">Check If I Can Make Curfew</span>
+              <span id="btn-check-text">Check If I Can Return Before Gate Closes</span>
             </button>
 
           </form>
@@ -245,14 +245,40 @@
         <!-- Result Card & 5-Step Journey Breakdown (7 cols on desktop) -->
         <div class="lg:col-span-7 space-y-5">
           
-          <!-- Big Feasibility Verdict Card -->
-          <div id="card-verdict" class="bg-slate-900 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-2xl transition duration-300 space-y-5">
+          <!-- Helpful Initial Prompt Card (Hidden once user clicks Check) -->
+          <div id="card-placeholder" class="bg-slate-900 border-2 border-dashed border-slate-700/80 rounded-2xl p-7 sm:p-9 text-center space-y-5 shadow-xl">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-3xl">
+              🌙
+            </div>
+            <div class="max-w-md mx-auto space-y-2">
+              <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Check Your Gate Return Time
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Planning to grab food from Bipul Da's tapri tonight? Select your hostel, what food you want to order, and how many people are in line on the left.
+              </p>
+            </div>
+            <div class="pt-2">
+              <button type="button" onclick="handleCheckButtonClick(event)" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-sm shadow-lg shadow-amber-500/25 transition active:scale-95">
+                <span>🔍</span>
+                <span>Check If I Can Return Before Gate Closes</span>
+              </button>
+            </div>
+            <div class="border-t border-slate-800/80 pt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
+              <span class="flex items-center gap-1.5"><strong class="text-emerald-400">✓</strong> Real walking times (BH1–BH9, GH1–GH4)</span>
+              <span class="flex items-center gap-1.5"><strong class="text-amber-400">✓</strong> Actual 2-burner tawa delays</span>
+              <span class="flex items-center gap-1.5"><strong class="text-sky-400">✓</strong> Based on 20 stall visits</span>
+            </div>
+          </div>
+
+          <!-- Big Feasibility Verdict Card (Hidden initially, revealed on Check click) -->
+          <div id="card-verdict" class="hidden bg-slate-900 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-2xl transition duration-300 space-y-5">
             
             <div class="flex items-start justify-between gap-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Result</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Gate In-Time Result</span>
                 <div id="verdict-headline" class="text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400">
-                  <span>🟢</span> SAFE TO GO
+                  <span>🟢</span> SAFE — YOU'LL BE BACK IN TIME!
                 </div>
               </div>
               <div class="text-right bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
@@ -304,9 +330,9 @@
 
                 <!-- Stage 5 -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 col-span-2 sm:col-span-1">
-                  <span class="text-[11px] font-bold uppercase text-slate-400 block" id="m-margin-label">5. Buffer Left</span>
+                  <span class="text-[11px] font-bold uppercase text-slate-400 block" id="m-margin-label">5. Time Before Lock</span>
                   <span class="text-sm font-bold mono mt-1 block" id="m-curfew-margin">+11.0m</span>
-                  <span class="text-[11px] text-slate-400" id="m-margin-sub">before lock</span>
+                  <span class="text-[11px] text-slate-400" id="m-margin-sub">buffer left</span>
                 </div>
 
               </div>
@@ -541,9 +567,9 @@
               </p>
             </div>
 
-            <!-- Curfew Risk Warning Box -->
+            <!-- Gate Closing Risk Warning Box -->
             <div id="counter-curfew-box" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium leading-relaxed">
-              🟢 Safe: Take the order. Student has plenty of time to reach BH7 before 12:30 AM.
+              🟢 Safe: Take the order. Student has plenty of time to reach BH7 before 12:30 AM gate lock.
             </div>
           </div>
 
@@ -594,9 +620,9 @@
           <span class="text-[11px] text-rose-400 font-semibold">+13 mins underestimation</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Curfew Incidents</span>
+          <span class="text-xs text-slate-400 font-semibold">Late &amp; Gate Lock Incidents</span>
           <div class="text-xl sm:text-2xl font-black text-amber-400 mt-1 mono" id="stat-breach-pct">30.0%</div>
-          <span class="text-[11px] text-slate-400" id="stat-breach-sub">6 of 20 visits caused late gate or panic sprint</span>
+          <span class="text-[11px] text-slate-400" id="stat-breach-sub">6 of 20 visits caused late gate entry or panic sprint</span>
         </div>
       </div>
 
@@ -672,7 +698,7 @@
           </div>
           <div class="flex items-center gap-2">
             <button onclick="filterTable('all')" id="filter-all" class="filter-btn px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold">All (20)</button>
-            <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">Curfew Incidents (6)</button>
+            <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">Gate Rush Incidents (6)</button>
             <button onclick="filterTable('ontime')" id="filter-ontime" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">On Time (14)</button>
           </div>
         </div>
@@ -688,7 +714,7 @@
                 <th class="py-2.5 px-3">Claimed</th>
                 <th class="py-2.5 px-3">Actual Wait</th>
                 <th class="py-2.5 px-3">Hostel</th>
-                <th class="py-2.5 px-3">Curfew Impact</th>
+                <th class="py-2.5 px-3">Gate In-Time Status</th>
                 <th class="py-2.5 px-4">Fieldwork Notes</th>
               </tr>
             </thead>
@@ -853,16 +879,16 @@
           </button>
         </div>
 
-        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 pt-3 border-t border-slate-800">2. Time & Curfew Scenarios</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 pt-3 border-t border-slate-800">2. Time & Gate Closing Scenarios</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button onclick="runDiagnosticTest('midnight_rollover')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
             🌙 Order at 11:55 PM (Midnight transition)
           </button>
           <button onclick="runDiagnosticTest('curfew_passed_midnight')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
-            ⛔ Curfew Already Passed (12:45 AM)
+            ⛔ Gate Already Locked (12:45 AM)
           </button>
           <button onclick="runDiagnosticTest('curfew_passed_evening')" class="px-3.5 py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
-            ⛔ Girls Hostel Late (11:15 PM vs 10:30 PM)
+            ⛔ Girls Hostel Gate Locked (11:15 PM vs 10:30 PM)
           </button>
         </div>
 
@@ -880,7 +906,7 @@
   <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-400">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
       <div>Bipul Da's Tea Stall ("Tapri") • Built for NIT Silchar Students outside Gate 1</div>
-      <div>Curfew: Boys (BH1–BH9) 12:30 AM • Girls (GH1–GH4) 10:30 PM • Maintained by Raju</div>
+      <div>Gate Closing Times: Boys (BH1–BH9) 12:30 AM • Girls (GH1–GH4) 10:30 PM • Maintained by Raju</div>
     </div>
   </footer>
 
@@ -917,16 +943,19 @@
       }
     }
 
+    // Flag to track whether student has initiated a check
+    let hasCheckedTiming = false;
+
     // Queue sliders & buttons
     function onQueueSlider(val) {
       document.getElementById('badge-queue-count').textContent = val + ' ' + (parseInt(val) === 1 ? 'order' : 'orders');
-      updatePrediction();
+      if (hasCheckedTiming) updatePrediction();
     }
 
     function setQueue(val) {
       document.getElementById('input-queue').value = val;
       document.getElementById('badge-queue-count').textContent = val + ' ' + (val === 1 ? 'order' : 'orders');
-      updatePrediction();
+      if (hasCheckedTiming) updatePrediction();
     }
 
     function onHostelChanged() {
@@ -938,7 +967,29 @@
       } else {
         curfewInput.value = '00:30';
       }
-      updatePrediction();
+      if (hasCheckedTiming) {
+        updatePrediction();
+      } else {
+        const walkTimes = {
+          "BH1": 5.0, "BH2": 5.0, "BH3": 6.0, "BH4": 6.5,
+          "BH5": 7.0, "BH6": 7.5, "BH7": 8.0, "BH8": 9.0, "BH9": 11.0,
+          "GH1": 10.0, "GH2": 10.5, "GH3": 11.0, "GH4": 11.5
+        };
+        const walkBadge = document.getElementById('badge-walk-time');
+        if (walkBadge && walkTimes[hostel]) walkBadge.textContent = walkTimes[hostel] + ' mins walk';
+      }
+    }
+
+    function onFoodItemChanged() {
+      if (hasCheckedTiming) updatePrediction();
+    }
+
+    function onTimeChanged() {
+      if (hasCheckedTiming) updatePrediction();
+    }
+
+    function onBurnersChanged() {
+      if (hasCheckedTiming) updatePrediction();
     }
 
     // Interactive button click handler with visual feedback & smooth scroll
@@ -951,6 +1002,14 @@
       btnIcon.textContent = '⏳';
       btn.classList.add('opacity-80', 'scale-[0.99]');
 
+      hasCheckedTiming = true;
+
+      // Reveal the result card and hide the placeholder
+      const placeholder = document.getElementById('card-placeholder');
+      const card = document.getElementById('card-verdict');
+      if (placeholder) placeholder.classList.add('hidden');
+      if (card) card.classList.remove('hidden');
+
       await updatePrediction();
 
       btnText.textContent = 'Checked! (Updated)';
@@ -958,18 +1017,17 @@
       btn.classList.remove('opacity-80', 'scale-[0.99]');
 
       // Highlight verdict card
-      const card = document.getElementById('card-verdict');
-      card.classList.remove('card-highlight');
-      void card.offsetWidth; // trigger reflow
-      card.classList.add('card-highlight');
+      if (card) {
+        card.classList.remove('card-highlight');
+        void card.offsetWidth; // trigger reflow
+        card.classList.add('card-highlight');
 
-      // On mobile view, scroll directly to result card
-      if (window.innerWidth < 1024) {
+        // Smoothly scroll directly to result card so the student sees their answer immediately
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
       setTimeout(() => {
-        btnText.textContent = 'Check If I Can Make Curfew';
+        btnText.textContent = 'Check If I Can Return Before Gate Closes';
         btnIcon.textContent = '🔍';
       }, 1600);
     }
@@ -1026,7 +1084,7 @@
         if (d.curfew_status === 'CURFEW ALREADY PASSED') {
           marginEl.textContent = 'LOCKED';
           marginEl.className = 'text-sm font-bold text-rose-500 mono mt-1 block';
-          marginSub.textContent = 'gate closed';
+          marginSub.textContent = 'gate locked';
         } else if (d.curfew_margin_mins < 0) {
           marginEl.textContent = '-' + Math.abs(d.curfew_margin_mins) + 'm';
           marginEl.className = 'text-sm font-bold text-rose-400 mono mt-1 block';
@@ -1046,23 +1104,42 @@
         const headline = document.getElementById('verdict-headline');
         const advice = document.getElementById('verdict-advice');
 
+        if (!hasCheckedTiming) {
+          // If the user hasn't clicked Check yet, keep verdict card hidden
+          const placeholder = document.getElementById('card-placeholder');
+          if (placeholder) placeholder.classList.remove('hidden');
+          if (card) card.classList.add('hidden');
+        }
+
         if (d.curfew_status === 'SAFE') {
           card.className = 'bg-slate-900 border-2 border-emerald-500/50 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400';
-          headline.innerHTML = '<span>🟢</span> SAFE TO GO';
+          headline.innerHTML = '<span>🟢</span> SAFE — YOU\'LL BE BACK IN TIME!';
         } else if (d.curfew_status === 'WARNING') {
           card.className = 'bg-slate-900 border-2 border-amber-500/50 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-amber-400';
-          headline.innerHTML = '<span>🟡</span> HURRY / TIGHT TIMING';
+          headline.innerHTML = '<span>🟡</span> HURRY — VERY CLOSE TO GATE LOCK!';
         } else if (d.curfew_status === 'CURFEW ALREADY PASSED') {
           card.className = 'bg-slate-900 border-2 border-rose-600 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
-          headline.innerHTML = '<span>⛔</span> GATE ALREADY LOCKED';
+          headline.innerHTML = '<span>⛔</span> GATE ALREADY LOCKED FOR TONIGHT';
         } else {
           card.className = 'bg-slate-900 border-2 border-rose-500/60 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
-          headline.innerHTML = '<span>🔴</span> DON\'T ORDER (WILL MISS CURFEW)';
+          headline.innerHTML = '<span>🔴</span> DON\'T ORDER (GATE WILL BE LOCKED)';
         }
+
+        advice.textContent = d.recommendation;
+        document.getElementById('val-explanation-box').textContent = d.calculation_explanation;
+
+        if (d.prediction_disclaimer) {
+          document.getElementById('val-disclaimer-box').textContent = d.prediction_disclaimer;
+        }
+
+      } catch (err) {
+        console.error('Prediction calculation error:', err);
+      }
+    }
 
         advice.textContent = d.recommendation;
         document.getElementById('val-explanation-box').textContent = d.calculation_explanation;
@@ -1175,13 +1252,13 @@
         const box = document.getElementById('counter-curfew-box');
         if (adv.status_color === 'red') {
           box.className = 'p-4 rounded-xl bg-rose-500/20 border border-rose-500/40 text-xs sm:text-sm text-rose-300 font-semibold leading-relaxed';
-          box.innerHTML = `⚠️ <strong>CURFEW WARNING:</strong> Customer is from ${counterHostelGroup === 'GH' ? 'Girls Hostel (10:30 PM curfew)' : 'Boys Hostel (12:30 AM curfew)'}. Food will NOT be ready in time! Shout: <em>"भैया बैठो मत, रूम जाओ या केवल चाय लो!" ("Bhaiya baitho mat, room jao ya chai lo!")</em>`;
+          box.innerHTML = `⚠️ <strong>GATE LOCK WARNING:</strong> Customer is from ${counterHostelGroup === 'GH' ? 'Girls Hostel (10:30 PM gate lock)' : 'Boys Hostel (12:30 AM gate lock)'}. Food will NOT be ready in time! Shout: <em>"भैया बैठो मत, रूम जाओ या केवल चाय लो!" ("Bhaiya baitho mat, room jao ya chai lo!")</em>`;
         } else if (adv.status_color === 'yellow') {
           box.className = 'p-4 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs sm:text-sm text-amber-300 font-semibold leading-relaxed';
           box.innerHTML = `⚡ <strong>RUSH ORDER:</strong> Only ${adv.curfew_margin_mins} mins left before gate lock! Prioritize this order.`;
         } else {
           box.className = 'p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs sm:text-sm text-emerald-300 font-medium leading-relaxed';
-          box.innerHTML = `🟢 <strong>SAFE TO TAKE:</strong> Customer from ${hostel} has plenty of time to return before ${curfew_time}.`;
+          box.innerHTML = `🟢 <strong>SAFE TO TAKE:</strong> Customer from ${hostel} has plenty of time to return before ${curfew_time} gate lock.`;
         }
       } catch (err) {
         console.error('Counter advice error:', err);
@@ -1325,7 +1402,7 @@
         <div class="text-xs text-slate-300 mt-1">Orders Ahead: <strong class="text-amber-400">${row.queue_ahead}</strong></div>
         <div class="text-xs text-slate-300">Actual Wait: <strong class="text-rose-400 font-mono">${row.actual_wait_mins}m</strong> (Claimed: ${row.claimed_wait_mins}m)</div>
         <div class="text-xs text-slate-400">Hostel: ${row.hostel_origin} • ${row.timestamp}</div>
-        <div class="text-xs font-semibold mt-1 ${isLate ? 'text-rose-400' : 'text-emerald-400'}">${isLate ? '⚠️ Curfew Incident' : '🟢 Safe Entry'}</div>
+        <div class="text-xs font-semibold mt-1 ${isLate ? 'text-rose-400' : 'text-emerald-400'}">${isLate ? '⚠️ Late Entry / Gate Rush' : '🟢 Safe Entry'}</div>
         <div class="text-[11px] text-slate-400 mt-1 italic">"${row.notes || ''}"</div>
       `;
 
@@ -1354,7 +1431,7 @@
       tbody.innerHTML = filtered.map(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';
         const badge = isLate 
-          ? '<span class="px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 font-bold border border-rose-500/30">🔴 Curfew Incident</span>'
+          ? '<span class="px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 font-bold border border-rose-500/30">🔴 Late / Gate Rush</span>'
           : '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-medium border border-emerald-500/30">🟢 Safe Entry</span>';
 
         return `
