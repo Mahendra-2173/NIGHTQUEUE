@@ -104,13 +104,15 @@ NIGHTQUEUE/
 │   ├── stall_front.jpg  # Photo 1: Stall front with signboard & Campa Energy banners
 │   ├── stove_burners.jpg# Photo 2: 2-burner stove & tea kettle through wire mesh
 │   ├── bipul_da_counter.jpg # Photo 3: Bipul Da behind the wooden counter
+│   ├── stall_setup.jpg  # Companion view of stall entrance
+│   ├── cooking_rush.jpg # Companion view of cooking activity
 │   └── README.md
-└── README.md            # Comprehensive project documentation
-```
-│   ├── stall_setup.jpg
-│   └── cooking_rush.jpg
 ├── ai-chats/            # AI transcripts exported per assignment instructions
-│   └── session_log.md
+│   ├── session_log.md   # Chronological index & developer decision log
+│   ├── 01_ideation_and_problem_discovery.md
+│   ├── 02_fieldwork_and_data_collection.md
+│   ├── 03_queuing_engine_and_midnight_bug.md
+│   └── 04_frontend_and_counter_batch_board.md
 └── README.md            # Comprehensive project documentation
 ```
 

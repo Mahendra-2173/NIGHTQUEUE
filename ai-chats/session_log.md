@@ -1,8 +1,19 @@
 # AI Chat Assistance Record: Ideation, Engineering & Technical Calibration
 
-**Scope:** Record of genuine AI interactions utilized during ideation, mathematical formulation, debugging, and testing of NIGHTQUEUE.  
+**Scope:** Complete chronological record of AI interactions utilized during ideation, mathematical formulation, debugging, and testing of NIGHTQUEUE.  
 **Primary Model:** Gemini 3.8 Flash (High)  
 **Engineering Policy:** AI was utilized strictly as an analytical accelerator (translating queue formulas into Python dataclasses, drafting CSS layouts, identifying edge-case boundary conditions). All fieldwork observations, local interviews, data collection, and architectural validation were conducted independently by the developer.
+
+---
+
+## Complete Session Transcripts in this Directory
+
+| File | Focus Area | Date & Time | Primary Discussion & Artifacts |
+| :--- | :--- | :--- | :--- |
+| **[`01_ideation_and_problem_discovery.md`](01_ideation_and_problem_discovery.md)** | Problem Selection & Scoping | Nov 14, 2026 (~19:30 IST) | Rejecting generic apps (attendance, mess); selecting Bipul Da's stall outside Gate 1, NIT Silchar; framing the "5-minute promise fallacy" against hostel curfew deadlines. |
+| **[`02_fieldwork_and_data_collection.md`](02_fieldwork_and_data_collection.md)** | Fieldwork & Data Schema | Nov 15, 2026 (~00:45 IST) | Logging 20 real orders in cold outside Gate 1; discovering the 2-burner stove constraint and pan transition latency (60–90s); dynamically computing item statistics from `data.csv`. |
+| **[`03_queuing_engine_and_midnight_bug.md`](03_queuing_engine_and_midnight_bug.md)** | Queuing Physics & Datetime Bugs | Nov 15, 2026 (~02:15 IST) | Debugging the classic midnight date rollover bug (23:55 to 00:30 giving -1405 mins); detecting already-passed curfews; formulating 2-burner queue delays; writing 23 automated tests. |
+| **[`04_frontend_and_counter_batch_board.md`](04_frontend_and_counter_batch_board.md)** | UI, Counter View & UX Polish | Nov 15, 2026 (~04:30 IST) | Mobile-first Tailwind CSS layout; Bipul Da & Raju's Live Kitchen Batch Board; hiding the result card behind a friendly placeholder until clicked; simplifying language from "curfew" to "hostel gate closing". |
 
 ---
 
@@ -15,40 +26,4 @@
 | **Bottleneck Discovery** | Discovered that pan changeover (wiping egg tawa with rag before boiling water) accounted for 60–90s of zero-cooking dead time. | Integrated pan changeover latency term into Python queuing engine. | Rejected standard $M/M/1$ queues that assume zero transition penalty between menu categories. |
 | **Technology Stack** | Selected lightweight Flask + vanilla HTML5/CSS/JS to guarantee instant loading on 2G/3G campus connections. | Accelerated Tailwind CSS markup generation for the 4 dashboard views. | Rejected React/Next.js/Vite, heavyweight ML frameworks (XGBoost, LSTM), and Docker orchestration. |
 | **Curfew & Date Logic** | Defined reference-night date model to handle pre-midnight (22:30) and post-midnight (00:30) curfews and detect passed curfews. | Generated boundary test cases for midnight rollover and timezone date arithmetic. | Rejected rolling an already-passed curfew forward to the next calendar day. |
-
----
-
-## 2. Key Interactive Excerpts
-
-### Excerpt 1: Rejecting Generic Ideas & Framing Student-First Problem
-* **User Prompt:** *"no give another it should be unique and good for building a website ... think in the student pov and try to find the prblm of the students and solve it so that the prblm should be meaningful and solution should be correct"*
-* **Developer Decision:** Chose the late-night hostel curfew lock at NIT Silchar as the genuine pain point rather than another campus marketplace or library tracker.
-* **AI Assistance:** Helped map out how the vendor's physical 2-burner constraint directly contradicts his verbal "5-minute" assurance, producing a predictable queuing backlog.
-
----
-
-### Excerpt 2: Grounding Field Setting to NIT Silchar, Cachar, Assam
-* **User Prompt:** *"use NIT silchar ASSAM detalis name the shop keepers names from assams names"*
-* **Developer Decision:** Fixed the location to Gate 1 (Main Gate), NIT Silchar, Cachar, Assam (788010). Verified walking times from Hostels 1–9 and Girls' Hostels to Gate 1 (~5.0 to 11.0 minutes).
-* **AI Assistance:** Structured the NIT Silchar hostel transit distance matrix into Python dictionary format.
-
----
-
-### Excerpt 3: Queuing Formulation & Pan Transition Latency
-* **Discussion:** Translating fieldwork observations into a deterministic queue calculation.
-* **Developer Insight:** Pointed out that Bipul Da cannot cook eggs and boil Maggi in the same pan simultaneously without washing, meaning discordant dish types incur significant setup overhead.
-* **AI Assistance:** Expressed the multi-burner batching formula ($c=2$ burners, batch multiplier $0.75$ for shared boiling pots, and $1.2\text{m}$ pan changeover latency per 3 mixed orders).
-
----
-
-### Excerpt 4: Data-Driven Refinement & Automated Test Suite
-* **Discussion:** Eliminating hardcoded preparation times and calibrating directly from `data.csv`.
-* **Developer Decision:** Mandated that all dish preparation times (mean, median, min, max, std) must be dynamically derived from the 20 validated rows in `data.csv`.
-* **AI Assistance:** Assisted in structuring the 21-point unit and integration test suite in `test_server.py`, including boundary fuzzing for negative orders and 0 burners.
-
----
-
-### Excerpt 5: Date-Aware Curfew Logic & Journey Milestone Tracking
-* **Discussion:** Fixing midnight date discontinuities and distinguishing curfew stress from confirmed late entries.
-* **Developer Decision:** Re-examined `data.csv` notes to separate confirmed late entries (3 orders marked in register / warned) from sprinting stress (3 orders), refining the metric to "Curfew Stress & Rush Incidents" (30%).
-* **AI Assistance:** Implemented the 5-milestone journey calculation (depart $\rightarrow$ stall $\rightarrow$ kitchen prep $\rightarrow$ food ready $\rightarrow$ room return vs curfew deadline) and reference-night date arithmetic.
+| **User Experience** | Kept verdict card hidden initially behind an engaging prompt card, revealing and smooth-scrolling only on check click. | Implemented dynamic DOM unhide and mobile scroll logic. | Rejected auto-triggering on every intermediate keystroke before the student enters all parameters. |
