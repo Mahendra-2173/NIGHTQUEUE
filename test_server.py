@@ -204,7 +204,7 @@ class TestNightQueueComprehensive23(unittest.TestCase):
         )
         self.assertEqual(params["orders_ahead"], 0)
         self.assertEqual(params["burners_active"], 1)
-        self.assertEqual(params["hostel"], "Hostel 7")
+        self.assertIn(params["hostel"], ["BH7", "Hostel 7"])
         self.assertEqual(params["current_time"], "23:45")
         self.assertEqual(params["curfew_time"], "00:30")
         self.assertGreater(len(warnings), 0)

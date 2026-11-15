@@ -21,7 +21,23 @@ import numpy as np
 
 
 # NIT Silchar campus walking times to Gate 1 (one-way in minutes, ~5 km/h pace)
+# Official campus nomenclature: Boys Hostels BH1 to BH9, Girls Hostels GH1 to GH4
 NIT_SILCHAR_HOSTEL_WALK_TIMES: Dict[str, float] = {
+    # Official NIT Silchar hostel codes
+    "BH1": 5.0,
+    "BH2": 5.0,
+    "BH3": 6.0,
+    "BH4": 6.5,
+    "BH5": 7.0,
+    "BH6": 7.5,
+    "BH7": 8.0,
+    "BH8": 9.0,
+    "BH9": 11.0,
+    "GH1": 10.0,
+    "GH2": 10.5,
+    "GH3": 11.0,
+    "GH4": 11.5,
+    # Backward compatible aliases
     "Hostel 1": 5.0,
     "Hostel 2": 5.0,
     "Hostel 3": 6.0,
@@ -30,9 +46,12 @@ NIT_SILCHAR_HOSTEL_WALK_TIMES: Dict[str, float] = {
     "Hostel 6": 7.5,
     "Hostel 7": 8.0,
     "Hostel 8": 9.0,
+    "Hostel 9": 11.0,
     "Hostel 9 (PG)": 11.0,
     "Girls Hostel 1": 10.0,
     "Girls Hostel 2": 10.5,
+    "Girls Hostel 3": 11.0,
+    "Girls Hostel 4": 11.5,
 }
 
 # Documented fallback base preparation estimates (minutes) used ONLY when an item has no data
@@ -497,8 +516,17 @@ class NightQueueModel:
 
         # 2. Hostel validation
         clean_hostel = str(hostel).strip() if hostel is not None else ""
-        if not clean_hostel or clean_hostel not in NIT_SILCHAR_HOSTEL_WALK_TIMES:
-            default_hostel = "Hostel 7"
+        # Check direct match or case-insensitive match
+        matched_hostel = None
+        for known_hostel in NIT_SILCHAR_HOSTEL_WALK_TIMES:
+            if clean_hostel.lower() == known_hostel.lower():
+                matched_hostel = known_hostel
+                break
+        
+        if matched_hostel is not None:
+            clean_hostel = matched_hostel
+        else:
+            default_hostel = "BH7"
             warnings.append(f"Hostel '{clean_hostel}' unrecognized or empty. Defaulted to '{default_hostel}' (~8.0 mins walk).")
             clean_hostel = default_hostel
         sanitized["hostel"] = clean_hostel
@@ -774,7 +802,7 @@ class NightQueueModel:
 
         vendor_claimed = 5.0 if orders_ahead <= 4 else 10.0
         gap = round(total_kitchen_wait - vendor_claimed, 1)
-        disclaimer = "Disclaimer: Predictions are data-driven estimates and actual waiting times may vary due to pan changeover latency, stove flame pressure, and sudden customer arrivals."
+        disclaimer = "Disclaimer: Times are realistic estimates based on observations at Bipul Da's stall. Actual wait times can vary if there are sudden crowds or stove delays."
 
         return QueuePrediction(
             item_name=dish_name,
@@ -816,6 +844,60 @@ class NightQueueModel:
             remaining_curfew_mins=round(curfew_margin, 1),
             prediction_disclaimer=disclaimer
         )
+
+    def get_counter_advice_for_bipul_da(
+        self,
+        dish_name: str = "Double Egg Maggi",
+        dish_category: str = "maggi",
+        hostel: str = "BH7",
+        orders_ahead: int = 4,
+        burners_active: int = 2,
+        current_time_str: str = "23:45",
+        curfew_time_str: str = "00:30"
+    ) -> Dict[str, Any]:
+        """
+        Special helper for Bipul Da or counter helper.
+        Tells him exactly what realistic time to shout out to the student,
+        and gives an immediate warning if the student will miss hostel curfew.
+        """
+        pred = self.predict_wait_and_curfew(
+            dish_name=dish_name,
+            dish_category=dish_category,
+            hostel=hostel,
+            orders_ahead=orders_ahead,
+            burners_active=burners_active,
+            current_time_str=current_time_str,
+            curfew_time_str=curfew_time_str
+        )
+        
+        prep_time = pred.food_prep_and_wait_mins
+        low_range = max(2, int(round(prep_time - 2)))
+        high_range = int(round(prep_time + 2))
+        shout_time = f"{low_range}–{high_range} mins" if high_range > low_range else f"{int(round(prep_time))} mins"
+        
+        if pred.curfew_status in ["LIKELY TO MISS CURFEW", "CURFEW ALREADY PASSED"]:
+            vendor_action = f"⚠️ Tell student from {hostel}: Food takes {shout_time}, they will miss curfew ({pred.curfew_time})! Suggest fast Plain Maggi or Tea instead."
+            status_color = "red"
+        elif pred.curfew_status == "WARNING":
+            vendor_action = f"⚡ Tell student from {hostel}: Takes {shout_time}. They only have {pred.curfew_margin_mins} mins buffer before gate lock! Make this fast."
+            status_color = "yellow"
+        else:
+            vendor_action = f"🟢 Safe: Tell student '{shout_time}'. They have plenty of time to reach {hostel} before curfew."
+            status_color = "green"
+
+        return {
+            "dish_name": dish_name,
+            "hostel": hostel,
+            "orders_ahead": orders_ahead,
+            "realistic_wait_mins": prep_time,
+            "shout_quote": f"Tell student: '{shout_time}' (instead of '5 minute')",
+            "vendor_action": vendor_action,
+            "status_color": status_color,
+            "room_return_time": pred.room_return_time,
+            "curfew_time": pred.curfew_time,
+            "curfew_status": pred.curfew_status,
+            "curfew_margin_mins": pred.curfew_margin_mins
+        }
 
 
 if __name__ == "__main__":
