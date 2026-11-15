@@ -1141,18 +1141,6 @@
       }
     }
 
-        advice.textContent = d.recommendation;
-        document.getElementById('val-explanation-box').textContent = d.calculation_explanation;
-
-        if (d.prediction_disclaimer) {
-          document.getElementById('val-disclaimer-box').textContent = d.prediction_disclaimer;
-        }
-
-      } catch (err) {
-        console.error('Prediction calculation error:', err);
-      }
-    }
-
     // ===============================================================
     // LIVE KITCHEN BATCH BOARD & RAJU COUNTER HELPER LOGIC
     // ===============================================================
