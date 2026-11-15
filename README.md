@@ -5,7 +5,6 @@
 > **Stall Owner & Sole Cook:** Bipul Nath ("Bipul Da"), Age 44  
 > **Date of Fieldwork:** November 14–15, 2026 (23:20 to 00:15 IST)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
-> **Demo Walkthrough Video Link:** [https://youtu.be/nightqueue-nit-silchar-demo](https://youtu.be/nightqueue-nit-silchar-demo) *(3-minute walkthrough)*  
 
 ---
 
@@ -91,12 +90,10 @@ NIGHTQUEUE/
 ├── data.csv             # 20 genuine empirical observations collected at Gate 1
 ├── templates/
 │   └── index.html       # Responsive 4-section dashboard (Tailwind CSS)
-├── test_server.py       # 19-point comprehensive unit and integration test suite
-├── fieldwork.md         # Fieldwork logs, photos references, interview quotes
+├── test_server.py       # 23-point comprehensive unit and integration test suite
+├── fieldwork.md         # Fieldwork logs, vendor interview quotes, methodology
 ├── research.md          # 5-line problem statement, 2 alternatives, 2 cited papers
 ├── reflection.md        # Retrospective on mistakes, cuts, and AI usage
-├── photos/              # Smartphone fieldwork photos placeholder & metadata
-│   └── README.md
 ├── ai-chats/            # AI transcripts exported per assignment instructions
 │   └── session_log.md
 └── README.md            # Comprehensive project documentation
@@ -186,13 +183,13 @@ python test_server.py
 
 ---
 
-## 14. Actual Screenshots
+## 14. Dashboard Architecture & User Interface Layout
 
-> **Note:** Screenshots of the interactive dashboard running on local host:
-- **Curfew Checker:** Clean 2-column interface showing food selection, queue slider, visual verdict card, and transparency breakdown.
-- **Stall Data:** Tables displaying item-wise statistical metrics (mean, median, min, max, std) and all 20 genuine observation records.
-- **The Story:** Grounded qualitative context of NIT Silchar, Gate 1, and stall dynamics.
-- **Simple Test:** Interactive scenario runner testing queue sensitivity and edge cases.
+The dashboard is structured into four functional views:
+- **Curfew Checker:** A 2-column interface featuring food item selection, queue slider, burner toggle, visual feasibility status (`SAFE`, `WARNING`, `LIKELY TO MISS CURFEW`, `CURFEW ALREADY PASSED`), the 5-milestone journey timeline, transparent calculation formulas, and disclaimer.
+- **Stall Data:** Empirical summary metrics, an interactive SVG scatter plot analyzing actual wait time versus queue size with the empirical regression line ($\approx 2.33\text{m/order}$), dynamic comparative bar charts, food-item statistics table with sample counts ($n$), and filterable raw fieldwork logs.
+- **The Story:** Grounded qualitative context of NIT Silchar, Gate 1, Bipul Da's stall, burner constraints, and alternative comparisons.
+- **Simple Test:** Interactive simulator testing queue sensitivity (0 to 10 orders ahead) and 6 one-click boundary and date diagnostic scenarios.
 
 ---
 

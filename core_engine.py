@@ -819,16 +819,25 @@ class NightQueueModel:
 
 
 if __name__ == "__main__":
+    print("==================================================================")
+    print("🌙 NightQueue: Core Data-Driven Prediction Script (NIT Silchar)")
+    print("==================================================================")
     model = NightQueueModel("data.csv")
-    print("--- DATASET VALIDATION REPORT ---")
     rep = model.validation_report
-    print(f"Valid: {rep.is_valid} | Rows read: {rep.total_rows_read} | Valid rows: {rep.valid_rows_count} | Excluded: {rep.excluded_rows_count}")
-    
-    print("\n--- ITEM-WISE HISTORICAL STATISTICS ---")
-    for item, s in model.get_item_statistics().items():
-        print(f"{item:20}: n={s['count']} | mean={s['mean_actual_mins']}m | median={s['median_actual_mins']}m | min={s['min_actual_mins']}m | max={s['max_actual_mins']}m | std={s['std_actual_mins']}m")
+    stats = model.get_summary_stats()
+    print(f"\n[1] DATASET LOADED FROM data.csv:")
+    print(f"  • Valid Rows:           {rep.valid_rows_count} / {rep.total_rows_read} rows loaded")
+    print(f"  • Observed Mean Wait:   {stats['avg_actual_mins']} mins (Claimed mean: {stats['avg_claimed_mins']} mins)")
+    print(f"  • Underestimation Gap:  +{stats['avg_underestimation_gap']} mins late")
+    print(f"  • Curfew Stress Rate:   {stats['curfew_incident_rate_pct']}% of observed late-night visits")
 
-    print("\n--- SAMPLE PREDICTION (Hostel 7, 6 ahead, 23:45) ---")
+    print(f"\n[2] ACTIONABLE RESULT FOR BIPUL DA (Counter Guidance):")
     pred = model.predict_wait_and_curfew("Bun Omelette", "egg_toast", "Hostel 7", 6, 2, "23:45", "00:30")
-    print(f"Status: {pred.curfew_status} (Margin: {pred.curfew_margin_mins}m)")
-    print(f"Explanation: {pred.calculation_explanation}")
+    print(f"  • Scenario:             Hostel 7 student ordering Bun Omelette at 23:45 with 6 orders ahead")
+    print(f"  • Bipul Da's Promise:   {pred.vendor_promised_mins} mins ('Bas 5 minute')")
+    print(f"  • Realistic Wait Time:  {pred.food_prep_and_wait_mins} mins (Base prep: {pred.historical_prep_mins}m + Queue delay: {pred.queue_wait_mins}m)")
+    print(f"  • Room Return Time:     {pred.room_return_time} (Hostel Curfew: 12:30 AM)")
+    print(f"  • Curfew Feasibility:   [{pred.curfew_status}] (Margin left: {pred.curfew_margin_mins} mins)")
+    print(f"  • Actionable Directive: DO NOT tell this customer '5 minutes'. Announce a realistic 25-minute wait")
+    print(f"                          and advise them to switch to fast Plain Maggi or Tea to avoid missing curfew.")
+    print("==================================================================")
