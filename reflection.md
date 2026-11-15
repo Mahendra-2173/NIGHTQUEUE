@@ -2,7 +2,7 @@
 
 > **Live Deployment:** [https://nightqueue.onrender.com](https://nightqueue.onrender.com)  
 > **GitHub Repository:** [https://github.com/Mahendra-2173/NIGHTQUEUE](https://github.com/Mahendra-2173/NIGHTQUEUE)  
-> **3-Minute Screen Recording Video:** [Watch on Google Drive](https://drive.google.com/drive/folders/1zBrTpkhPoQvqBuyldZZNyvc1oD0mFReR?usp=drive_link) *(Companion mirror: [`demo.mp4`](demo.mp4))*  
+> **3-Minute Screen Recording Video:** [Watch on Google Drive](https://drive.google.com/drive/folders/1zBrTpkhPoQvqBuyldZZNyvc1oD0mFReR?usp=drive_link) 
 
 ---
 
