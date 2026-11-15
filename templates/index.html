@@ -14,7 +14,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
-  <!-- Top Navigation Header -->
+  <!-- Header & Navigation Bar -->
   <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
       
@@ -28,231 +28,227 @@
             <span class="text-base font-extrabold text-white tracking-tight">NightQueue</span>
             <span class="text-[11px] bg-amber-500/15 text-amber-300 font-semibold px-2 py-0.5 rounded border border-amber-500/30">NIT Silchar</span>
           </div>
-          <p class="text-xs text-slate-400">Bipul Da's Stall @ Gate 1 • Real-Time Radar</p>
+          <p class="text-xs text-slate-400">Bipul Da's Stall @ Gate 1 • Data-Calibrated Radar</p>
         </div>
       </a>
 
-      <!-- Navigation Bar -->
+      <!-- 4 Primary Sections Navigation -->
       <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-semibold overflow-x-auto">
         <button id="nav-checker" onclick="showPage('checker')" class="nav-btn px-3 py-1.5 rounded-lg text-amber-300 bg-slate-800/80 transition flex items-center gap-1.5 whitespace-nowrap">
           <span>🕒</span> <span>Curfew Checker</span>
         </button>
-        <button id="nav-owner" onclick="showPage('owner')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
-          <span>👨‍🍳</span> <span>Stall Counter</span>
-        </button>
         <button id="nav-data" onclick="showPage('data')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
-          <span>📊</span> <span>Stall Data (20)</span>
+          <span>📊</span> <span>Stall Data</span>
         </button>
         <button id="nav-story" onclick="showPage('story')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
           <span>📖</span> <span>The Story</span>
         </button>
         <button id="nav-test" onclick="showPage('test')" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
-          <span>🧪</span> <span>Diagnostics</span>
+          <span>🧪</span> <span>Simple Test</span>
         </button>
       </nav>
 
     </div>
   </header>
 
-  <!-- Main Content Viewport -->
+  <!-- Main Viewport -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-7">
 
     <!-- ================================================================= -->
-    <!-- PAGE 1: CURFEW CHECKER (STUDENT VIEW)                             -->
+    <!-- SECTION A: CURFEW CHECKER                                         -->
     <!-- ================================================================= -->
     <section id="page-checker" class="page-content space-y-6">
       
       <!-- Headline & Subtitle -->
       <div class="text-center max-w-2xl mx-auto space-y-1.5">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Will you make it back before <span class="text-amber-400">12:30 AM</span>?
+          Will you make it back before <span class="text-amber-400">12:30 AM Curfew</span>?
         </h2>
         <p class="text-xs sm:text-sm text-slate-400">
-          Bipul Da always tells waiting students: <em class="text-amber-300 font-medium">"Bas 5 minute lagega, bohi thaak!"</em><br>
-          Check your <strong>real cooking time</strong> and walking transit time before you leave your hostel.
+          Bipul Da always tells hostellers: <em class="text-amber-300 font-medium">"Bas 5 minute lagega, bohi thaak!"</em><br>
+          This radar uses <strong>actual observations from data.csv</strong> to calculate realistic cooking, queue, and walking times.
         </p>
       </div>
 
-      <!-- Main 2-Column Grid -->
+      <!-- 2-Column Responsive Layout -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         
-        <!-- Left: Student Input Controls (5 cols) -->
-        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+        <!-- Input Form (5 cols) -->
+        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
           <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
             <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>📋</span> Order Configuration
+              <span>📋</span> Order & Transit Inputs
             </h3>
             <span class="text-[11px] text-amber-400 font-mono">Gate 1 Stall</span>
           </div>
 
           <form id="checker-form" class="space-y-4" onsubmit="return false;">
             
-            <!-- Step 1: Select Hostel -->
+            <!-- Food Item Selection -->
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5 flex justify-between">
-                <span>1. Where is your Hostel?</span>
-                <span id="badge-walk-time" class="text-amber-400 mono font-semibold">8 mins walk</span>
+                <span>Food Item</span>
+                <span id="badge-item-stat" class="text-amber-400 mono text-[11px]">Historical n=4</span>
+              </label>
+              <select id="input-food" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
+                <option value="Double Egg Maggi|maggi|50" selected>Double Egg Maggi (₹50) — Pan shared, high demand</option>
+                <option value="Plain Maggi|maggi|35">Plain Maggi (₹35) — Fast batch cooking (n=5)</option>
+                <option value="Bun Omelette|egg_toast|45">Bun Omelette (₹45) — Toasted bun + egg tawa (n=4)</option>
+                <option value="Egg Toast|egg_toast|40">Egg Toast (₹40) — Tawa fried bread (n=4)</option>
+                <option value="Dudh Saah x2|beverage|30">Milk Tea / Dudh Saah x2 (₹30) — Fast simmer (n=1)</option>
+                <option value="Lal Saah x2|beverage|20">Black Tea / Lal Saah x2 (₹20) — Quick turnaround (n=1)</option>
+                <option value="Custom / Unobserved Dish|unknown|40">Unobserved Food Item (Tests Fallback)</option>
+              </select>
+            </div>
+
+            <!-- Hostel Selection -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5 flex justify-between">
+                <span>Select Your Hostel</span>
+                <span id="badge-walk-time" class="text-amber-400 mono font-semibold">8.0 mins walk</span>
               </label>
               <select id="input-hostel" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
-                <option value="Hostel 1">Hostel 1 (Freshers - 5 mins walk)</option>
-                <option value="Hostel 2">Hostel 2 (5 mins walk)</option>
-                <option value="Hostel 3">Hostel 3 (6 mins walk)</option>
+                <option value="Hostel 1">Hostel 1 (Freshers - 5.0 mins walk)</option>
+                <option value="Hostel 2">Hostel 2 (5.0 mins walk)</option>
+                <option value="Hostel 3">Hostel 3 (6.0 mins walk)</option>
                 <option value="Hostel 4">Hostel 4 (6.5 mins walk)</option>
-                <option value="Hostel 5">Hostel 5 (7 mins walk)</option>
+                <option value="Hostel 5">Hostel 5 (7.0 mins walk)</option>
                 <option value="Hostel 6">Hostel 6 (7.5 mins walk)</option>
-                <option value="Hostel 7" selected>Hostel 7 (Senior - 8 mins walk)</option>
-                <option value="Hostel 8">Hostel 8 (Senior - 9 mins walk)</option>
-                <option value="Hostel 9 (PG)">Hostel 9 / PG (11 mins walk)</option>
-                <option value="Girls Hostel 1">Girls Hostel 1 (10 mins walk)</option>
+                <option value="Hostel 7" selected>Hostel 7 (Senior - 8.0 mins walk)</option>
+                <option value="Hostel 8">Hostel 8 (Senior - 9.0 mins walk)</option>
+                <option value="Hostel 9 (PG)">Hostel 9 / PG (Far North - 11.0 mins walk)</option>
+                <option value="Girls Hostel 1">Girls Hostel 1 (10.0 mins walk)</option>
                 <option value="Girls Hostel 2">Girls Hostel 2 (10.5 mins walk)</option>
               </select>
             </div>
 
-            <!-- Step 2: Food Craving -->
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1.5 flex justify-between">
-                <span>2. Select Food Item</span>
-                <span id="badge-data-tag" class="text-slate-400 mono text-[11px]">Empirical (n=4)</span>
-              </label>
-              <select id="input-food" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500">
-                <option value="Bun Omelette|egg_toast|45" selected>Bun Omelette (₹45) — Toasted bun + egg tawa</option>
-                <option value="Double Egg Maggi|maggi|50">Double Egg Maggi (₹50) — Pan shared, high demand</option>
-                <option value="Plain Maggi|maggi|35">Plain Maggi (₹35) — Fast batch cooking</option>
-                <option value="Egg Toast|egg_toast|40">Egg Toast (₹40) — Tawa fried bread</option>
-                <option value="Dudh Saah x2|beverage|30">Milk Tea / Dudh Saah x2 (₹30) — Fast simmer</option>
-                <option value="Lal Saah x1|beverage|10">Black Tea / Lal Saah (₹10) — Quickest turnaround</option>
-              </select>
-            </div>
-
-            <!-- Step 3: Orders in Queue -->
+            <!-- Pending Orders Ahead Slider -->
             <div>
               <div class="flex items-center justify-between text-xs font-bold text-slate-300 mb-1.5">
-                <span>3. Orders Ahead at Counter:</span>
-                <span id="badge-queue-count" class="mono text-amber-400 font-bold bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30">6 orders</span>
+                <span>Orders Ahead at Counter:</span>
+                <span id="badge-queue-count" class="mono text-amber-400 font-bold bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30">4 orders</span>
               </div>
-              <input type="range" id="input-queue" min="0" max="15" value="6" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+              <input type="range" id="input-queue" min="0" max="15" value="4" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
               
               <!-- Quick Select Buttons -->
               <div class="grid grid-cols-4 gap-1.5 mt-2">
                 <button type="button" onclick="setQueue(0)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">0 (Clear)</button>
                 <button type="button" onclick="setQueue(3)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">3 (Few)</button>
                 <button type="button" onclick="setQueue(6)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-amber-400 border-amber-500/30 transition">6 (Rush)</button>
-                <button type="button" onclick="setQueue(10)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">10 (Severe)</button>
+                <button type="button" onclick="setQueue(10)" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-[11px] rounded text-slate-400 hover:text-white transition">10 (Packed)</button>
               </div>
             </div>
 
-            <!-- Advanced Settings Accordion -->
-            <div class="pt-2 border-t border-slate-800/80">
-              <button type="button" onclick="toggleSettings()" class="text-xs text-slate-400 hover:text-slate-200 flex items-center justify-between w-full font-medium transition">
-                <span>Operational Inputs (Clock Time & Burners)</span>
-                <span id="settings-arrow">▶</span>
-              </button>
-              <div id="settings-box" class="hidden mt-3 p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-400 mb-1">Current Clock Time</label>
-                  <input type="time" id="input-time" value="23:45" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white mono">
-                </div>
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-400 mb-1">Active Gas Burners</label>
-                  <select id="input-burners" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
-                    <option value="2" selected>2 Burners (Normal Operation)</option>
-                    <option value="1">1 Burner (LPG Cylinder Low / Valve Issue)</option>
-                  </select>
-                </div>
+            <!-- Time Inputs -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Current Time</label>
+                <input type="time" id="input-time" value="23:45" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white mono">
               </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Curfew Deadline</label>
+                <input type="time" id="input-curfew" value="00:30" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 mono font-bold">
+              </div>
+            </div>
+
+            <!-- Active Burner Status Toggle -->
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Stall Preparation Capacity</label>
+              <select id="input-burners" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                <option value="2" selected>2 Gas Burners (Normal Operation)</option>
+                <option value="1">1 Gas Burner (Row 7 Condition: Low LPG Cylinder)</option>
+              </select>
             </div>
 
           </form>
         </div>
 
-        <!-- Right: Prediction & Verdict (7 cols) -->
+        <!-- Result & Transparency Card (7 cols) -->
         <div class="md:col-span-7 space-y-5">
           
-          <!-- Big Verdict Card -->
-          <div id="card-verdict" class="bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-6 shadow-2xl transition duration-300">
+          <!-- Big Feasibility Verdict Card -->
+          <div id="card-verdict" class="bg-slate-900 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-2xl transition duration-300">
             
             <div class="flex items-start justify-between gap-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Risk Status</span>
-                <div id="verdict-headline" class="text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-amber-400">
-                  <span>🟡</span> HURRY UP!
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Curfew Feasibility Result</span>
+                <div id="verdict-headline" class="text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400">
+                  <span>🟢</span> SAFE
                 </div>
               </div>
               <div class="text-right bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800">
                 <span class="text-[10px] text-slate-400 block font-semibold">GATE CLOSES</span>
-                <span class="text-sm font-bold text-amber-400 mono">12:30 AM</span>
+                <span class="text-sm font-bold text-amber-400 mono" id="val-curfew-tag">00:30 (12:30 AM)</span>
               </div>
             </div>
 
-            <!-- Practical Recommendation -->
+            <!-- Recommendation Callout -->
             <div id="verdict-advice" class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed">
-              Calculating wait time...
+              Calculating empirical prediction...
             </div>
 
-            <!-- Departure Deadline Callout -->
-            <div class="mt-3.5 flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs">
-              <span class="text-slate-400">Latest Departure from Hostel:</span>
-              <span class="font-bold text-amber-300 mono" id="val-departure-deadline">Leave by 11:47 PM</span>
-            </div>
-
-            <!-- Step by Step Timeline Breakdown -->
+            <!-- Key Timeline Breakdown Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
               
               <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-[10px] font-bold uppercase text-slate-400 block">1. Walk to Gate</span>
-                <span class="text-base sm:text-lg font-black text-white mono mt-0.5 block" id="val-walk-to">8.0m</span>
-                <span class="text-[11px] text-slate-400">one-way</span>
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Base Prep</span>
+                <span class="text-base sm:text-lg font-black text-white mono mt-0.5 block" id="val-base-prep">6.4m</span>
+                <span class="text-[11px] text-slate-400">solo cook</span>
               </div>
 
               <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-[10px] font-bold uppercase text-amber-400 block">2. Real Cook Wait</span>
-                <span class="text-base sm:text-lg font-black text-amber-300 mono mt-0.5 block" id="val-cook-wait">26.2m</span>
-                <span class="text-[11px] text-slate-400">Bipul claims: 10m</span>
+                <span class="text-[10px] font-bold uppercase text-amber-400 block">Queue Delay</span>
+                <span class="text-base sm:text-lg font-black text-amber-300 mono mt-0.5 block" id="val-queue-wait">7.0m</span>
+                <span class="text-[11px] text-slate-400">waiting at stall</span>
               </div>
 
               <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-[10px] font-bold uppercase text-slate-400 block">3. Walk Back</span>
-                <span class="text-base sm:text-lg font-black text-white mono mt-0.5 block" id="val-walk-back">8.0m</span>
-                <span class="text-[11px] text-slate-400">to hostel</span>
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Round-Trip Walk</span>
+                <span class="text-base sm:text-lg font-black text-white mono mt-0.5 block" id="val-walk-round">16.0m</span>
+                <span class="text-[11px] text-slate-400">8.0m each way</span>
               </div>
 
               <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-[10px] font-bold uppercase text-emerald-400 block">4. Reach Room</span>
-                <span class="text-base sm:text-lg font-black text-emerald-300 mono mt-0.5 block" id="val-reach-room">12:27 AM</span>
-                <span class="text-[11px] text-slate-400" id="val-margin-tag">Margin: +2.8m</span>
+                <span class="text-[10px] font-bold uppercase text-emerald-400 block">Hostel Arrival</span>
+                <span class="text-base sm:text-lg font-black text-emerald-300 mono mt-0.5 block" id="val-reach-room">12:15 AM</span>
+                <span class="text-[11px] text-slate-400" id="val-margin-tag">Margin: +15.0m</span>
               </div>
 
             </div>
 
-            <!-- Empirical Grounding & Transparency Details -->
-            <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
-              <span id="val-confidence">Confidence: ±2.5 mins spread</span>
-              <button onclick="toggleTransparency()" class="text-amber-400 hover:text-amber-300 underline">
-                View Measured Facts vs Assumptions
-              </button>
+            <!-- Departure Deadline Banner -->
+            <div class="mt-3.5 flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs">
+              <span class="text-slate-400">Latest Departure from Hostel:</span>
+              <span class="font-bold text-amber-300 mono" id="val-departure-deadline">Leave by 12:00 AM</span>
             </div>
 
-            <!-- Transparent Audit Drawer -->
-            <div id="transparency-drawer" class="hidden mt-3 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-2">
-              <div>
-                <strong class="text-emerald-400 block text-[11px] uppercase font-bold">✔ Measured from data.csv:</strong>
-                <ul id="list-measured" class="list-disc list-inside text-slate-300 space-y-0.5 text-[11px]"></ul>
+            <!-- Transparency Card (Section 6) -->
+            <div class="mt-4 pt-3 border-t border-slate-800 space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-white flex items-center gap-1.5">
+                  <span>🔍</span> Prediction Transparency Breakdown
+                </span>
+                <span class="text-[11px] text-slate-400 mono" id="val-uncertainty">Buffer: ±2.5m</span>
               </div>
-              <div class="pt-1.5 border-t border-slate-800/80">
-                <strong class="text-amber-400 block text-[11px] uppercase font-bold">⚠️ Operational Assumptions:</strong>
-                <ul id="list-assumptions" class="list-disc list-inside text-slate-400 space-y-0.5 text-[11px]"></ul>
+              
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 mono text-[11px] text-slate-300 leading-relaxed" id="val-explanation-box">
+                Loading transparency breakdown...
               </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                <div class="p-2.5 bg-slate-950/50 rounded-lg border border-slate-800/60">
+                  <strong class="text-emerald-400 block">Historical Data Used:</strong>
+                  <span id="val-data-used" class="text-slate-400">Double Egg Maggi (n=4 genuine observations in data.csv)</span>
+                </div>
+                <div class="p-2.5 bg-slate-950/50 rounded-lg border border-slate-800/60">
+                  <strong class="text-amber-400 block">Uncertainty Range:</strong>
+                  <span id="val-expected-range" class="text-slate-400">11.0 – 16.0 mins kitchen delay</span>
+                </div>
+              </div>
+
+              <div id="validation-warning-box" class="hidden p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-[11px] text-amber-300"></div>
             </div>
 
-          </div>
-
-          <!-- Bipul Da's "Bas 5 Minute" Physics Callout -->
-          <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl text-xs text-slate-300 flex items-start gap-3">
-            <span class="text-xl">💡</span>
-            <div>
-              <strong class="text-white block font-semibold mb-0.5">The 2-Burner Bottleneck:</strong>
-              <span>Bipul Da operates only two domestic burners (one tawa for eggs and one pot for Maggi). If 6 people are waiting, cooking physically takes over 20 minutes! He promises "5 minutes" so students don't walk away to competing tea stalls.</span>
-            </div>
           </div>
 
         </div>
@@ -262,160 +258,120 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- PAGE 2: STALL OWNER VIEW (BIPUL DA'S COUNTER MANAGER)             -->
-    <!-- ================================================================= -->
-    <section id="page-owner" class="page-content hidden space-y-6">
-      
-      <div class="pb-2 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <h2 class="text-2xl font-extrabold text-white tracking-tight">👨‍🍳 Bipul Da's Counter Order Manager</h2>
-          <p class="text-xs text-slate-400 mt-0.5">Helps the stall owner manage pending tickets and communicate honest waiting times.</p>
-        </div>
-        <div class="text-xs text-amber-400 font-mono bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
-          Stall Operator Mode
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        
-        <!-- Live Counter Pod (5 cols) -->
-        <div class="md:col-span-5 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-5">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Pending Queue Counter</span>
-          
-          <div class="text-center py-4 bg-slate-950 rounded-2xl border border-slate-800">
-            <div class="text-6xl font-black text-amber-400 mono" id="owner-queue-display">6</div>
-            <span class="text-xs text-slate-400 mt-1 block">Orders Waiting at Stall</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="changeOwnerQueue(1)" class="py-3 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
-              <span>➕</span> New Customer (+1)
-            </button>
-            <button onclick="changeOwnerQueue(-1)" class="py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
-              <span>✅</span> Order Served (-1)
-            </button>
-          </div>
-
-          <!-- Active Burner Status Toggle -->
-          <div class="pt-3 border-t border-slate-800 space-y-2">
-            <label class="block text-xs font-semibold text-slate-300">Stove Burner Health:</label>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <button onclick="setBurners(2)" id="btn-burner-2" class="py-2 px-3 bg-amber-500 text-slate-950 font-bold rounded-lg transition">2 Burners Normal</button>
-              <button onclick="setBurners(1)" id="btn-burner-1" class="py-2 px-3 bg-slate-950 text-slate-400 border border-slate-800 rounded-lg hover:text-white transition">1 Burner Low LPG</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Honest Wait Advisor for Bipul Da (7 cols) -->
-        <div class="md:col-span-7 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-5">
-          <div class="border-b border-slate-800 pb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Communication Guidance</span>
-            <h3 class="text-xl font-bold text-white mt-1">What to Tell Arriving Students Right Now</h3>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-slate-950 border border-amber-500/30 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-slate-400">Honest Waiting Quote:</span>
-              <span class="text-2xl font-black text-amber-400 mono" id="owner-honest-quote">~18 - 22 mins</span>
-            </div>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              <strong>Tip for Bipul Da:</strong> Instead of saying <em>"5 minute"</em>, tell students:  
-              <span class="text-amber-300 italic block mt-1" id="owner-quote-text">"Peeche 6 order ase, 18-20 minute lagbo. 12:30 curfew ase toh Lal Saah ba Plain Maggi lobi?"</span>
-            </p>
-          </div>
-
-          <!-- Benefits of Honest Communication -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-              <strong class="text-emerald-400 block">Reduces Shouting & Disputes</strong>
-              <span class="text-slate-400">Students don't stand at the hot stove demanding refunds or shouting when 12:20 AM whistle blows.</span>
-            </div>
-            <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-              <strong class="text-amber-400 block">Saves UPI Food Wastage</strong>
-              <span class="text-slate-400">Students who cannot wait cancel *before* eggs are cracked, preventing ₹45–₹50 losses per unpaid dish.</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- ================================================================= -->
-    <!-- PAGE 3: STALL DATA & DATASET AUDIT (20 OBSERVATIONS)              -->
+    <!-- SECTION B: STALL DATA (ITEM STATISTICS & AUDIT)                   -->
     <!-- ================================================================= -->
     <section id="page-data" class="page-content hidden space-y-6">
       
       <!-- Top Title & Dataset Integrity Badge -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
         <div>
-          <h2 class="text-2xl font-extrabold text-white tracking-tight">Real Stall Observations (data.csv)</h2>
-          <p class="text-xs text-slate-400 mt-0.5">20 empirical entries recorded at Gate 1, NIT Silchar on Nov 14–15, 2026.</p>
+          <h2 class="text-2xl font-extrabold text-white tracking-tight">Verified Stall Observations & Item Statistics</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Derived from 20 genuine field observations collected at Gate 1, NIT Silchar.</p>
         </div>
         <div id="badge-dataset-audit" class="flex items-center gap-2 text-xs">
           <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold flex items-center gap-1.5">
             <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
-            Dataset Validated: 20 Genuine Rows
+            Dataset Audit: 20 Genuine Rows • 0 Missing • 0 Duplicates
           </span>
         </div>
       </div>
 
-      <!-- 4 Empirical Metric Cards -->
+      <!-- 4 Core Empirical Proof Numbers -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Total Observations</span>
+          <span class="text-xs text-slate-400 font-semibold">Valid Observations</span>
           <div class="text-2xl font-black text-white mt-1 mono" id="stat-total-orders">20</div>
-          <span class="text-[11px] text-slate-400">Nov 14–15 Rush Window</span>
+          <span class="text-[11px] text-slate-400">0 records excluded</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Bipul's Average Claim</span>
+          <span class="text-xs text-slate-400 font-semibold">Bipul's Average Quote</span>
           <div class="text-2xl font-black text-amber-400 mt-1 mono" id="stat-avg-claimed">4.8m</div>
-          <span class="text-[11px] text-slate-400">"Bas 5 minute bohi thaak"</span>
+          <span class="text-[11px] text-slate-400">"Bas 5 minute" claim</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-          <span class="text-xs text-slate-400 font-semibold">Actual Measured Wait</span>
+          <span class="text-xs text-slate-400 font-semibold">Actual Measured Mean</span>
           <div class="text-2xl font-black text-rose-400 mt-1 mono" id="stat-avg-actual">17.7m</div>
-          <span class="text-[11px] text-rose-400/80">+12.9m underestimation</span>
+          <span class="text-[11px] text-rose-400/80">+12.9m underestimation gap</span>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
           <span class="text-xs text-slate-400 font-semibold">Curfew Breach Rate</span>
           <div class="text-2xl font-black text-red-500 mt-1 mono" id="stat-breach-pct">30.0%</div>
-          <span class="text-[11px] text-red-400/80">6 of 20 marked late</span>
+          <span class="text-[11px] text-red-400/80">6 of 20 marked in late register</span>
         </div>
       </div>
 
-      <!-- Filter & Search Controls -->
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div class="flex items-center gap-1.5">
-          <span class="text-slate-400 font-medium mr-1">Filter View:</span>
-          <button onclick="filterTable('all')" id="filter-all" class="filter-btn px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold">All Orders (20)</button>
-          <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">Late Students (6)</button>
-          <button onclick="filterTable('ontime')" id="filter-ontime" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">On Time (14)</button>
+      <!-- Food-Item-Wise Statistics Table (Requirement 1 & 5B) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl space-y-3 p-4 sm:p-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>🍳</span> Food-Item Preparation Time Statistics
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Calculated separately for each item from valid observations in data.csv</p>
+          </div>
+          <span class="text-xs bg-amber-500/15 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/30 font-mono">
+            Item Profiler
+          </span>
         </div>
-        <div>
-          <input type="text" id="table-search" oninput="searchTable()" placeholder="Search food, hostel, or notes..." class="bg-slate-950 border border-slate-700 px-3 py-1.5 rounded-lg text-xs text-white focus:outline-none focus:border-amber-500 w-52 sm:w-64">
-        </div>
-      </div>
 
-      <!-- Observational Table -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs text-slate-300 divide-y divide-slate-800">
             <thead class="bg-slate-950/80 text-slate-400 uppercase font-semibold">
               <tr>
-                <th class="py-3 px-3">#</th>
-                <th class="py-3 px-3">Time</th>
-                <th class="py-3 px-3">Food Item</th>
-                <th class="py-3 px-3">Bipul Promised</th>
-                <th class="py-3 px-3">Actual Wait</th>
-                <th class="py-3 px-3">Hostel</th>
-                <th class="py-3 px-3">Missed Curfew?</th>
-                <th class="py-3 px-4">Fieldwork Notes</th>
+                <th class="py-2.5 px-3">Food Item</th>
+                <th class="py-2.5 px-2">Category</th>
+                <th class="py-2.5 px-2 text-center">Samples (n)</th>
+                <th class="py-2.5 px-3">Mean Wait</th>
+                <th class="py-2.5 px-3 text-amber-300">Median Wait</th>
+                <th class="py-2.5 px-2">Min Wait</th>
+                <th class="py-2.5 px-2">Max Wait</th>
+                <th class="py-2.5 px-3">Std Dev (σ)</th>
+                <th class="py-2.5 px-3 text-emerald-400">Base Prep Estimate</th>
               </tr>
             </thead>
-            <tbody id="data-table-body" class="divide-y divide-slate-800/60 font-normal">
+            <tbody id="item-stats-body" class="divide-y divide-slate-800/60 font-mono">
               <tr>
-                <td colspan="8" class="text-center py-6 text-slate-500">Loading verified fieldwork observations...</td>
+                <td colspan="9" class="text-center py-4 text-slate-500">Loading item statistics...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Raw Fieldwork Log Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl space-y-3 p-4 sm:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3 text-xs">
+          <div>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>📋</span> All 20 Fieldwork Observation Records
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Raw empirical entries recorded Nov 14–15 outside Gate 1</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="filterTable('all')" id="filter-all" class="filter-btn px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold">All (20)</button>
+            <button onclick="filterTable('late')" id="filter-late" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">Late (6)</button>
+            <button onclick="filterTable('ontime')" id="filter-ontime" class="filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium">On Time (14)</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300 divide-y divide-slate-800">
+            <thead class="bg-slate-950/80 text-slate-400 uppercase font-semibold">
+              <tr>
+                <th class="py-2.5 px-3">#</th>
+                <th class="py-2.5 px-3">Time</th>
+                <th class="py-2.5 px-3">Food Item</th>
+                <th class="py-2.5 px-2 text-center">Queue</th>
+                <th class="py-2.5 px-3">Bipul Promised</th>
+                <th class="py-2.5 px-3">Actual Wait</th>
+                <th class="py-2.5 px-3">Hostel</th>
+                <th class="py-2.5 px-3">Curfew Breach?</th>
+                <th class="py-2.5 px-4">Fieldwork Notes</th>
+              </tr>
+            </thead>
+            <tbody id="raw-data-body" class="divide-y divide-slate-800/60 font-normal">
+              <tr>
+                <td colspan="9" class="text-center py-4 text-slate-500">Loading data.csv...</td>
               </tr>
             </tbody>
           </table>
@@ -425,59 +381,59 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- PAGE 4: THE STORY & NIT SILCHAR CONTEXT                           -->
+    <!-- SECTION C: THE STORY                                              -->
     <!-- ================================================================= -->
     <section id="page-story" class="page-content hidden space-y-6">
       
       <div class="pb-2 border-b border-slate-800">
-        <h2 class="text-2xl font-extrabold text-white tracking-tight">The Story Behind the Stall</h2>
-        <p class="text-xs text-slate-400 mt-0.5">Fieldwork conducted at NIT Silchar Main Gate, Cachar, Assam.</p>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">The Fieldwork Story</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Actual problem context, location, person helped, and qualitative fieldwork findings.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2.5">
           <div class="text-2xl">📍</div>
-          <h3 class="text-base font-bold text-white">The Place</h3>
+          <h3 class="text-base font-bold text-white">Actual Location</h3>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Roadside tin-shed stall, exactly <strong>80 meters outside Gate 1</strong> (Main Gate) of NIT Silchar, Cachar, Assam. Hostellers from Hostel 1 through 9 walk across campus in the freezing night during exam weeks for late-night food.
+            Roadside tin-shed stall, located exactly <strong>80 meters outside Gate 1</strong> (Main Gate) of National Institute of Technology (NIT) Silchar, Cachar, Assam (788010). Late-night hostellers walk across campus to this spot for dinner snacks.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2.5">
+          <div class="text-2xl">👨‍🍳</div>
+          <h3 class="text-base font-bold text-white">Real Person Helped</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            <strong>Bipul Nath ("Bipul Da")</strong>, age 44, sole proprietor and cook. He runs the stall entirely alone, managing two commercial gas burners while cracking eggs and stirring Maggi pans in freezing late-night temperatures.
           </p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2.5">
           <div class="text-2xl">⏰</div>
-          <h3 class="text-base font-bold text-white">The 12:30 AM Curfew</h3>
+          <h3 class="text-base font-bold text-white">Actual Problem Statement</h3>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Campus security strictly enforces a <strong>12:30 AM gate register sign-in</strong>. At 12:20 AM, guards sound warning whistles. Anyone arriving after 12:30 AM has their name and roll number recorded in the penalty register.
-          </p>
-        </div>
-
-        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2.5">
-          <div class="text-2xl">🗣️</div>
-          <h3 class="text-base font-bold text-white">The "5-Minute" Habit</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Bipul Da (age 44) always tells students: <em>"Bas 5 minute lagega, bohi thaak!"</em> He explains: if he admits food will take 20 minutes, impatient students will walk away to other tea stalls or skip dinner.
+            Hostellers face a strict <strong>12:30 AM gate curfew</strong>. Because Bipul Da fears losing customers to rival stalls, he tells every student: <em>"Bas 5 minute lagega, bohi thaak!"</em> When 6+ orders queue up, cooking takes 20–28 minutes, resulting in panicked sprints and register penalties.
           </p>
         </div>
 
       </div>
 
-      <!-- Qualitative Fieldwork Deep-Dive -->
+      <!-- Qualitative Fieldwork Findings -->
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
         <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
-          <span>🍳</span> Fieldwork Findings & The Pan Transition Latency
+          <span>🔬</span> What Was Learned from the Fieldwork Interaction
         </h3>
         <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
           <p>
-            During our fieldwork on November 14–15, we observed that cooking speed alone wasn't the only bottleneck. What really multiplied delays was <strong>pan changeover overhead</strong>:
+            During our on-site observation on November 14–15 (23:20 to 00:15 IST), we uncovered key operational insights that desk analysis would miss:
           </p>
-          <ul class="list-disc list-inside space-y-1.5 pl-2 text-slate-300">
-            <li>Bipul Da uses only two commercial burners: one for boiling Maggi and one tawa for frying eggs and buns.</li>
-            <li>Whenever an order switches from Maggi to Egg Toast, he has to wipe egg grease off the tawa with a cloth, re-apply oil, and whisk fresh eggs. This dead time takes <strong>60 to 90 seconds</strong> between discordant food categories.</li>
-            <li>When 6 to 8 orders accumulate, cumulative wait times surge past <strong>20 minutes</strong>, causing panic among students heading back to distant hostels (Hostels 7, 8, and PG Hostel 9).</li>
+          <ul class="list-disc list-inside space-y-2 pl-2 text-slate-300">
+            <li><strong>The 2-Burner Hardware Constraint:</strong> Bipul Da operates only two burners: Burner 1 holds a tawa for frying eggs and buns; Burner 2 holds a pot for boiling water/Maggi. Concurrency is capped at 2 orders at a time.</li>
+            <li><strong>Pan Transition Dead Time:</strong> Switching between dish types (e.g., Egg Toast after Maggi) requires wiping down the tawa with a coarse rag, re-oiling, and egg whisking. This creates <strong>60 to 90 seconds of zero-cooking overhead</strong> invisible to waiting students.</li>
+            <li><strong>The 12:20 AM Warning Whistle:</strong> Security guards blow whistles 10 minutes before the 12:30 AM gate closure. That is when anxious students begin shouting at the counter, demanding instant food or canceling orders after eggs are already cracked.</li>
           </ul>
           <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-slate-400">
-            <strong>Assignment Evidence:</strong> Two timestamped photographs (<code class="text-amber-300">photos/nit_silchar_stall_setup.jpg</code> at 23:28 IST and <code class="text-amber-300">photos/rush_hour_burners.jpg</code> at 23:55 IST) accompany the fieldwork report in <code class="text-amber-300">fieldwork.md</code>.
+            <strong>Photographs Reference:</strong> Two timestamped smartphone captures (<code class="text-amber-300">photos/nit_silchar_stall_setup.jpg</code> at 23:28 IST and <code class="text-amber-300">photos/rush_hour_burners.jpg</code> at 23:55 IST) are documented in <code class="text-amber-300">fieldwork.md</code>.
           </div>
         </div>
       </div>
@@ -485,57 +441,73 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- PAGE 5: DIAGNOSTICS & EDGE-CASE TESTING                           -->
+    <!-- SECTION D: SIMPLE TEST & DIAGNOSTICS                              -->
     <!-- ================================================================= -->
     <section id="page-test" class="page-content hidden space-y-6">
       
       <div class="pb-2 border-b border-slate-800">
-        <h2 class="text-2xl font-extrabold text-white tracking-tight">Diagnostics & Reliability Testing</h2>
-        <p class="text-xs text-slate-400 mt-0.5">Tests edge cases, midnight rollover, curfew expiry, and defensive input sanitization.</p>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">Simple Test & Queuing Simulator</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Test how predictions change under different queue sizes, food items, and boundary conditions.</p>
       </div>
 
-      <!-- Formula Card -->
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Prediction Architecture</h3>
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mono text-xs text-emerald-400 space-y-1">
-          <div>Estimated Cook Wait = Base_Prep(dish) + (Queue × 2.33 mins / Burners) + Pan_Cleaning_Delay</div>
-          <div>Total Trip Time = Walk_To_Gate(hostel) + Cook_Wait + Walk_Back_To_Hostel</div>
-          <div>Departure Deadline = 12:30 AM Curfew - Total_Trip_Time</div>
-          <div class="text-amber-300">Curfew Margin = 12:30 AM - Estimated_Return_Time</div>
+      <!-- Queue Sensitivity Experiment Cards -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">1. Queue Sensitivity: How Wait Times Change</h3>
+        <p class="text-xs text-slate-300">
+          Click below to observe how the estimated wait and curfew feasibility change as pending orders accumulate on Bipul Da's two burners:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <button onclick="runSensitivityTest(0)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-emerald-400 block">Queue = 0 (Clear)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Solo prep time (~6.4 mins). Safely returns to hostel.</span>
+          </button>
+          <button onclick="runSensitivityTest(3)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-amber-300 block">Queue = 3 (Moderate)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait increases to ~11.5 mins. Leaves slight buffer.</span>
+          </button>
+          <button onclick="runSensitivityTest(6)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-amber-400 block">Queue = 6 (Rush)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait surges to ~18–20 mins. WARNING / Tight margin.</span>
+          </button>
+          <button onclick="runSensitivityTest(10)" class="p-3 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition">
+            <span class="text-xs font-bold text-rose-400 block">Queue = 10 (Jam)</span>
+            <span class="text-[11px] text-slate-400 block mt-1">Wait exceeds 25 mins. LIKELY TO MISS CURFEW.</span>
+          </button>
         </div>
       </div>
 
-      <!-- Interactive Edge Case Tests -->
+      <!-- Edge Case & Diagnostic Scenarios -->
       <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400">2. Interactive Edge-Case Stress Testing</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400">2. Boundary & Time Edge Cases</h3>
         <p class="text-xs text-slate-300">
-          Click any button below to verify that the application handles difficult or invalid boundary conditions gracefully:
+          Click any scenario to verify that date-aware calculations and input validations execute correctly:
         </p>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-          <button onclick="runDiagnosticTest('zero_queue')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
-            🧪 Zero Queue (Empty Stall)
-          </button>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button onclick="runDiagnosticTest('midnight_rollover')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
-            🌙 Midnight Rollover (23:55)
+            🌙 Midnight Rollover (23:55 -> 00:20)
           </button>
           <button onclick="runDiagnosticTest('curfew_passed')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-rose-300 rounded-xl transition text-left font-semibold">
-            ⛔ Curfew Already Passed (00:35)
+            ⛔ Curfew Already Passed (00:45 AM)
           </button>
           <button onclick="runDiagnosticTest('negative_orders')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
-            🛡️ Negative Orders (-10)
+            🛡️ Negative Orders (-15 Bound to 0)
           </button>
           <button onclick="runDiagnosticTest('zero_burners')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-amber-300 rounded-xl transition text-left font-semibold">
-            🛡️ Zero Active Burners (0)
+            🛡️ Zero Active Burners (Clamped to 1)
           </button>
-          <button onclick="runDiagnosticTest('invalid_food')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
-            🥣 Unobserved Dish Name
+          <button onclick="runDiagnosticTest('unobserved_food')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
+            🥣 Unobserved Food Item (Fallback)
+          </button>
+          <button onclick="runDiagnosticTest('curfew_exact')" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl transition text-left font-semibold">
+            ⏱️ Arrival Exactly at Curfew (Margin = 0m)
           </button>
         </div>
 
-        <!-- Diagnostic Output Terminal -->
-        <div id="diagnostic-output" class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs mono text-slate-300 hidden whitespace-pre-wrap leading-relaxed">
-          Running diagnostic...
+        <!-- Simulation Result Terminal -->
+        <div id="test-output-terminal" class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs mono text-slate-300 hidden whitespace-pre-wrap leading-relaxed">
+          Running simulation...
         </div>
       </div>
 
@@ -546,16 +518,15 @@
   <!-- Global Footer -->
   <footer class="border-t border-slate-900 bg-slate-950/90 py-5 text-center text-xs text-slate-400">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div>NightQueue • Fieldwork at NIT Silchar Main Gate, Cachar, Assam (788010)</div>
-      <div>Curfew: 12:30 AM • 20 Empirical Observations Calibrated</div>
+      <div>NightQueue • Built for NIT Silchar Hostellers outside Gate 1</div>
+      <div>Curfew: 12:30 AM • 20 Verified Fieldwork Observations</div>
     </div>
   </footer>
 
-  <!-- Client-Side Engine Controller -->
+  <!-- Client-Side Controller -->
   <script>
     let allOrdersData = [];
     let currentFilter = 'all';
-    let currentBurners = 2;
 
     // Navigation Switcher
     function showPage(pageId) {
@@ -581,61 +552,9 @@
       }
     }
 
-    function toggleSettings() {
-      const box = document.getElementById('settings-box');
-      const arrow = document.getElementById('settings-arrow');
-      if (box.classList.contains('hidden')) {
-        box.classList.remove('hidden');
-        arrow.textContent = '▼';
-      } else {
-        box.classList.add('hidden');
-        arrow.textContent = '▶';
-      }
-    }
-
-    function toggleTransparency() {
-      const drawer = document.getElementById('transparency-drawer');
-      drawer.classList.toggle('hidden');
-    }
-
     function setQueue(val) {
       document.getElementById('input-queue').value = val;
       updatePrediction();
-    }
-
-    // Stall Owner Counter Logic
-    function changeOwnerQueue(delta) {
-      let current = parseInt(document.getElementById('owner-queue-display').textContent) + delta;
-      if (current < 0) current = 0;
-      if (current > 20) current = 20;
-      document.getElementById('owner-queue-display').textContent = current;
-      document.getElementById('input-queue').value = Math.min(15, current);
-      updateOwnerQuote(current);
-      updatePrediction();
-    }
-
-    function setBurners(num) {
-      currentBurners = num;
-      document.getElementById('input-burners').value = num;
-      if (num === 2) {
-        document.getElementById('btn-burner-2').className = 'py-2 px-3 bg-amber-500 text-slate-950 font-bold rounded-lg transition';
-        document.getElementById('btn-burner-1').className = 'py-2 px-3 bg-slate-950 text-slate-400 border border-slate-800 rounded-lg hover:text-white transition';
-      } else {
-        document.getElementById('btn-burner-1').className = 'py-2 px-3 bg-amber-500 text-slate-950 font-bold rounded-lg transition';
-        document.getElementById('btn-burner-2').className = 'py-2 px-3 bg-slate-950 text-slate-400 border border-slate-800 rounded-lg hover:text-white transition';
-      }
-      const q = parseInt(document.getElementById('owner-queue-display').textContent);
-      updateOwnerQuote(q);
-      updatePrediction();
-    }
-
-    function updateOwnerQuote(q) {
-      const burnerFactor = currentBurners === 1 ? 1.8 : 1.0;
-      const minWait = Math.round((6.0 + (q * 2.3 * burnerFactor)) * 0.9);
-      const maxWait = Math.round((6.0 + (q * 2.3 * burnerFactor)) * 1.15);
-      document.getElementById('owner-honest-quote').textContent = `~${minWait} - ${maxWait} mins`;
-      document.getElementById('owner-quote-text').textContent = 
-        `"Peeche ${q} order ase, ${minWait}-${maxWait} minute lagbo. 12:30 curfew ase toh Lal Saah ba Plain Maggi lobi?"`;
     }
 
     // Prediction Update Logic
@@ -647,6 +566,7 @@
       const orders_ahead = parseInt(document.getElementById('input-queue').value);
       const burners_active = parseInt(document.getElementById('input-burners').value);
       const current_time = document.getElementById('input-time').value;
+      const curfew_time = document.getElementById('input-curfew').value;
 
       document.getElementById('badge-queue-count').textContent = orders_ahead + ' ' + (orders_ahead === 1 ? 'order' : 'orders');
 
@@ -661,26 +581,22 @@
             orders_ahead,
             burners_active,
             current_time,
-            curfew_time: '00:30'
+            curfew_time
           })
         });
         const d = await res.json();
 
-        // Update Walk & Time Metrics
+        // Update Timeline Values
         document.getElementById('badge-walk-time').textContent = d.walk_one_way_mins + ' mins walk';
-        document.getElementById('val-walk-to').textContent = d.walk_one_way_mins + 'm';
-        document.getElementById('val-walk-back').textContent = d.walk_one_way_mins + 'm';
-        document.getElementById('val-cook-wait').textContent = d.estimated_cook_wait_mins + 'm';
+        document.getElementById('val-base-prep').textContent = d.historical_prep_mins + 'm';
+        document.getElementById('val-queue-wait').textContent = d.queue_wait_mins + 'm';
+        document.getElementById('val-walk-round').textContent = (d.walk_one_way_mins * 2).toFixed(1) + 'm';
         document.getElementById('val-reach-room').textContent = d.estimated_return_time;
-        document.getElementById('val-departure-deadline').textContent = 'Leave by ' + d.departure_deadline;
-        document.getElementById('val-confidence').textContent = 'Empirical spread: ' + d.confidence_interval;
+        document.getElementById('val-departure-deadline').textContent = 'Leave hostel by ' + d.departure_deadline;
+        document.getElementById('val-curfew-tag').textContent = d.curfew_time;
+        document.getElementById('val-uncertainty').textContent = 'Buffer: ±' + d.uncertainty_buffer_mins + 'm';
 
-        // Sample count badge
-        document.getElementById('badge-data-tag').textContent = d.is_empirically_grounded 
-          ? `Empirical (n=${d.item_sample_count})` 
-          : `Fallback Assumption`;
-
-        // Card Verdict Styling
+        // Verdict Styling
         const card = document.getElementById('card-verdict');
         const headline = document.getElementById('verdict-headline');
         const advice = document.getElementById('verdict-advice');
@@ -689,16 +605,16 @@
         if (d.curfew_status === 'SAFE') {
           card.className = 'bg-slate-900 border-2 border-emerald-500/40 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-emerald-400';
-          headline.innerHTML = '<span>🟢</span> SAFE TO GO';
+          headline.innerHTML = '<span>🟢</span> SAFE';
           marginTag.className = 'text-[11px] text-emerald-400 font-bold';
           marginTag.textContent = 'Margin: +' + d.curfew_margin_mins + 'm';
-        } else if (d.curfew_status === 'CAUTION') {
+        } else if (d.curfew_status === 'WARNING') {
           card.className = 'bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-amber-400';
-          headline.innerHTML = '<span>🟡</span> HURRY UP!';
+          headline.innerHTML = '<span>🟡</span> WARNING';
           marginTag.className = 'text-[11px] text-amber-400 font-bold';
           marginTag.textContent = 'Margin: +' + d.curfew_margin_mins + 'm';
-        } else if (d.curfew_status === 'CURFEW_PASSED') {
+        } else if (d.curfew_status === 'CURFEW ALREADY PASSED') {
           card.className = 'bg-slate-900 border-2 border-rose-600 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
           headline.innerHTML = '<span>⛔</span> CURFEW PASSED';
@@ -707,80 +623,85 @@
         } else {
           card.className = 'bg-slate-900 border-2 border-rose-500/50 rounded-2xl p-6 shadow-2xl';
           headline.className = 'text-2xl sm:text-3xl font-black mt-1 flex items-center gap-2 text-rose-500';
-          headline.innerHTML = '<span>🔴</span> DON\'T GO!';
+          headline.innerHTML = '<span>🔴</span> LIKELY TO MISS CURFEW';
           marginTag.className = 'text-[11px] text-rose-500 font-bold';
           marginTag.textContent = 'Late by ' + Math.abs(d.curfew_margin_mins) + 'm';
         }
 
         advice.textContent = d.recommendation;
 
-        // Render transparency facts
-        const listM = document.getElementById('list-measured');
-        const listA = document.getElementById('list-assumptions');
-        listM.innerHTML = (d.measured_facts || []).map(f => `<li>${f}</li>`).join('');
-        listA.innerHTML = (d.assumptions_made || []).map(a => `<li>${a}</li>`).join('');
+        // Transparency Information
+        document.getElementById('val-explanation-box').textContent = d.calculation_explanation;
+        const used = d.historical_data_used || {};
+        document.getElementById('val-data-used').textContent = used.matched_item 
+          ? `${used.matched_item} (n=${used.sample_count} observations, median=${used.median_actual_wait}m)`
+          : (used.data_source || 'Documented fallbacks');
+        document.getElementById('val-expected-range').textContent = d.expected_range;
+
+        // Warnings
+        const warnBox = document.getElementById('validation-warning-box');
+        if (d.validation_warnings && d.validation_warnings.length > 0) {
+          warnBox.classList.remove('hidden');
+          warnBox.textContent = 'Notice: ' + d.validation_warnings.join(' | ');
+        } else {
+          warnBox.classList.add('hidden');
+        }
 
       } catch (err) {
         console.error('Calculation error:', err);
       }
     }
 
-    // Load Data Page and Audit
+    // Load Data Page (Item Statistics and Raw Table)
     async function loadDataPage() {
       try {
-        const [statsRes, dataRes, auditRes] = await Promise.all([
+        const [statsRes, dataRes, auditRes, itemStatsRes] = await Promise.all([
           fetch('/api/stats'),
           fetch('/api/data'),
-          fetch('/api/audit')
+          fetch('/api/audit'),
+          fetch('/api/item-stats')
         ]);
         const stats = await statsRes.json();
         allOrdersData = await dataRes.json();
         const audit = await auditRes.json();
+        const itemStats = await itemStatsRes.json();
 
-        // Update stats
+        // Summary Stats
         document.getElementById('stat-total-orders').textContent = stats.total_orders;
         document.getElementById('stat-avg-claimed').textContent = stats.avg_claimed_mins + 'm';
         document.getElementById('stat-avg-actual').textContent = stats.avg_actual_mins + 'm';
         document.getElementById('stat-breach-pct').textContent = stats.curfew_breach_rate_pct + '%';
 
-        // Update audit badge
-        const auditBadge = document.getElementById('badge-dataset-audit');
-        if (audit.is_valid) {
-          auditBadge.innerHTML = `
-            <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold flex items-center gap-1.5">
-              <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
-              Dataset Verified: ${audit.total_rows} Rows • 0 Missing • 0 Duplicates
-            </span>
-          `;
-        }
+        // Render Item-Wise Statistics Table
+        const itemTbody = document.getElementById('item-stats-body');
+        itemTbody.innerHTML = Object.values(itemStats).map(s => `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-2.5 px-3 font-bold text-white font-sans">${s.item_name}</td>
+            <td class="py-2.5 px-2 text-slate-400 text-[11px]">${s.dish_category}</td>
+            <td class="py-2.5 px-2 text-center text-amber-300 font-bold">${s.count}</td>
+            <td class="py-2.5 px-3 text-slate-300">${s.mean_actual_mins.toFixed(1)}m</td>
+            <td class="py-2.5 px-3 text-amber-400 font-bold">${s.median_actual_mins.toFixed(1)}m</td>
+            <td class="py-2.5 px-2 text-slate-400">${s.min_actual_mins.toFixed(1)}m</td>
+            <td class="py-2.5 px-2 text-slate-400">${s.max_actual_mins.toFixed(1)}m</td>
+            <td class="py-2.5 px-3 text-slate-400">±${s.std_actual_mins.toFixed(1)}m</td>
+            <td class="py-2.5 px-3 text-emerald-400 font-bold">${s.base_prep_estimate_mins.toFixed(1)}m</td>
+          </tr>
+        `).join('');
 
         renderTable();
       } catch (err) {
-        console.error('Failed to load data:', err);
+        console.error('Failed to load data page:', err);
       }
     }
 
     function renderTable() {
-      const tbody = document.getElementById('data-table-body');
-      const query = document.getElementById('table-search').value.toLowerCase();
-
+      const tbody = document.getElementById('raw-data-body');
       let filtered = allOrdersData.filter(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';
         if (currentFilter === 'late' && !isLate) return false;
         if (currentFilter === 'ontime' && isLate) return false;
-        if (query) {
-          const matchItem = (row.item_ordered || '').toLowerCase().includes(query);
-          const matchHostel = (row.hostel_origin || '').toLowerCase().includes(query);
-          const matchNotes = (row.notes || '').toLowerCase().includes(query);
-          return matchItem || matchHostel || matchNotes;
-        }
         return true;
       });
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-slate-500">No matching orders found.</td></tr>';
-        return;
-      }
 
       tbody.innerHTML = filtered.map(row => {
         const isLate = (row.curfew_breach || '').toLowerCase() === 'yes';
@@ -790,14 +711,15 @@
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-2.5 px-3 font-bold text-slate-400 mono">${row.order_id}</td>
-            <td class="py-2.5 px-3 mono text-slate-300">${row.timestamp}</td>
-            <td class="py-2.5 px-3 font-semibold text-white">${row.item_ordered}</td>
-            <td class="py-2.5 px-3 mono text-amber-400">${row.claimed_wait_mins}m</td>
-            <td class="py-2.5 px-3 mono font-bold ${isLate ? 'text-rose-400' : 'text-slate-200'}">${row.actual_wait_mins}m</td>
-            <td class="py-2.5 px-3 text-slate-300">${row.hostel_origin}</td>
-            <td class="py-2.5 px-3">${badge}</td>
-            <td class="py-2.5 px-4 text-slate-400 text-[11px] leading-snug">${row.notes || ''}</td>
+            <td class="py-2 px-3 font-bold text-slate-400 mono">${row.order_id}</td>
+            <td class="py-2 px-3 mono text-slate-300">${row.timestamp}</td>
+            <td class="py-2 px-3 font-semibold text-white">${row.item_ordered}</td>
+            <td class="py-2 px-2 text-center mono text-slate-400">${row.queue_ahead}</td>
+            <td class="py-2 px-3 mono text-amber-400">${row.claimed_wait_mins}m</td>
+            <td class="py-2 px-3 mono font-bold ${isLate ? 'text-rose-400' : 'text-slate-200'}">${row.actual_wait_mins}m</td>
+            <td class="py-2 px-3 text-slate-300">${row.hostel_origin}</td>
+            <td class="py-2 px-3">${badge}</td>
+            <td class="py-2 px-4 text-slate-400 text-[11px]">${row.notes || ''}</td>
           </tr>
         `;
       }).join('');
@@ -813,29 +735,59 @@
       renderTable();
     }
 
-    function searchTable() {
-      renderTable();
+    // Queuing Sensitivity Simulator
+    async function runSensitivityTest(q) {
+      const out = document.getElementById('test-output-terminal');
+      out.classList.remove('hidden');
+      out.textContent = `Testing queue = ${q} orders ahead...`;
+
+      try {
+        const res = await fetch('/api/predict', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            dish_name: "Bun Omelette",
+            dish_category: "egg_toast",
+            hostel: "Hostel 7",
+            orders_ahead: q,
+            burners_active: 2,
+            current_time: "23:45",
+            curfew_time: "00:30"
+          })
+        });
+        const d = await res.json();
+        out.innerHTML = `
+<span class="text-amber-400 font-bold">🧪 QUEUE SIMULATION RESULT (Queue = ${q} orders ahead):</span>
+• Dish: Bun Omelette | Hostel: Hostel 7 (~8.0m walk each way)
+• Base Prep Time: ${d.historical_prep_mins}m | Queue Waiting: ${d.queue_wait_mins}m
+• Total Trip Time: ${d.total_trip_mins}m | Room Arrival: ${d.estimated_return_time}
+• Curfew Feasibility: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400'}">${d.curfew_status}</strong> (Margin: ${d.curfew_margin_mins}m)
+• Why it changed: With ${q} orders ahead on 2 burners, queue delay changed to ${d.queue_wait_mins}m based on ~2.1m marginal delay per order.
+        `.trim();
+      } catch (err) {
+        out.textContent = "Error running test: " + err;
+      }
     }
 
-    // Diagnostics Edge Case Runner
-    async function runDiagnosticTest(testKey) {
-      const out = document.getElementById('diagnostic-output');
+    // Diagnostic Scenario Runner
+    async function runDiagnosticTest(key) {
+      const out = document.getElementById('test-output-terminal');
       out.classList.remove('hidden');
-      out.textContent = `Running diagnostic scenario: [${testKey}]...`;
+      out.textContent = `Running diagnostic scenario: [${key}]...`;
 
       let payload = {};
-      if (testKey === 'zero_queue') {
-        payload = { dish_name: "Double Egg Maggi", dish_category: "maggi", hostel: "Hostel 7", orders_ahead: 0, current_time: "23:30" };
-      } else if (testKey === 'midnight_rollover') {
-        payload = { dish_name: "Bun Omelette", dish_category: "egg_toast", hostel: "Hostel 1", orders_ahead: 2, current_time: "23:55" };
-      } else if (testKey === 'curfew_passed') {
-        payload = { dish_name: "Plain Maggi", dish_category: "maggi", hostel: "Hostel 7", orders_ahead: 3, current_time: "00:35" };
-      } else if (testKey === 'negative_orders') {
-        payload = { dish_name: "Plain Maggi", dish_category: "maggi", hostel: "Hostel 7", orders_ahead: -10, current_time: "23:45" };
-      } else if (testKey === 'zero_burners') {
-        payload = { dish_name: "Egg Toast", dish_category: "egg_toast", hostel: "Hostel 8", orders_ahead: 4, burners_active: 0, current_time: "23:45" };
-      } else if (testKey === 'invalid_food') {
-        payload = { dish_name: "Exotic Dish", dish_category: "unknown", hostel: "Unknown Hostel", orders_ahead: 2, current_time: "23:45" };
+      if (key === 'midnight_rollover') {
+        payload = { dish_name: "Plain Maggi", dish_category: "maggi", hostel: "Hostel 1", orders_ahead: 2, current_time: "23:55", curfew_time: "00:30" };
+      } else if (key === 'curfew_passed') {
+        payload = { dish_name: "Plain Maggi", dish_category: "maggi", hostel: "Hostel 7", orders_ahead: 2, current_time: "00:45", curfew_time: "00:30" };
+      } else if (key === 'negative_orders') {
+        payload = { dish_name: "Plain Maggi", dish_category: "maggi", hostel: "Hostel 7", orders_ahead: -15, current_time: "23:45" };
+      } else if (key === 'zero_burners') {
+        payload = { dish_name: "Bun Omelette", dish_category: "egg_toast", hostel: "Hostel 7", orders_ahead: 4, burners_active: 0, current_time: "23:45" };
+      } else if (key === 'unobserved_food') {
+        payload = { dish_name: "Exotic Special Dish", dish_category: "unseen", hostel: "Unknown Hostel", orders_ahead: 2, current_time: "23:45" };
+      } else if (key === 'curfew_exact') {
+        payload = { dish_name: "Dudh Saah x1", dish_category: "beverage", hostel: "Hostel 1", orders_ahead: 3, current_time: "00:10", curfew_time: "00:30" };
       }
 
       try {
@@ -844,27 +796,27 @@
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
         });
-        const data = await res.json();
+        const d = await res.json();
         out.innerHTML = `
-<span class="text-emerald-400 font-bold">✔ SCENARIO TEST: ${testKey}</span>
-• Status: <strong class="${data.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400'}">${data.curfew_status}</strong>
-• Input Orders: ${payload.orders_ahead ?? 4} -> Sanitized Orders: ${data.orders_ahead}
-• Input Burners: ${payload.burners_active ?? 2} -> Sanitized Burners: ${data.burners_active}
-• Cook Wait: ${data.estimated_cook_wait_mins} mins (Empirical Grounding: ${data.is_empirically_grounded})
-• Room Return: ${data.estimated_return_time} (Curfew Margin: ${data.curfew_margin_mins}m)
-• Recommendation: "${data.recommendation}"
+<span class="text-emerald-400 font-bold">✔ SCENARIO TEST: ${key}</span>
+• Status: <strong class="${d.curfew_status === 'SAFE' ? 'text-emerald-400' : 'text-amber-400'}">${d.curfew_status}</strong>
+• Current Time: ${payload.current_time} -> Arrival: ${d.estimated_return_time} vs Curfew: ${d.curfew_time}
+• Curfew Margin: ${d.curfew_margin_mins} mins
+• Warnings: ${d.validation_warnings.length > 0 ? d.validation_warnings.join(' | ') : 'None'}
+• Recommendation: "${d.recommendation}"
         `.trim();
       } catch (err) {
-        out.textContent = "Test execution error: " + err;
+        out.textContent = "Diagnostic error: " + err;
       }
     }
 
-    // Initialize Page
+    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('input-hostel').addEventListener('change', updatePrediction);
       document.getElementById('input-food').addEventListener('change', updatePrediction);
       document.getElementById('input-queue').addEventListener('input', updatePrediction);
       document.getElementById('input-time').addEventListener('change', updatePrediction);
+      document.getElementById('input-curfew').addEventListener('change', updatePrediction);
       document.getElementById('input-burners').addEventListener('change', updatePrediction);
 
       const hash = window.location.hash.replace('#', '') || 'checker';
